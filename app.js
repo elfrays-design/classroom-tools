@@ -7,7 +7,7 @@ const safeId = () => (self.crypto?.randomUUID?.() || `${Date.now()}-${Math.rando
 const dateString = () => new Date().toLocaleString('ko-KR',{hour12:false});
 const boardDays=[{n:1,key:'mon',label:'월'},{n:2,key:'tue',label:'화'},{n:3,key:'wed',label:'수'},{n:4,key:'thu',label:'목'},{n:5,key:'fri',label:'금'}];
 const boardDefaultHours=[['09:00','09:40'],['09:50','10:30'],['10:40','11:20'],['11:30','12:10'],['13:10','13:50'],['14:00','14:40'],['14:50','15:30']];
-const defaultState = () => ({schema:1,activeClassId:'class-default',classes:[{id:'class-default',name:'우리 반',students:[],groups:[],seating:[],seatingCols:5,seatingRows:6,presentationOrder:[],board:makeDefaultBoard(),grading:makeDefaultGrading()}],history:[]});
+const defaultState = () => ({schema:1,activeClassId:'class-default',classes:[{id:'class-default',name:'우리 반',students:[],groups:[],seating:[],seatingCols:5,seatingRows:6,presentationOrder:[],board:makeDefaultBoard(),grading:makeDefaultGrading(),lunch:makeDefaultLunch()}],history:[]});
 let state=defaultState();
 let currentView='home';
 let gradingFullScreen=false;
@@ -27,7 +27,8 @@ const tools=[
  {id:'timer',icon:'⏱',title:'수업 타이머',desc:'집중 활동 시간 설정과 종료 알림',color:'#f2eefe'},
  {id:'seating',icon:'🪑',title:'자리 배치',desc:'랜덤 자리 배정과 두 자리 맞바꾸기',color:'#ffefef'},
  {id:'participation',icon:'⭐',title:'참여 기록',desc:'학생별 발표·참여 횟수 기록하기',color:'#fff6d7'},
- {id:'grading',icon:'📝',title:'채점 줄서기',desc:'이름을 눌러 줄서고 차례대로 채점받기',color:'#e4f5ff'}
+ {id:'grading',icon:'📝',title:'채점 줄서기',desc:'이름을 눌러 줄서고 차례대로 채점받기',color:'#e4f5ff'},
+ {id:'lunch',icon:'🧸',title:'급식 줄서기',desc:'인형뽑기로 우리 반 급식 순서 정하기',color:'#fff0dc'}
 ];
 function activeClass(){return state.classes.find(c=>c.id===state.activeClassId)||state.classes[0];}
 function participants(){return activeClass().students.filter(s=>s.included!==false);}
@@ -64,20 +65,95 @@ const head=gradingFullScreen?'<div class="grading-full-head"><strong>📝 채점
 const controls='<div class="grading-control"><h3>👩‍🏫 선생님 관리</h3><div class="grading-actions"><button id="gradeCall" class="btn btn-primary" '+(q.current||!q.waiting.length?'disabled':'')+'>📣 다음 학생 호출</button><button id="gradeDone" class="btn btn-secondary" '+(!q.current?'disabled':'')+'>✓ 채점 완료</button><button id="gradeUncall" class="btn btn-outline" '+(!q.current?'disabled':'')+'>↩ 호출 취소</button></div><div class="grading-actions grading-small"><button id="gradeToggle" class="btn btn-outline btn-small">⛶ 학생용 크게 보기</button><button id="gradeCopy" class="btn btn-outline btn-small" '+(!q.current&&!q.waiting.length?'disabled':'')+'>대기 순서 복사</button><button id="gradeClear" class="btn btn-danger btn-small">대기열 초기화</button></div></div><div class="grading-history"><strong>✅ 채점 완료 '+q.completed.length+'건</strong><p>'+(q.completed.length?q.completed.slice(-25).reverse().map(o=>escapeHtml(nameOf(o.id))).join(' · '):'아직 완료된 학생이 없습니다.')+'</p></div>';
 return head+'<section class="grading-panel"><div class="grading-top"><div><small>현재 학급</small><h2>'+escapeHtml(activeClass().name)+'</h2></div><div class="grading-stats"><span>대기 <b>'+q.waiting.length+'</b>명</span><span>완료 <b>'+q.completed.length+'</b>건</span></div></div><div class="grading-now"><span>📣 지금 채점받을 학생</span><strong>'+(q.current?escapeHtml(nameOf(q.current)):'호출을 기다리는 중')+'</strong><small>'+(q.current?'채점이 끝나면 완료 버튼을 눌러주세요.':'대기열의 첫 번째 학생부터 호출하세요.')+'</small></div><div class="grading-layout"><div class="grading-roster"><h3>✋ 내 이름을 눌러 줄서기</h3>'+(ss.length?'<div class="grading-people">'+students+'</div>':noStudents('먼저 학급 명단을 등록해 주세요.'))+'</div><div class="grading-queue"><h3>📋 기다리는 학생 · '+q.waiting.length+'명</h3><div class="grading-wait-list">'+(queue||'<p class="grading-empty">아직 줄 선 학생이 없어요.</p>')+'</div></div></div>'+(gradingFullScreen?'':controls)+'<p class="grading-note">🔒 이 대기열은 현재 기기의 브라우저에만 저장됩니다. 다른 PC·독립형 전자칠판과 자동 연동하지 않습니다.</p></section>';
 }
-function normalizeState(data){if(!data||typeof data!=='object'||!Array.isArray(data.classes)||!data.classes.length)throw Error('올바른 백업 파일이 아닙니다.');if(data.classes.length>100)throw Error('학급이 너무 많습니다.');const classes=data.classes.map(c=>{if(!c||!Array.isArray(c.students)||c.students.length>1000)throw Error('학생 명단에 오류가 있습니다.');const seen=new Set();const students=c.students.map(s=>({id:String(s.id||safeId()).slice(0,100),name:String(s.name||'').trim().slice(0,60),included:s.included!==false,points:clamp(Number(s.points)||0,0,999999)})).filter(s=>s.name&&!seen.has(s.id)&&seen.add(s.id));const valid=new Set(students.map(s=>s.id));return {id:String(c.id||safeId()).slice(0,100),name:String(c.name||'우리 반').slice(0,60),students,groups:Array.isArray(c.groups)?c.groups.slice(0,100).map(g=>Array.isArray(g)?g.filter(id=>valid.has(id)):[]):[],seating:Array.isArray(c.seating)?c.seating.filter(id=>valid.has(id)):[],seatingCols:clamp(Math.floor(Number(c.seatingCols)||5),3,8),seatingRows:clamp(Math.floor(Number(c.seatingRows)||6),3,12),presentationOrder:Array.isArray(c.presentationOrder)?c.presentationOrder.filter(id=>valid.has(id)):[],board:normalizeBoard(c.board),grading:normalizeGrading(c.grading,valid)};});const activeClassId=classes.some(c=>c.id===data.activeClassId)?data.activeClassId:classes[0].id;return {schema:1,activeClassId,classes,history:Array.isArray(data.history)?data.history.slice(-500).map(h=>({type:String(h?.type||'기록').slice(0,50),classId:String(h?.classId||'').slice(0,100),text:String(h?.text||'').slice(0,250),date:String(h?.date||'').slice(0,40)})):[]};}
+
+/* 급식 줄서기: 인형뽑기 게임으로 결정한 순서를 학급별 브라우저에 저장 */
+const lunchPlush=['🐰','🐱','🐶','🐻','🐼','🦊','🐸','🐤','🐧','🐨','🐹','🦄'];
+let lunchDrawing=false,lunchDrawTimer=null,lunchToyView=[],lunchSelectedIds=[],lunchCraneX=52,lunchRecentId=null;
+function lunchToday(){const t=new Date();return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
+function makeDefaultLunch(){return {order:[],date:''};}
+function normalizeLunch(raw,valid){const x=raw&&typeof raw==='object'?raw:{},unique=new Set();return {order:Array.isArray(x.order)?x.order.filter(id=>typeof id==='string'&&valid.has(id)&&!unique.has(id)&&unique.add(id)).slice(0,1000):[],date:typeof x.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)?x.date:''};}
+function lunchData(){const c=activeClass();if(!c.lunch)c.lunch=makeDefaultLunch();return c.lunch;}
+function lunchRemaining(){const picked=new Set(lunchData().order);return participants().filter(s=>!picked.has(s.id));}
+function lunchCancelAnimation(){if(lunchDrawTimer!==null){clearTimeout(lunchDrawTimer);lunchDrawTimer=null;}lunchDrawing=false;lunchSelectedIds=[];lunchToyView=[];}
+function lunchBuildToys(students,focusId){
+ const visible=shuffled(students).slice(0,12);
+ if(focusId&&!visible.some(s=>s.id===focusId)){const focus=students.find(s=>s.id===focusId);if(focus){if(visible.length)visible[visible.length-1]=focus;else visible.push(focus);}}
+ const xs=[18,38,58,78,24,47,70,83,17,38,61,80],ys=[24,24,24,24,50,50,50,50,76,76,76,76];
+ return visible.map((s,i)=>({id:s.id,x:xs[i],y:ys[i],emoji:lunchPlush[i%lunchPlush.length]}));
+}
+function lunchDraw(mode){
+ if(lunchDrawing)return;
+ const data=lunchData(),remaining=lunchRemaining();
+ if(!remaining.length)return toast('모든 학생의 급식 순서를 정했습니다. 새로 뽑으려면 초기화해 주세요.');
+ if(data.order.length&&data.date&&data.date!==lunchToday()){
+  if(!confirm('저장된 급식 순서가 이전 날짜('+data.date+')의 결과입니다. 오늘 순서로 새로 뽑을까요?'))return;
+  data.order=[];data.date=lunchToday();lunchRecentId=null;save();
+ }
+ const pool=lunchRemaining(),permutation=shuffled(pool.map(s=>s.id));
+ lunchSelectedIds=mode==='all'?permutation:permutation.slice(0,1);
+ const chosen=lunchSelectedIds[0];
+ lunchToyView=lunchBuildToys(pool,chosen);
+ const target=lunchToyView.find(s=>s.id===chosen);
+ lunchCraneX=target?target.x:52;
+ lunchDrawing=true;
+ render();
+ lunchDrawTimer=setTimeout(()=>{
+  lunchDrawTimer=null;
+  const selected=lunchSelectedIds.slice(),q=lunchData(),allowed=new Set(participants().map(s=>s.id));
+  selected.forEach(id=>{if(allowed.has(id)&&!q.order.includes(id))q.order.push(id);});
+  q.date=lunchToday();lunchRecentId=selected[0]||null;
+  lunchDrawing=false;lunchSelectedIds=[];lunchToyView=[];
+  history('급식 순서',mode==='all'?'급식 전체 순서 추첨 ('+q.order.length+'명)':nameOf(lunchRecentId)+' 학생 급식 순서 '+q.order.length+'번');
+  save();render();toast(mode==='all'?'🍽️ 급식 순서 '+q.order.length+'명 완성!':'🎉 '+nameOf(lunchRecentId)+' 학생이 뽑혔어요!');
+ },3200);
+}
+function lunchReset(){
+ if(lunchDrawing)return;
+ if(!lunchData().order.length)return toast('초기화할 급식 순서가 없습니다.');
+ if(!confirm('현재 학급의 급식 순서 '+lunchData().order.length+'명을 초기화하고 다시 뽑을까요?'))return;
+ activeClass().lunch={order:[],date:lunchToday()};lunchRecentId=null;save();render();toast('급식 순서를 초기화했습니다.');
+}
+function lunchCopy(){const q=lunchData();if(!q.order.length)return toast('먼저 급식 순서를 뽑아 주세요.');copyText(activeClass().name+' 급식 줄서기 ('+q.date+')\n'+q.order.map((id,i)=>(i+1)+'번 '+nameOf(id)).join('\n'));}
+function renderLunch(){
+ const ss=participants(),q=lunchData(),remaining=lunchRemaining(),done=q.order.length,latest=lunchRecentId&&q.order.includes(lunchRecentId)?lunchRecentId:(done?q.order[done-1]:null);
+ const toys=lunchDrawing?lunchToyView:lunchBuildToys(remaining,null);
+ const toyMarkup=toys.map((p,i)=>'<div class="lunch-toy" style="--x:'+p.x+'%;--y:'+p.y+'%;--delay:'+(i%5)*.13+'s"><span class="lunch-toy-emoji">'+p.emoji+'</span><span class="lunch-toy-label">'+escapeHtml(nameOf(p.id))+'</span></div>').join('');
+ const completed=q.order.map((id,i)=>'<li class="lunch-order-item '+(id===latest?'just-picked':'')+'"><span class="lunch-order-number">'+(i+1)+'번</span><strong>'+escapeHtml(nameOf(id))+'</strong><span class="lunch-order-icon">'+lunchPlush[i%lunchPlush.length]+'</span></li>').join('');
+ const clawPrize=lunchDrawing&&lunchSelectedIds.length?lunchPlush[(q.order.length)%lunchPlush.length]:'🐰';
+ return title('학급 운영','급식 줄서기','인형뽑기 집게가 학생 이름을 하나씩 뽑아 급식 순서를 정합니다.','🧸')+
+ '<section class="lunch-container">'+
+ '<div class="lunch-top"><div><span class="lunch-kicker">🍚 오늘의 급식 순서 · '+escapeHtml(activeClass().name)+'</span><h2>우리 반 인형뽑기</h2></div><div class="lunch-totals"><span>뽑음 <b>'+done+'</b>명</span><span>남음 <b>'+remaining.length+'</b>명</span></div></div>'+
+ (ss.length?
+ '<div class="lunch-layout"><div class="lunch-left">'+
+ '<div class="lunch-machine '+(lunchDrawing?'is-playing':'')+'" style="--grab-x:'+lunchCraneX+'%">'+
+ '<div class="lunch-machine-header"><span>★</span><strong>우리 반 인형뽑기</strong><span>★</span></div>'+
+ '<div class="lunch-glass"><div class="lunch-light"></div><div class="lunch-crane"><div class="lunch-crane-rail"></div><div class="lunch-cable"></div><div class="lunch-hook">⌄</div><div class="lunch-caught">'+clawPrize+'</div></div>'+
+ '<div class="lunch-toys">'+toyMarkup+'</div><div class="lunch-machine-floor"></div></div>'+
+ '<div class="lunch-machine-bottom"><div class="lunch-prize-window"><small>🎁 뽑힌 학생</small><strong aria-live="polite">'+(lunchDrawing?'뽑는 중…':latest?escapeHtml(nameOf(latest)):'누가 나올까요?')+'</strong></div><div class="lunch-joystick" aria-hidden="true"><div class="lunch-stick"></div><div class="lunch-button-decoration"></div></div></div><div class="lunch-machine-feet"><span></span><span></span></div></div>'+
+ '<div class="lunch-controls"><button id="lunchPickBtn" class="btn btn-primary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>'+(lunchDrawing?'🕹️ 인형 뽑는 중…':'🕹️ 한 명 뽑기 (3초)')+'</button><button id="lunchAllBtn" class="btn btn-secondary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>🎰 남은 학생 전체 순서 뽑기</button></div>'+
+ '<p class="lunch-tip">학생 한 명씩 뽑거나, 집게를 한 번 움직여 남은 학생의 순서를 모두 정할 수 있어요. 뽑힌 학생은 중복되지 않습니다.</p></div>'+
+ '<div class="lunch-right"><div class="lunch-result-head"><h3>🏅 급식 순서표</h3><small>'+done+' / '+ss.length+'명</small></div>'+
+ (done?'<ol class="lunch-order-list">'+completed+'</ol>':'<div class="lunch-result-empty"><span>🎁</span><strong>아직 뽑은 학생이 없어요.</strong><p>왼쪽에서 인형뽑기를 시작하세요!</p></div>')+
+ (done&&!remaining.length?'<div class="lunch-finish">🎉 전체 학생의 급식 순서가 완성됐어요!</div>':'')+
+ '<div class="lunch-result-actions"><button id="lunchCopyBtn" class="btn btn-outline btn-small" '+(!done?'disabled':'')+'>📋 순서 복사</button><button id="lunchResetBtn" class="btn btn-outline btn-small" '+(!done||lunchDrawing?'disabled':'')+'>↻ 다시 뽑기</button></div>'+
+ '<p class="lunch-date">'+(q.date?'결과 날짜: '+escapeHtml(q.date):'급식 순서를 뽑으면 날짜와 함께 저장됩니다.')+'</p></div></div>'
+ :noStudents('학급 명단에 학생을 등록하면 인형뽑기로 급식 순서를 정할 수 있어요.'))+
+ '<p class="lunch-local-note">🔒 급식 순서는 이 기기의 브라우저에만 자동 저장됩니다. 다른 컴퓨터의 전자칠판과는 자동 동기화되지 않습니다.</p></section>';
+}
+function normalizeState(data){if(!data||typeof data!=='object'||!Array.isArray(data.classes)||!data.classes.length)throw Error('올바른 백업 파일이 아닙니다.');if(data.classes.length>100)throw Error('학급이 너무 많습니다.');const classes=data.classes.map(c=>{if(!c||!Array.isArray(c.students)||c.students.length>1000)throw Error('학생 명단에 오류가 있습니다.');const seen=new Set();const students=c.students.map(s=>({id:String(s.id||safeId()).slice(0,100),name:String(s.name||'').trim().slice(0,60),included:s.included!==false,points:clamp(Number(s.points)||0,0,999999)})).filter(s=>s.name&&!seen.has(s.id)&&seen.add(s.id));const valid=new Set(students.map(s=>s.id));return {id:String(c.id||safeId()).slice(0,100),name:String(c.name||'우리 반').slice(0,60),students,groups:Array.isArray(c.groups)?c.groups.slice(0,100).map(g=>Array.isArray(g)?g.filter(id=>valid.has(id)):[]):[],seating:Array.isArray(c.seating)?c.seating.filter(id=>valid.has(id)):[],seatingCols:clamp(Math.floor(Number(c.seatingCols)||5),3,8),seatingRows:clamp(Math.floor(Number(c.seatingRows)||6),3,12),presentationOrder:Array.isArray(c.presentationOrder)?c.presentationOrder.filter(id=>valid.has(id)):[],board:normalizeBoard(c.board),grading:normalizeGrading(c.grading,valid),lunch:normalizeLunch(c.lunch,valid)};});const activeClassId=classes.some(c=>c.id===data.activeClassId)?data.activeClassId:classes[0].id;return {schema:1,activeClassId,classes,history:Array.isArray(data.history)?data.history.slice(-500).map(h=>({type:String(h?.type||'기록').slice(0,50),classId:String(h?.classId||'').slice(0,100),text:String(h?.text||'').slice(0,250),date:String(h?.date||'').slice(0,40)})):[]};}
 async function saveNow(){clearTimeout(saveTimer);saveTimer=null;try{if(storageMode==='indexeddb')await dbWrite(state);else if(storageMode==='localStorage')localStorage.setItem('classroom-toolbox-state',JSON.stringify(state));else return;setIndicator('● PC에 자동 저장');}catch(err){console.error('Save failed',err);setIndicator('⚠ 저장 실패 · 백업하세요',true);toast('저장에 실패했습니다. 백업 파일을 내려받아 주세요.');}}
 function save(){setIndicator('● 저장 중…',true);clearTimeout(saveTimer);saveTimer=setTimeout(saveNow,250);}
 function history(type,text){state.history.push({type,classId:activeClass().id,text,date:dateString()});if(state.history.length>500)state.history.shift();}
 function requireStudents(){if(participants().length){return true;}toast('먼저 학급 명단에 참여 학생을 등록해 주세요.');navigate('roster');return false;}
-function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.9`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
+function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.10`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
 function setUiTheme(value){uiTheme=value==='middle'?'middle':'elementary';applyTheme();try{localStorage.setItem('classroom-toolbox-ui-theme',uiTheme);}catch(err){}render();}
 function renderTop(){const select=$('#activeClassSelect');select.innerHTML=state.classes.map(c=>`<option value="${escapeHtml(c.id)}" ${c.id===state.activeClassId?'selected':''}>${escapeHtml(c.name)}</option>`).join('');const themeSelect=$('#themeSelect');if(themeSelect)themeSelect.value=uiTheme;document.querySelectorAll('[data-view]').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===currentView));applyTheme();}
 function renderAll(){renderTop();render();}
 function cancelRace(){if(raceRunning){raceRunning=false;if(raceAnimationId!==null)cancelAnimationFrame(raceAnimationId);raceAnimationId=null;}}
-function navigate(view){if(currentView==='dashboard'&&view!=='dashboard'&&boardPresenting)stopBoardPresentation();if(currentView==='grading'&&view!=='grading'&&gradingFullScreen){gradingFullScreen=false;document.body.classList.remove('grading-fullscreen');}if(currentView==='race'&&view!=='race'){cancelRace();raceResultVisible=false;}if(currentView==='picker'&&view!=='picker')resetPickerState(false);const valid=['home','roster',...tools.map(t=>t.id)];if(!valid.includes(view))return;currentView=view;selectedSeat=null;renderTop();render();window.scrollTo({top:0,behavior:'smooth'});}
+function navigate(view){if(currentView==='lunch'&&view!=='lunch'&&lunchDrawing)lunchCancelAnimation();if(currentView==='dashboard'&&view!=='dashboard'&&boardPresenting)stopBoardPresentation();if(currentView==='grading'&&view!=='grading'&&gradingFullScreen){gradingFullScreen=false;document.body.classList.remove('grading-fullscreen');}if(currentView==='race'&&view!=='race'){cancelRace();raceResultVisible=false;}if(currentView==='picker'&&view!=='picker')resetPickerState(false);const valid=['home','roster',...tools.map(t=>t.id)];if(!valid.includes(view))return;currentView=view;selectedSeat=null;renderTop();render();window.scrollTo({top:0,behavior:'smooth'});}
 function title(view,headline,desc,icon){return `<div class="page-header"><div><span class="eyebrow">${escapeHtml(view)}</span><h1>${escapeHtml(headline)}</h1><p>${escapeHtml(desc)}</p></div><span class="page-header-icon" aria-hidden="true">${icon}</span></div>`;}
 function noStudents(message){return `<div class="empty"><span class="emoji">📋</span><strong>먼저 학생 명단을 등록해 주세요.</strong><p>${escapeHtml(message)}</p><button class="btn btn-primary" data-view="roster">학급 명단 관리로 이동 →</button></div>`;}
-function render(){let html='';switch(currentView){case'home':html=renderHome();break;case'dashboard':html=renderDashboard();break;case'roster':html=renderRoster();break;case'race':html=renderRace();break;case'picker':html=renderPicker();break;case'groups':html=renderGroups();break;case'timer':html=renderTimer();break;case'seating':html=renderSeating();break;case'participation':html=renderParticipation();break;case'grading':html=renderGrading();break;}$('#content').innerHTML=html;}
+function render(){let html='';switch(currentView){case'home':html=renderHome();break;case'dashboard':html=renderDashboard();break;case'roster':html=renderRoster();break;case'race':html=renderRace();break;case'picker':html=renderPicker();break;case'groups':html=renderGroups();break;case'timer':html=renderTimer();break;case'seating':html=renderSeating();break;case'participation':html=renderParticipation();break;case'grading':html=renderGrading();break;case'lunch':html=renderLunch();break;}$('#content').innerHTML=html;}
 
 // 우리 반 전자칠판: 입력한 자료는 현재 학급의 브라우저 저장 데이터에 포함됩니다.
 function boardText(value,limit=500){return String(value??'').slice(0,limit);}
@@ -149,8 +225,8 @@ function download(filename,contents,mimetype){const blob=new Blob([contents],{ty
 function safeFilename(text){return String(text).replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,35)||'우리반';}
 function csv(rows){return '\ufeff'+rows.map(row=>row.map(v=>{const value=String(v??'');const safe=/^[=+@-]/.test(value)?'\''+value:value;return `"${safe.replace(/"/g,'""')}"`;}).join(',')).join('\r\n');}
 function backup(){saveNow();download(`수업도구상자_전체백업_${new Date().toISOString().slice(0,10)}.json`,JSON.stringify(state,null,2),'application/json;charset=utf-8');toast('전체 백업 파일을 다운로드했습니다.');}
-async function restore(file){if(!file)return;if(file.size>5_000_000){toast('백업 파일이 너무 큽니다. (최대 5MB)');return;}try{const obj=normalizeState(JSON.parse(await file.text()));if(!confirm('복원하면 현재 학급 명단과 기록이 백업 파일 내용으로 덮어써집니다. 계속할까요?'))return;if(boardPresenting)stopBoardPresentation();if(gradingFullScreen){gradingFullScreen=false;document.body.classList.remove('grading-fullscreen');}cancelRace();raceResultVisible=false;state=obj;resetPickerState(true);lastPickedId=null;selectedSeat=null;raceRunning=false;save();navigate('home');toast('백업 파일을 복원했습니다.');}catch(err){console.error(err);toast('복원 실패: 올바른 수업도구 상자 백업 파일인지 확인해 주세요.');}finally{$('#restoreFile').value='';}}
-function addClass(){const name=prompt('새 학급 이름을 입력하세요. (예: 3학년 1반)');if(name===null)return;const clean=name.trim().slice(0,60);if(!clean)return toast('학급 이름을 입력해 주세요.');if(state.classes.length>=100)return toast('학급은 최대 100개까지 가능합니다.');const c={id:safeId(),name:clean,students:[],groups:[],seating:[],seatingCols:5,seatingRows:6,presentationOrder:[],board:makeDefaultBoard(),grading:makeDefaultGrading()};state.classes.push(c);state.activeClassId=c.id;save();navigate('roster');toast(`${clean} 학급을 추가했습니다.`);}
+async function restore(file){if(!file)return;if(file.size>5_000_000){toast('백업 파일이 너무 큽니다. (최대 5MB)');return;}try{const obj=normalizeState(JSON.parse(await file.text()));if(!confirm('복원하면 현재 학급 명단과 기록이 백업 파일 내용으로 덮어써집니다. 계속할까요?'))return;if(boardPresenting)stopBoardPresentation();if(gradingFullScreen){gradingFullScreen=false;document.body.classList.remove('grading-fullscreen');}lunchCancelAnimation();lunchRecentId=null;cancelRace();raceResultVisible=false;state=obj;resetPickerState(true);lastPickedId=null;selectedSeat=null;raceRunning=false;save();navigate('home');toast('백업 파일을 복원했습니다.');}catch(err){console.error(err);toast('복원 실패: 올바른 수업도구 상자 백업 파일인지 확인해 주세요.');}finally{$('#restoreFile').value='';}}
+function addClass(){const name=prompt('새 학급 이름을 입력하세요. (예: 3학년 1반)');if(name===null)return;const clean=name.trim().slice(0,60);if(!clean)return toast('학급 이름을 입력해 주세요.');if(state.classes.length>=100)return toast('학급은 최대 100개까지 가능합니다.');const c={id:safeId(),name:clean,students:[],groups:[],seating:[],seatingCols:5,seatingRows:6,presentationOrder:[],board:makeDefaultBoard(),grading:makeDefaultGrading(),lunch:makeDefaultLunch()};state.classes.push(c);state.activeClassId=c.id;save();navigate('roster');toast(`${clean} 학급을 추가했습니다.`);}
 function raceRecord(ids,label){const c=activeClass();c.presentationOrder=ids;raceResultVisible=true;history('발표 순서',`${label}: ${ids.map(nameOf).join(', ').slice(0,180)}`);save();render();}
 function startRace(){if(raceRunning)return;if(!requireStudents())return;raceOrderIds=shuffled(participants().map(s=>s.id));raceResultVisible=false;raceRunning=true;raceStartTime=performance.now();render();const rank=new Map(raceOrderIds.map((id,i)=>[id,i]));const duration=4700;function tick(now){if(!raceRunning)return;const frac=clamp((now-raceStartTime)/duration,0,1);const easing=1-Math.pow(1-frac,2.7);document.querySelectorAll('[data-race-id]').forEach(el=>{const i=rank.get(el.dataset.raceId);const target=i===0?100:clamp(96-i*1.35,45,96);const pct=frac===1?target:target*easing;const runner=el.querySelector('.runner');if(runner)runner.style.left=`calc(${Math.min(96,pct)}% - ${pct*0.22}px)`;});if(frac<1)raceAnimationId=requestAnimationFrame(tick);else{raceRunning=false;raceAnimationId=null;raceRecord(raceOrderIds,'레이스');toast('🏁 레이스 종료! 발표 순서가 정해졌습니다.');}}raceAnimationId=requestAnimationFrame(tick);}
 function copyText(contents){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(contents).then(()=>toast('클립보드에 복사했습니다.')).catch(()=>fallbackCopy(contents));}else fallbackCopy(contents);}
@@ -162,6 +238,10 @@ function setTimer(seconds){timerRunning=false;clearInterval(timerInterval);timer
 function updateTimer(){if(timerRunning){timerRemaining=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));if(timerRemaining<=0){timerRunning=false;clearInterval(timerInterval);beep();toast('⏰ 활동 시간이 끝났습니다!');}}const clock=$('#timerClock'),status=$('#timerStatus');if(clock)clock.textContent=formatTime(timerRemaining);if(status)status.textContent=timerRunning?'시간 측정 중':timerRemaining===0?'⏰ 시간이 종료되었습니다':'일시정지 · 준비';if(!timerRunning&&currentView==='timer'){const start=$('#timerStartBtn');if(start)start.textContent='▶ 시작';}}
 function switchTimer(){if(timerRunning){timerRemaining=Math.max(0,Math.ceil((timerEndAt-Date.now())/1000));timerRunning=false;clearInterval(timerInterval);}else{if(timerRemaining<=0)timerRemaining=300;soundUnlock();timerEndAt=Date.now()+timerRemaining*1000;timerRunning=true;clearInterval(timerInterval);timerInterval=setInterval(updateTimer,220);}render();}
 function onClick(event){const btn=event.target.closest('button');if(!btn)return;if(btn.id==='boardPresentBtn'||btn.id==='boardPresentBtnSecondary')return startBoardPresentation();if(btn.id==='boardExitBtn')return stopBoardPresentation();if(btn.dataset.view){navigate(btn.dataset.view);return;}
+ if(btn.id==='lunchPickBtn')return lunchDraw('single');
+ if(btn.id==='lunchAllBtn')return lunchDraw('all');
+ if(btn.id==='lunchCopyBtn')return lunchCopy();
+ if(btn.id==='lunchResetBtn')return lunchReset();
  if(btn.id==='gradeToggle')return gradingToggleScreen();
  if(btn.dataset.gradeJoin)return gradingJoin(btn.dataset.gradeJoin);
  if(btn.dataset.gradeLeave)return gradingLeave(btn.dataset.gradeLeave);
@@ -176,7 +256,7 @@ function onClick(event){const btn=event.target.closest('button');if(!btn)return;
  if(btn.id==='deleteClassBtn'){const c=activeClass();if(state.classes.length<=1)return toast('마지막 학급은 삭제할 수 없습니다. 학생별 삭제를 이용해 주세요.');if(confirm(`'${c.name}' 학급과 학생·수업 기록을 삭제할까요? 이 작업은 취소할 수 없습니다.`)){state.classes=state.classes.filter(x=>x.id!==c.id);state.activeClassId=state.classes[0].id;save();navigate('roster');toast('학급을 삭제했습니다.');}return;}
  if(btn.id==='sampleBtn'){if(activeClass().students.length&&!confirm('현재 명단에 예시 학생을 추가할까요?'))return;addStudents(Array.from({length:8},(_,i)=>`학생 ${i+1}`).join('\n'));return;}
  if(btn.dataset.toggleStudent){const s=activeClass().students.find(x=>x.id===btn.dataset.toggleStudent);if(s){s.included=!s.included;activeClass().groups=[];activeClass().presentationOrder=[];save();render();}return;}
- if(btn.dataset.removeStudent){const c=activeClass(),s=c.students.find(x=>x.id===btn.dataset.removeStudent);if(s&&confirm(`${s.name} 학생을 명단에서 삭제할까요? 참여 횟수도 함께 삭제됩니다.`)){c.students=c.students.filter(x=>x.id!==s.id);c.seating=c.seating.filter(id=>id!==s.id);c.presentationOrder=c.presentationOrder.filter(id=>id!==s.id);c.groups=c.groups.map(g=>g.filter(id=>id!==s.id));if(c.grading){c.grading.waiting=c.grading.waiting.filter(id=>id!==s.id);if(c.grading.current===s.id)c.grading.current=null;c.grading.completed=c.grading.completed.filter(o=>o.id!==s.id);}save();render();}return;}
+ if(btn.dataset.removeStudent){const c=activeClass(),s=c.students.find(x=>x.id===btn.dataset.removeStudent);if(s&&confirm(`${s.name} 학생을 명단에서 삭제할까요? 참여 횟수도 함께 삭제됩니다.`)){c.students=c.students.filter(x=>x.id!==s.id);c.seating=c.seating.filter(id=>id!==s.id);c.presentationOrder=c.presentationOrder.filter(id=>id!==s.id);c.groups=c.groups.map(g=>g.filter(id=>id!==s.id));if(c.grading){c.grading.waiting=c.grading.waiting.filter(id=>id!==s.id);if(c.grading.current===s.id)c.grading.current=null;c.grading.completed=c.grading.completed.filter(o=>o.id!==s.id);}if(c.lunch){c.lunch.order=c.lunch.order.filter(id=>id!==s.id);}save();render();}return;}
  if(btn.id==='raceShowResultsBtn'){if(!raceRunning){raceResultVisible=true;render();}return;}if(btn.id==='raceShowLanesBtn'){raceResultVisible=false;render();return;}
  if(btn.id==='raceStartBtn')return startRace();if(btn.id==='raceShuffleBtn'){if(raceRunning||!requireStudents())return;return raceRecord(shuffled(participants().map(s=>s.id)),'즉시 추첨');}
  if(btn.id==='copyRaceBtn'){return copyText(activeClass().presentationOrder.map((id,i)=>`${i+1}등: ${nameOf(id)}`).join('\n'));}
@@ -196,6 +276,6 @@ function onClick(event){const btn=event.target.closest('button');if(!btn)return;
 }
 function printList(heading,lines){const popup=window.open('','_blank','width=680,height=800');if(!popup)return toast('인쇄 팝업이 차단되었습니다.');popup.document.write(`<!doctype html><html lang="ko"><meta charset="utf-8"><title>${escapeHtml(heading)}</title><style>body{font-family:sans-serif;padding:32px}h1{font-size:23px}li{font-size:18px;line-height:2}</style><h1>${escapeHtml(heading)}</h1><ol>${lines.map(line=>`<li>${escapeHtml(line.replace(/^\d+\.\s*/,''))}</li>`).join('')}</ol></html>`);popup.document.close();popup.focus();setTimeout(()=>popup.print(),350);}
 function onSubmit(event){event.preventDefault();const form=event.target;if(form.id==='addOneForm'){const val=$('#studentName').value;addStudents(val);}if(form.id==='addBulkForm'){const val=$('#bulkNames').value;addStudents(val);}if(form.id==='renameClassForm'){const val=$('#className').value.trim().slice(0,60);if(!val)return toast('학급 이름을 입력해 주세요.');activeClass().name=val;save();renderAll();toast('학급 이름을 변경했습니다.');}}
-function onChange(event){const el=event.target;if(el.id==='boardDaySelect'){boardDay=Number(el.value);render();return;}if(el.id==='activeClassSelect'){if(gradingFullScreen){gradingFullScreen=false;document.body.classList.remove('grading-fullscreen');}if(boardPresenting)stopBoardPresentation();cancelRace();raceResultVisible=false;state.activeClassId=el.value;resetPickerState(true);lastPickedId=null;selectedSeat=null;save();renderAll();}if(el.id==='themeSelect'){setUiTheme(el.value);return;}if(el.id==='restoreFile')restore(el.files?.[0]);if(el.id==='groupCount'){groupCount=Number(el.value);}if(el.id==='seatCols'||el.id==='seatRows'){const c=activeClass();if(el.id==='seatCols')c.seatingCols=clamp(Number(el.value)||5,3,8);else c.seatingRows=clamp(Number(el.value)||6,3,12);selectedSeat=null;save();render();}}
+function onChange(event){const el=event.target;if(el.id==='boardDaySelect'){boardDay=Number(el.value);render();return;}if(el.id==='activeClassSelect'){lunchCancelAnimation();lunchRecentId=null;if(gradingFullScreen){gradingFullScreen=false;document.body.classList.remove('grading-fullscreen');}if(boardPresenting)stopBoardPresentation();cancelRace();raceResultVisible=false;state.activeClassId=el.value;resetPickerState(true);lastPickedId=null;selectedSeat=null;save();renderAll();}if(el.id==='themeSelect'){setUiTheme(el.value);return;}if(el.id==='restoreFile')restore(el.files?.[0]);if(el.id==='groupCount'){groupCount=Number(el.value);}if(el.id==='seatCols'||el.id==='seatRows'){const c=activeClass();if(el.id==='seatCols')c.seatingCols=clamp(Number(el.value)||5,3,8);else c.seatingRows=clamp(Number(el.value)||6,3,12);selectedSeat=null;save();render();}}
 document.addEventListener('click',onClick);document.addEventListener('submit',onSubmit);document.addEventListener('change',onChange);document.addEventListener('input',event=>{if(currentView==='dashboard'&&!boardPresenting)boardFieldInput(event.target);});document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&boardPresenting){boardPresenting=false;document.body.classList.remove('board-presenting');render();}});setInterval(refreshBoardClock,15000);document.addEventListener('keydown',event=>{if(boardPresenting&&event.code==='Escape'){event.preventDefault();stopBoardPresentation();return;}if(currentView==='race'&&!raceRunning&&event.code==='Space'&&!/input|textarea|button|select/i.test(event.target.tagName)){event.preventDefault();startRace();}});
 boot();
