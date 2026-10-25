@@ -318,3 +318,34 @@ a{color:inherit}
   .part-row,.part-head{gap:5px;padding:10px 6px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+/* v1.6 동물 발표 레이스 및 전용 결과 화면 */
+.race-lane{min-height:51px}
+.lane-track{height:36px;overflow:visible}
+.runner{font-size:29px;top:0;line-height:1.2;filter:drop-shadow(0 2px 2px rgba(90,111,143,.14));transform-origin:center bottom}
+.race-lanes.racing .runner{animation:raceAnimalHop .34s ease-in-out infinite alternate}
+@keyframes raceAnimalHop{from{transform:translateY(0) rotate(-6deg)}to{transform:translateY(-5px) rotate(7deg)}}
+.race-result-view{max-width:920px;margin:auto}
+.race-result-head{text-align:center;padding:25px 10px 12px}
+.race-result-confetti{display:block;font-size:30px;letter-spacing:8px}
+.race-result-head h2{font-weight:900;font-size:clamp(25px,4vw,36px);color:#574ac4;margin:10px 0 5px}
+.race-result-head p{margin:0;color:#6e7b8d;font-size:14px}
+.race-podium{display:flex;justify-content:center;align-items:flex-end;gap:14px;max-width:700px;margin:25px auto 30px}
+.race-podium-card{flex:1;min-width:0;max-width:235px;min-height:172px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;border-radius:24px 24px 14px 14px;border:1px solid #ece5f8;padding:17px 9px 14px;background:linear-gradient(180deg,#f5f1ff,#e7efff);box-shadow:0 10px 20px rgba(100,120,172,.09)}
+.race-podium-card.rank-1{min-height:226px;border-color:#f8d790;background:linear-gradient(180deg,#fff9db,#ffedd1);box-shadow:0 15px 26px rgba(192,152,65,.18)}
+.race-podium-card.rank-2{min-height:193px;background:linear-gradient(180deg,#f4f7ff,#e2ecff)}
+.race-podium-card.rank-3{min-height:165px;background:linear-gradient(180deg,#fff2e8,#fce7e0)}
+.race-podium-medal{font-size:27px}
+.race-podium-animal{font-size:clamp(32px,5vw,51px);line-height:1.1}
+.race-podium-name{max-width:100%;font-size:clamp(12px,2vw,18px);line-height:1.35;color:#34445c;overflow-wrap:anywhere}
+.race-podium-rank{border-radius:999px;background:#ffffffcf;color:#695aaa;padding:5px 13px;font-size:13px;font-weight:900}
+.race-ranking-heading{font-size:17px;color:#3c5670;margin:0 0 12px}
+.race-ranking-list{list-style:none;padding:10px;margin:0;display:grid;gap:8px;max-height:440px;overflow-y:auto;background:linear-gradient(180deg,#f7fbff,#fffafc);border:1px solid #e5eaf5;border-radius:18px}
+.race-ranking-row{display:flex;align-items:center;gap:14px;padding:10px 15px;border:1px solid #ecedf4;background:white;border-radius:13px;min-height:56px}
+.race-ranking-number{min-width:48px;color:#7060b5;font-weight:900;font-size:14px}
+.race-ranking-animal{font-size:29px;line-height:1}
+.race-ranking-name{font-size:15px;font-weight:800;color:#34445c;flex:1;min-width:0;overflow-wrap:anywhere}
+.race-ranking-medal{font-size:18px;width:24px;text-align:center}
+.race-result-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:22px}
+.race-fairness{text-align:center;margin:16px 0 3px;line-height:1.7}
+@media(max-width:560px){.race-podium{gap:7px;margin:20px auto}.race-podium-card{padding:13px 4px 11px;border-radius:17px 17px 12px 12px;min-height:147px}.race-podium-card.rank-1{min-height:186px}.race-podium-card.rank-2{min-height:160px}.race-podium-card.rank-3{min-height:142px}.race-podium-medal{font-size:22px}.race-podium-rank{font-size:11px;padding:4px 9px}.race-ranking-row{gap:9px;padding:9px 10px}.race-result-buttons .btn{flex:1 1 43%}.race-ranking-list{max-height:350px}.lane-name{width:68px}}
+@media(prefers-reduced-motion:reduce){.race-lanes.racing .runner{animation:none}}
