@@ -28,7 +28,7 @@ const tools=[
  {id:'seating',icon:'🪑',title:'자리 배치',desc:'랜덤 자리 배정과 두 자리 맞바꾸기',color:'#ffefef'},
  {id:'participation',icon:'⭐',title:'참여 기록',desc:'학생별 발표·참여 횟수 기록하기',color:'#fff6d7'},
  {id:'grading',icon:'📝',title:'채점 줄서기',desc:'이름을 눌러 줄서고 차례대로 채점받기',color:'#e4f5ff'},
- {id:'lunch',icon:'🧸',title:'급식 줄서기',desc:'인형뽑기로 우리 반 급식 순서 정하기',color:'#fff0dc'}
+ {id:'lunch',icon:'🎰',title:'급식 줄서기',desc:'가챠 캡슐로 우리 반 급식 순서 정하기',color:'#fff0dc'}
 ];
 function activeClass(){return state.classes.find(c=>c.id===state.activeClassId)||state.classes[0];}
 function participants(){return activeClass().students.filter(s=>s.included!==false);}
@@ -66,98 +66,87 @@ const controls='<div class="grading-control"><h3>👩‍🏫 선생님 관리</h
 return head+'<section class="grading-panel"><div class="grading-top"><div><small>현재 학급</small><h2>'+escapeHtml(activeClass().name)+'</h2></div><div class="grading-stats"><span>대기 <b>'+q.waiting.length+'</b>명</span><span>완료 <b>'+q.completed.length+'</b>건</span></div></div><div class="grading-now"><span>📣 지금 채점받을 학생</span><strong>'+(q.current?escapeHtml(nameOf(q.current)):'호출을 기다리는 중')+'</strong><small>'+(q.current?'채점이 끝나면 완료 버튼을 눌러주세요.':'대기열의 첫 번째 학생부터 호출하세요.')+'</small></div><div class="grading-layout"><div class="grading-roster"><h3>✋ 내 이름을 눌러 줄서기</h3>'+(ss.length?'<div class="grading-people">'+students+'</div>':noStudents('먼저 학급 명단을 등록해 주세요.'))+'</div><div class="grading-queue"><h3>📋 기다리는 학생 · '+q.waiting.length+'명</h3><div class="grading-wait-list">'+(queue||'<p class="grading-empty">아직 줄 선 학생이 없어요.</p>')+'</div></div></div>'+(gradingFullScreen?'':controls)+'<p class="grading-note">🔒 이 대기열은 현재 기기의 브라우저에만 저장됩니다. 다른 PC·독립형 전자칠판과 자동 연동하지 않습니다.</p></section>';
 }
 
-/* 급식 줄서기: 인형뽑기 게임으로 결정한 순서를 학급별 브라우저에 저장 */
-const lunchPlush=['🐰','🐱','🐶','🐻','🐼','🦊','🐸','🐤','🐧','🐨','🐹','🦄'];
-let lunchDrawing=false,lunchDrawTimer=null,lunchToyView=[],lunchSelectedIds=[],lunchCraneX=52,lunchRecentId=null;
+/* 급식 줄서기 v1.11 — 가챠 캡슐 뽑기. 학생 명단과 급식 순서는 브라우저에만 저장됩니다. */
+const lunchCapsuleSpots=[
+ [14,24],[34,23],[54,25],[74,23],[24,41],[44,40],[64,41],[82,42],
+ [17,60],[36,58],[55,61],[76,59],[23,78],[43,77],[63,78],[81,77]
+];
+let lunchDrawing=false,lunchDrawTimer=null,lunchSelectedIds=[],lunchCapsules=[],lunchRecentId=null;
 function lunchToday(){const t=new Date();return t.getFullYear()+'-'+String(t.getMonth()+1).padStart(2,'0')+'-'+String(t.getDate()).padStart(2,'0');}
 function makeDefaultLunch(){return {order:[],date:''};}
 function normalizeLunch(raw,valid){const x=raw&&typeof raw==='object'?raw:{},unique=new Set();return {order:Array.isArray(x.order)?x.order.filter(id=>typeof id==='string'&&valid.has(id)&&!unique.has(id)&&unique.add(id)).slice(0,1000):[],date:typeof x.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x.date)?x.date:''};}
 function lunchData(){const c=activeClass();if(!c.lunch)c.lunch=makeDefaultLunch();return c.lunch;}
 function lunchRemaining(){const picked=new Set(lunchData().order);return participants().filter(s=>!picked.has(s.id));}
-function lunchCancelAnimation(){if(lunchDrawTimer!==null){clearTimeout(lunchDrawTimer);lunchDrawTimer=null;}lunchDrawing=false;lunchSelectedIds=[];lunchToyView=[];}
-function lunchAnimal(id){
- // 학생 ID를 이용하므로 이름표 위치나 뽑기 순서가 바뀌어도 동물은 변하지 않습니다.
- let hash=2166136261;
- for(const ch of String(id)){hash^=ch.charCodeAt(0);hash=Math.imul(hash,16777619)>>>0;}
- return lunchPlush[hash%lunchPlush.length];
-}
-function lunchBuildToys(students,focusId){
- const xs=[18,38,58,78,24,47,70,83,17,38,61,80],ys=[24,24,24,24,50,50,50,50,76,76,76,76];
- const chosen=focusId?students.find(s=>s.id===focusId):null;
- if(!chosen)return shuffled(students).slice(0,12).map((s,i)=>({id:s.id,x:xs[i],y:ys[i],emoji:lunchAnimal(s.id)}));
- // 선택 학생을 실제 집게가 닿는 중앙 줄에 배치하고, 이름표·인형·집게를 동일 ID로 연결합니다.
- const spot=[4,5,6][randomInt(3)];
- const otherSpots=xs.map((_,i)=>i).filter(i=>i!==spot);
- const display=[chosen,...shuffled(students.filter(s=>s.id!==focusId)).slice(0,11)];
- return display.map((s,i)=>{const slot=i===0?spot:otherSpots[i-1];return {id:s.id,x:xs[slot],y:ys[slot],emoji:lunchAnimal(s.id)};});
+function lunchColor(id){let hash=2166136261;for(const char of String(id)){hash^=char.charCodeAt(0);hash=Math.imul(hash,16777619)>>>0;}return hash%8;}
+function lunchCancelAnimation(){if(lunchDrawTimer!==null){clearTimeout(lunchDrawTimer);lunchDrawTimer=null;}lunchDrawing=false;lunchSelectedIds=[];lunchCapsules=[];}
+function lunchBuildCapsules(pool,targetId=null){
+ const target=targetId?pool.find(s=>s.id===targetId):null;
+ const remaining=shuffled(pool.filter(s=>s.id!==targetId)).slice(0,target?15:16);
+ const visible=target?[target,...remaining]:remaining;
+ return shuffled(visible).map((s,i)=>({id:s.id,x:lunchCapsuleSpots[i][0],y:lunchCapsuleSpots[i][1],color:lunchColor(s.id)}));
 }
 function lunchDraw(mode){
  if(lunchDrawing)return;
  const data=lunchData(),remaining=lunchRemaining();
- if(!remaining.length)return toast('모든 학생의 급식 순서를 정했습니다. 새로 뽑으려면 초기화해 주세요.');
+ if(!remaining.length)return toast('모든 학생의 급식 순서를 정했습니다. 다시 뽑기를 눌러주세요.');
  if(data.order.length&&data.date&&data.date!==lunchToday()){
-  if(!confirm('저장된 급식 순서가 이전 날짜('+data.date+')의 결과입니다. 오늘 순서로 새로 뽑을까요?'))return;
+  if(!confirm('지난 급식 순서가 저장되어 있습니다. 오늘 순서로 새로 뽑을까요?'))return;
   data.order=[];data.date=lunchToday();lunchRecentId=null;save();
  }
- const pool=lunchRemaining(),permutation=shuffled(pool.map(s=>s.id));
- lunchSelectedIds=mode==='all'?permutation:permutation.slice(0,1);
- const chosen=lunchSelectedIds[0];
- lunchToyView=lunchBuildToys(pool,chosen);
- const target=lunchToyView.find(s=>s.id===chosen);
- lunchCraneX=target?target.x:52;
- lunchDrawing=true;
- render();
+ const shuffledIds=shuffled(lunchRemaining().map(s=>s.id));
+ lunchSelectedIds=mode==='all'?shuffledIds:shuffledIds.slice(0,1);
+ lunchCapsules=lunchBuildCapsules(lunchRemaining(),lunchSelectedIds[0]);
+ lunchDrawing=true;render();
  lunchDrawTimer=setTimeout(()=>{
   lunchDrawTimer=null;
-  const selected=lunchSelectedIds.slice(),q=lunchData(),allowed=new Set(participants().map(s=>s.id));
-  selected.forEach(id=>{if(allowed.has(id)&&!q.order.includes(id))q.order.push(id);});
+  const selected=lunchSelectedIds.slice(),q=lunchData(),valid=new Set(participants().map(s=>s.id));
+  selected.forEach(id=>{if(valid.has(id)&&!q.order.includes(id))q.order.push(id);});
   q.date=lunchToday();lunchRecentId=selected[0]||null;
-  lunchDrawing=false;lunchSelectedIds=[];lunchToyView=[];
-  history('급식 순서',mode==='all'?'급식 전체 순서 추첨 ('+q.order.length+'명)':nameOf(lunchRecentId)+' 학생 급식 순서 '+q.order.length+'번');
-  save();render();toast(mode==='all'?'🍽️ 급식 순서 '+q.order.length+'명 완성!':'🎉 '+nameOf(lunchRecentId)+' 학생이 뽑혔어요!');
- },3200);
+  lunchDrawing=false;lunchSelectedIds=[];lunchCapsules=[];
+  history('급식 순서',mode==='all'?'급식 전체 순서 '+q.order.length+'명':nameOf(lunchRecentId)+' 학생 '+q.order.length+'번');
+  save();render();
+  toast(mode==='all'?'🎉 급식 순서 '+q.order.length+'명 완성!':'🎉 '+nameOf(lunchRecentId)+' 학생 당첨!');
+ },3100);
 }
 function lunchReset(){
  if(lunchDrawing)return;
  if(!lunchData().order.length)return toast('초기화할 급식 순서가 없습니다.');
- if(!confirm('현재 학급의 급식 순서 '+lunchData().order.length+'명을 초기화하고 다시 뽑을까요?'))return;
+ if(!confirm('저장된 급식 순서 '+lunchData().order.length+'명을 지우고 다시 뽑을까요?'))return;
  activeClass().lunch={order:[],date:lunchToday()};lunchRecentId=null;save();render();toast('급식 순서를 초기화했습니다.');
 }
-function lunchCopy(){const q=lunchData();if(!q.order.length)return toast('먼저 급식 순서를 뽑아 주세요.');copyText(activeClass().name+' 급식 줄서기 ('+q.date+')\n'+q.order.map((id,i)=>(i+1)+'번 '+nameOf(id)).join('\n'));}
+function lunchCopy(){const q=lunchData();if(!q.order.length)return toast('먼저 급식 순서를 뽑아 주세요.');copyText(activeClass().name+' 급식 순서 ('+q.date+')\n'+q.order.map((id,i)=>(i+1)+'번 '+nameOf(id)).join('\n'));}
+function lunchCapsuleHtml(color,extraClass=''){return '<span class="gacha-capsule cap-'+color+' '+extraClass+'" aria-hidden="true"><span class="gacha-cap-top"></span><span class="gacha-cap-bottom"></span><span class="gacha-cap-highlight"></span></span>';}
 function renderLunch(){
  const ss=participants(),q=lunchData(),remaining=lunchRemaining(),done=q.order.length,latest=lunchRecentId&&q.order.includes(lunchRecentId)?lunchRecentId:(done?q.order[done-1]:null);
- const toys=lunchDrawing?lunchToyView:lunchBuildToys(remaining,null);
- const toyMarkup=toys.map((p,i)=>'<div class="lunch-toy '+(lunchDrawing&&p.id===lunchSelectedIds[0]?'is-target':'')+'" data-lunch-id="'+escapeHtml(p.id)+'" style="--x:'+p.x+'%;--y:'+p.y+'%;--delay:'+(i%5)*.13+'s"><span class="lunch-toy-emoji">'+p.emoji+'</span><span class="lunch-toy-label">'+escapeHtml(nameOf(p.id))+'</span></div>').join('');
- const completed=q.order.map((id,i)=>'<li class="lunch-order-item '+(id===latest?'just-picked':'')+'"><span class="lunch-order-number">'+(i+1)+'번</span><strong>'+escapeHtml(nameOf(id))+'</strong><span class="lunch-order-icon">'+lunchAnimal(id)+'</span></li>').join('');
- const clawId=lunchDrawing?lunchSelectedIds[0]:null;
- const clawPrize=clawId?lunchAnimal(clawId):'';
- const clawLabel=clawId?escapeHtml(nameOf(clawId)):'';
- return title('학급 운영','급식 줄서기','인형뽑기 집게가 학생 이름을 하나씩 뽑아 급식 순서를 정합니다.','🧸')+
- '<section class="lunch-container">'+
- '<div class="lunch-top"><div><span class="lunch-kicker">🍚 오늘의 급식 순서 · '+escapeHtml(activeClass().name)+'</span><h2>우리 반 인형뽑기</h2></div><div class="lunch-totals"><span>뽑음 <b>'+done+'</b>명</span><span>남음 <b>'+remaining.length+'</b>명</span></div></div>'+
- (ss.length?
- '<div class="lunch-layout"><div class="lunch-left">'+
- '<div class="lunch-machine '+(lunchDrawing?'is-playing':'')+'" style="--grab-x:'+lunchCraneX+'%">'+
- '<div class="lunch-machine-header"><span>★</span><strong>우리 반 인형뽑기</strong><span>★</span></div>'+
- '<div class="lunch-glass"><div class="lunch-light"></div><div class="lunch-crane"><div class="lunch-crane-rail"></div><div class="lunch-cable"></div><div class="lunch-hook">⌄</div><div class="lunch-caught" data-lunch-id="'+escapeHtml(clawId||'')+'"><span class="lunch-caught-emoji">'+clawPrize+'</span><span class="lunch-caught-name">'+clawLabel+'</span></div></div>'+
- '<div class="lunch-toys">'+toyMarkup+'</div><div class="lunch-machine-floor"></div></div>'+
- '<div class="lunch-machine-bottom"><div class="lunch-prize-window"><small>🎁 뽑힌 학생</small><strong aria-live="polite">'+(lunchDrawing?'뽑는 중…':latest?lunchAnimal(latest)+' '+escapeHtml(nameOf(latest)):'누가 나올까요?')+'</strong></div><div class="lunch-joystick" aria-hidden="true"><div class="lunch-stick"></div><div class="lunch-button-decoration"></div></div></div><div class="lunch-machine-feet"><span></span><span></span></div></div>'+
- '<div class="lunch-controls"><button id="lunchPickBtn" class="btn btn-primary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>'+(lunchDrawing?'🕹️ 인형 뽑는 중…':'🕹️ 한 명 뽑기 (3초)')+'</button><button id="lunchAllBtn" class="btn btn-secondary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>🎰 남은 학생 전체 순서 뽑기</button></div>'+
- '<p class="lunch-tip">학생 한 명씩 뽑거나, 집게를 한 번 움직여 남은 학생의 순서를 모두 정할 수 있어요. 뽑힌 학생은 중복되지 않습니다.</p></div>'+
- '<div class="lunch-right"><div class="lunch-result-head"><h3>🏅 급식 순서표</h3><small>'+done+' / '+ss.length+'명</small></div>'+
- (done?'<ol class="lunch-order-list">'+completed+'</ol>':'<div class="lunch-result-empty"><span>🎁</span><strong>아직 뽑은 학생이 없어요.</strong><p>왼쪽에서 인형뽑기를 시작하세요!</p></div>')+
+ const capsules=lunchDrawing?lunchCapsules:lunchBuildCapsules(remaining);
+ const target=lunchDrawing?lunchSelectedIds[0]:null;
+ const balls=capsules.map((p,i)=>'<span class="gacha-ball '+(p.id===target?'is-selected':'')+'" data-capsule-id="'+escapeHtml(p.id)+'" style="--x:'+p.x+'%;--y:'+p.y+'%;--delay:'+(i%6)*.11+'s">'+lunchCapsuleHtml(p.color)+'</span>').join('');
+ const drop=target?lunchCapsuleHtml(lunchColor(target),'gacha-dropping'):'';
+ const rows=q.order.map((id,i)=>'<li class="lunch-order-item '+(id===latest?'just-picked':'')+'"><span class="lunch-order-number">'+(i+1)+'번</span><strong>'+escapeHtml(nameOf(id))+'</strong>'+lunchCapsuleHtml(lunchColor(id),'gacha-small')+'</li>').join('');
+ const reveal=latest?'<div class="gacha-winner">'+lunchCapsuleHtml(lunchColor(latest),'gacha-winner-capsule')+'<span><small>🎉 '+(q.order.indexOf(latest)+1)+'번 당첨!</small><strong>'+escapeHtml(nameOf(latest))+'</strong></span></div>':'<div class="gacha-placeholder">두근두근! 누구의 캡슐이 나올까요?</div>';
+ return title('학급 운영','급식 줄서기','가챠통에서 캡슐 하나를 뽑아 열고, 급식 순서를 정합니다.','🎰')+
+ '<section class="lunch-container"><div class="lunch-top"><div><span class="lunch-kicker">🍚 오늘의 급식 순서 · '+escapeHtml(activeClass().name)+'</span><h2>우리 반 가챠 캡슐 뽑기</h2></div><div class="lunch-totals"><span>뽑음 <b>'+done+'</b>명</span><span>남음 <b>'+remaining.length+'</b>명</span></div></div>'+
+ (ss.length?'<div class="lunch-layout"><div class="lunch-left">'+
+ '<div class="gacha-machine '+(lunchDrawing?'is-spinning':'')+'"><div class="gacha-machine-top"><span>✦</span> LUNCH GACHA <span>✦</span></div>'+
+ '<div class="gacha-orb"><div class="gacha-shine"></div><div class="gacha-ball-field">'+balls+'</div><div class="gacha-orb-rim"></div></div>'+
+ '<div class="gacha-body"><div class="gacha-brand">🍬 우리 반 행운 캡슐</div><div class="gacha-dial"><span class="gacha-dial-inner"></span></div><div class="gacha-exit" aria-label="캡슐 출구"><span class="gacha-exit-caption">캡슐 출구</span>'+drop+'</div></div><div class="gacha-machine-foot"></div></div>'+
+ '<div class="gacha-reveal" aria-live="polite">'+(lunchDrawing?'<div class="gacha-drawing-message"><span class="gacha-spinner">✦</span> 캡슐이 나오고 있어요…</div>':reveal)+'</div>'+
+ '<div class="lunch-controls"><button id="lunchPickBtn" class="btn btn-primary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>'+(lunchDrawing?'🎰 추첨 중…':'🎰 캡슐 한 개 뽑기')+'</button><button id="lunchAllBtn" class="btn btn-secondary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>✨ 남은 학생 전체 순서 뽑기</button></div>'+
+ '<p class="lunch-tip">통 속 캡슐에는 이름이 숨겨져 있어요. 약 3초 뒤 캡슐을 열어 학생을 공개합니다. 전체 순서 뽑기는 대표 캡슐 하나를 보여준 뒤 나머지 순서를 함께 정합니다.</p></div>'+
+ '<div class="lunch-right"><div class="lunch-result-head"><h3>📋 급식 순서표</h3><small>'+done+' / '+ss.length+'명</small></div>'+
+ (done?'<ol class="lunch-order-list">'+rows+'</ol>':'<div class="lunch-result-empty"><span>🎁</span><strong>아직 뽑은 학생이 없어요.</strong><p>왼쪽에서 캡슐 뽑기를 시작하세요!</p></div>')+
  (done&&!remaining.length?'<div class="lunch-finish">🎉 전체 학생의 급식 순서가 완성됐어요!</div>':'')+
  '<div class="lunch-result-actions"><button id="lunchCopyBtn" class="btn btn-outline btn-small" '+(!done?'disabled':'')+'>📋 순서 복사</button><button id="lunchResetBtn" class="btn btn-outline btn-small" '+(!done||lunchDrawing?'disabled':'')+'>↻ 다시 뽑기</button></div>'+
- '<p class="lunch-date">'+(q.date?'결과 날짜: '+escapeHtml(q.date):'급식 순서를 뽑으면 날짜와 함께 저장됩니다.')+'</p></div></div>'
- :noStudents('학급 명단에 학생을 등록하면 인형뽑기로 급식 순서를 정할 수 있어요.'))+
- '<p class="lunch-local-note">🔒 급식 순서는 이 기기의 브라우저에만 자동 저장됩니다. 다른 컴퓨터의 전자칠판과는 자동 동기화되지 않습니다.</p></section>';
+ '<p class="lunch-date">'+(q.date?'결과 날짜: '+escapeHtml(q.date):'뽑은 날짜와 순서는 자동 저장됩니다.')+'</p></div></div>'
+ :noStudents('학급 명단에 학생을 등록하면 가챠통으로 급식 순서를 정할 수 있어요.'))+
+ '<p class="lunch-local-note">🔒 급식 순서는 현재 기기의 브라우저에만 저장됩니다. 다른 PC나 독립형 전자칠판과는 자동으로 동기화되지 않습니다.</p></section>';
 }
 function normalizeState(data){if(!data||typeof data!=='object'||!Array.isArray(data.classes)||!data.classes.length)throw Error('올바른 백업 파일이 아닙니다.');if(data.classes.length>100)throw Error('학급이 너무 많습니다.');const classes=data.classes.map(c=>{if(!c||!Array.isArray(c.students)||c.students.length>1000)throw Error('학생 명단에 오류가 있습니다.');const seen=new Set();const students=c.students.map(s=>({id:String(s.id||safeId()).slice(0,100),name:String(s.name||'').trim().slice(0,60),included:s.included!==false,points:clamp(Number(s.points)||0,0,999999)})).filter(s=>s.name&&!seen.has(s.id)&&seen.add(s.id));const valid=new Set(students.map(s=>s.id));return {id:String(c.id||safeId()).slice(0,100),name:String(c.name||'우리 반').slice(0,60),students,groups:Array.isArray(c.groups)?c.groups.slice(0,100).map(g=>Array.isArray(g)?g.filter(id=>valid.has(id)):[]):[],seating:Array.isArray(c.seating)?c.seating.filter(id=>valid.has(id)):[],seatingCols:clamp(Math.floor(Number(c.seatingCols)||5),3,8),seatingRows:clamp(Math.floor(Number(c.seatingRows)||6),3,12),presentationOrder:Array.isArray(c.presentationOrder)?c.presentationOrder.filter(id=>valid.has(id)):[],board:normalizeBoard(c.board),grading:normalizeGrading(c.grading,valid),lunch:normalizeLunch(c.lunch,valid)};});const activeClassId=classes.some(c=>c.id===data.activeClassId)?data.activeClassId:classes[0].id;return {schema:1,activeClassId,classes,history:Array.isArray(data.history)?data.history.slice(-500).map(h=>({type:String(h?.type||'기록').slice(0,50),classId:String(h?.classId||'').slice(0,100),text:String(h?.text||'').slice(0,250),date:String(h?.date||'').slice(0,40)})):[]};}
 async function saveNow(){clearTimeout(saveTimer);saveTimer=null;try{if(storageMode==='indexeddb')await dbWrite(state);else if(storageMode==='localStorage')localStorage.setItem('classroom-toolbox-state',JSON.stringify(state));else return;setIndicator('● PC에 자동 저장');}catch(err){console.error('Save failed',err);setIndicator('⚠ 저장 실패 · 백업하세요',true);toast('저장에 실패했습니다. 백업 파일을 내려받아 주세요.');}}
 function save(){setIndicator('● 저장 중…',true);clearTimeout(saveTimer);saveTimer=setTimeout(saveNow,250);}
 function history(type,text){state.history.push({type,classId:activeClass().id,text,date:dateString()});if(state.history.length>500)state.history.shift();}
 function requireStudents(){if(participants().length){return true;}toast('먼저 학급 명단에 참여 학생을 등록해 주세요.');navigate('roster');return false;}
-function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.10.1`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
+function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.11`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
 function setUiTheme(value){uiTheme=value==='middle'?'middle':'elementary';applyTheme();try{localStorage.setItem('classroom-toolbox-ui-theme',uiTheme);}catch(err){}render();}
 function renderTop(){const select=$('#activeClassSelect');select.innerHTML=state.classes.map(c=>`<option value="${escapeHtml(c.id)}" ${c.id===state.activeClassId?'selected':''}>${escapeHtml(c.name)}</option>`).join('');const themeSelect=$('#themeSelect');if(themeSelect)themeSelect.value=uiTheme;document.querySelectorAll('[data-view]').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===currentView));applyTheme();}
 function renderAll(){renderTop();render();}
