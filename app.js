@@ -1,4 +1,4 @@
-/* 수업도구 상자 v1.4 | 외부 라이브러리, 외부 데이터 전송 없음 */
+/* 수업도구 상자 v1.6 | 외부 라이브러리, 외부 데이터 전송 없음 */
 'use strict';
 const $ = (selector) => document.querySelector(selector);
 const clamp = (value,min,max) => Math.min(max,Math.max(min,value));
@@ -14,7 +14,7 @@ let raceRunning=false,raceOrderIds=[],raceStartTime=0,raceAnimationId=null,raceR
 const raceAnimals=['🐰','🐶','🐱','🦊','🐻','🐼','🐨','🐹','🐭','🐯','🦁','🐸','🐧','🐵','🦉','🦄','🐮','🐷','🐤','🦆','🐝','🦋','🦖','🐿️'];
 let timerRemaining=300,timerRunning=false,timerEndAt=0,timerInterval=null,audioContext=null;
 const tools=[
- {id:'race',icon:'🏃',title:'발표 레이스',desc:'달리기로 즐겁게 발표 순서 정하기',color:'#e9f5eb'},
+ {id:'race',icon:'🐰',title:'발표 레이스',desc:'동물 친구들과 즐겁게 발표 순서 정하기',color:'#e9f5eb'},
  {id:'picker',icon:'🎯',title:'랜덤 발표자',desc:'누가 발표할까? 공정하게 한 명 뽑기',color:'#eaf2fd'},
  {id:'groups',icon:'🧩',title:'모둠 편성',desc:'학생 명단으로 모둠 자동 만들기',color:'#fff0e1'},
  {id:'timer',icon:'⏱',title:'수업 타이머',desc:'집중 활동 시간 설정과 종료 알림',color:'#f2eefe'},
