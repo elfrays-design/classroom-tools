@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#7c6cf2" />
+  <meta name="description" content="회원가입 없이 수업에 바로 쓰는 무료 도구 모음. 학생 정보는 현재 기기의 브라우저에만 저장됩니다." />
+  <meta name="color-scheme" content="light" />
+  <title>별이와 송이의 수업도구 상자 | 선생님의 수업을 더 가볍게</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon-192.png" sizes="192x192" />
+  <link rel="stylesheet" href="./style.css" />
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <a href="#content" class="skip-link">본문으로 건너뛰기</a>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="수업도구 메뉴">
+      <button class="brand" data-view="home" type="button" aria-label="수업도구 상자 홈">
+        <span class="brand-logo" aria-hidden="true">🌈</span>
+        <span><strong>수업도구 상자</strong><small>별이와 송이가 함께해요</small></span>
+      </button>
+      <div class="nav-label">수업 준비</div>
+      <nav class="nav-list" id="navList">
+        <button type="button" class="nav-link active" data-view="home"><span>⌂</span> 홈</button>
+        <button type="button" class="nav-link" data-view="roster"><span>☷</span> 학급 명단 관리</button>
+        <div class="nav-label nav-label-inside">수업 도구</div>
+        <button type="button" class="nav-link" data-view="race"><span>🏃</span> 발표 레이스</button>
+        <button type="button" class="nav-link" data-view="picker"><span>🎯</span> 랜덤 발표자</button>
+        <button type="button" class="nav-link" data-view="groups"><span>🧩</span> 모둠 편성</button>
+        <button type="button" class="nav-link" data-view="timer"><span>⏱</span> 수업 타이머</button>
+        <button type="button" class="nav-link" data-view="seating"><span>🪑</span> 자리 배치</button>
+        <button type="button" class="nav-link" data-view="participation"><span>⭐</span> 참여 기록</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="privacy-mini"><span class="privacy-lock">🔒</span><span><strong>로컬 저장 방식</strong><small>학생 정보 서버 전송 없음</small></span></div>
+        <span class="version">초등형 캐릭터 버전 · v1.3</span>
+      </div>
+    </aside>
+    <div class="workarea">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="mobile-brand">🌈 별이와 송이의 수업도구 상자</div>
+          <div class="class-switch"><label for="activeClassSelect">현재 학급</label><select id="activeClassSelect" aria-label="현재 학급 선택"></select><button id="newClassBtn" class="icon-button" type="button" title="새 학급 추가" aria-label="새 학급 추가">＋</button></div>
+          <div class="top-actions"><span id="saveIndicator" class="saved" aria-live="polite">● PC에 자동 저장</span><button id="backupBtn" class="btn btn-outline btn-small" type="button">⬇ 백업</button><button id="restoreBtn" class="btn btn-outline btn-small" type="button">⬆ 복원</button><input id="restoreFile" type="file" accept=".json,application/json" hidden /></div>
+        </div>
+      </header>
+      <main id="content" tabindex="-1" aria-live="polite"><div class="loading">수업도구를 준비하고 있어요…</div></main>
+      <footer class="main-footer">별도 로그인 없이 이용하세요. 학생 명단과 기록은 이 기기의 브라우저에만 저장됩니다. 중요한 자료는 정기적으로 백업해 주세요.</footer>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
