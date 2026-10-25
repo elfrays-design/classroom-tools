@@ -203,11 +203,19 @@ a{color:inherit}
 .timer-setup{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .timer-setup label{font-size:13px;font-weight:800}
 .timer-setup input{width:82px}
-.seat-area{max-width:840px;margin:0 auto}
+.seating-controls{gap:10px 14px}
+.seat-dimension{display:flex;align-items:center;gap:8px}
+.seat-dimension .form-label{margin:0;white-space:nowrap}
+.seat-dimension .field{min-width:75px}
+.seat-capacity{font-size:12px;font-weight:800;color:#536c82;background:#eef6ff;border:1px solid #e0ecfb;border-radius:20px;padding:8px 12px}
+.seat-alert{color:#835923;background:#fff5d9;border:1px solid #f3dca5;border-radius:12px;padding:10px 14px;margin:-3px 0 20px;font-size:13px;font-weight:700}
+.seat-area{max-width:840px;margin:0 auto;overflow-x:auto}
 .desk{border-radius:16px;background:linear-gradient(135deg,#dde7ff,#e4f8ff);padding:12px 15px;width:180px;text-align:center;margin:0 auto 29px;color:#546b7c;font-size:13px;font-weight:900;box-shadow:var(--shadow-soft)}
-.seat-grid{display:grid;grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));gap:11px}
+.seat-grid{display:grid;grid-template-columns:repeat(var(--cols,5),minmax(0,1fr));grid-template-rows:repeat(var(--rows,6),minmax(74px,auto));gap:11px}
 .seat{min-height:74px;border-radius:18px;border:2px solid #dde6f0;background:linear-gradient(180deg,#fff,#f8fcff);color:#294c42;font-weight:900;font-size:13px;padding:8px 4px;display:flex;justify-content:center;align-items:center;word-break:break-all;box-shadow:0 4px 10px rgba(123,140,184,.05)}
 .seat:hover{border-color:#92b6ff}
+.seat-empty{background:#f5f7fb;border:2px dashed #d9e1ee;color:#a0aebe;box-shadow:none;font-weight:700}
+.seat-empty:hover{border-color:#d9e1ee}
 .seat.selected{background:linear-gradient(180deg,#fff3cf,#ffeab1);border-color:#f0b94d}
 .seat-num{font-size:10px;color:#91a89e;display:block;font-weight:600;margin-bottom:6px}
 .part-head,.part-row{display:grid;grid-template-columns:minmax(100px,1.6fr) minmax(60px,.7fr) minmax(90px,1fr);align-items:center;gap:12px;padding:12px 15px}
@@ -276,7 +284,7 @@ a{color:inherit}
   .metric strong{font-size:19px}
   .metric small{font-size:11px}
   .group-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .seat-grid{gap:5px}
+  .seat-grid{gap:5px;min-width:max(100%,var(--seat-min-width,320px))}
   .seat{font-size:11px;min-height:62px;border-radius:14px}
   .main-footer{line-height:1.7}
 }
