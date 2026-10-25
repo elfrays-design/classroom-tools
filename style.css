@@ -526,7 +526,11 @@ body[data-ui-theme="middle"] .grading-now{background:linear-gradient(110deg,#476
 .lunch-crane-rail{width:96px;height:18px;background:linear-gradient(#bfd3ed,#6c8dad);border:3px solid #527da6;border-radius:10px;position:absolute;top:0;left:-6px;box-shadow:0 3px 6px rgba(45,90,130,.2)}
 .lunch-cable{position:absolute;top:13px;left:42px;width:5px;height:62px;background:repeating-linear-gradient(#7899b8 0,#7899b8 7px,#557ca4 7px,#557ca4 10px);transform-origin:top center}
 .lunch-hook{position:absolute;top:70px;left:29px;width:30px;height:23px;border-left:7px solid #607fa6;border-right:7px solid #607fa6;border-bottom:7px solid #607fa6;border-radius:2px 2px 18px 18px;transform-origin:center top}
-.lunch-caught{position:absolute;top:91px;left:23px;font-size:35px;opacity:0;filter:drop-shadow(0 3px 3px rgba(74,89,124,.2))}
+.lunch-caught{position:absolute;top:91px;left:0;width:85px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;opacity:0;filter:drop-shadow(0 3px 3px rgba(74,89,124,.2))}
+.lunch-caught-emoji{font-size:35px;line-height:1.05}
+.lunch-caught-name{font-size:11px;font-weight:900;color:#405778;background:rgba(255,255,255,.95);border:1px solid #dce7f6;padding:2px 6px;border-radius:999px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lunch-machine.is-playing .lunch-toy.is-target{animation:lunch-toy-picked 3.2s linear forwards}
+@keyframes lunch-toy-picked{0%,56%{opacity:1;transform:translate(-50%,-50%) scale(1)}64%,100%{opacity:0;transform:translate(-50%,-50%) scale(.15)}}
 .lunch-machine.is-playing .lunch-crane{animation:lunch-crane-move 3.2s ease-in-out forwards}
 .lunch-machine.is-playing .lunch-cable{animation:lunch-cable-drop 3.2s ease-in-out forwards}
 .lunch-machine.is-playing .lunch-hook{animation:lunch-hook-grab 3.2s ease-in-out forwards}

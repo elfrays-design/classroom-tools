@@ -75,11 +75,21 @@ function normalizeLunch(raw,valid){const x=raw&&typeof raw==='object'?raw:{},uni
 function lunchData(){const c=activeClass();if(!c.lunch)c.lunch=makeDefaultLunch();return c.lunch;}
 function lunchRemaining(){const picked=new Set(lunchData().order);return participants().filter(s=>!picked.has(s.id));}
 function lunchCancelAnimation(){if(lunchDrawTimer!==null){clearTimeout(lunchDrawTimer);lunchDrawTimer=null;}lunchDrawing=false;lunchSelectedIds=[];lunchToyView=[];}
+function lunchAnimal(id){
+ // 학생 ID를 이용하므로 이름표 위치나 뽑기 순서가 바뀌어도 동물은 변하지 않습니다.
+ let hash=2166136261;
+ for(const ch of String(id)){hash^=ch.charCodeAt(0);hash=Math.imul(hash,16777619)>>>0;}
+ return lunchPlush[hash%lunchPlush.length];
+}
 function lunchBuildToys(students,focusId){
- const visible=shuffled(students).slice(0,12);
- if(focusId&&!visible.some(s=>s.id===focusId)){const focus=students.find(s=>s.id===focusId);if(focus){if(visible.length)visible[visible.length-1]=focus;else visible.push(focus);}}
  const xs=[18,38,58,78,24,47,70,83,17,38,61,80],ys=[24,24,24,24,50,50,50,50,76,76,76,76];
- return visible.map((s,i)=>({id:s.id,x:xs[i],y:ys[i],emoji:lunchPlush[i%lunchPlush.length]}));
+ const chosen=focusId?students.find(s=>s.id===focusId):null;
+ if(!chosen)return shuffled(students).slice(0,12).map((s,i)=>({id:s.id,x:xs[i],y:ys[i],emoji:lunchAnimal(s.id)}));
+ // 선택 학생을 실제 집게가 닿는 중앙 줄에 배치하고, 이름표·인형·집게를 동일 ID로 연결합니다.
+ const spot=[4,5,6][randomInt(3)];
+ const otherSpots=xs.map((_,i)=>i).filter(i=>i!==spot);
+ const display=[chosen,...shuffled(students.filter(s=>s.id!==focusId)).slice(0,11)];
+ return display.map((s,i)=>{const slot=i===0?spot:otherSpots[i-1];return {id:s.id,x:xs[slot],y:ys[slot],emoji:lunchAnimal(s.id)};});
 }
 function lunchDraw(mode){
  if(lunchDrawing)return;
@@ -117,9 +127,11 @@ function lunchCopy(){const q=lunchData();if(!q.order.length)return toast('먼저
 function renderLunch(){
  const ss=participants(),q=lunchData(),remaining=lunchRemaining(),done=q.order.length,latest=lunchRecentId&&q.order.includes(lunchRecentId)?lunchRecentId:(done?q.order[done-1]:null);
  const toys=lunchDrawing?lunchToyView:lunchBuildToys(remaining,null);
- const toyMarkup=toys.map((p,i)=>'<div class="lunch-toy" style="--x:'+p.x+'%;--y:'+p.y+'%;--delay:'+(i%5)*.13+'s"><span class="lunch-toy-emoji">'+p.emoji+'</span><span class="lunch-toy-label">'+escapeHtml(nameOf(p.id))+'</span></div>').join('');
- const completed=q.order.map((id,i)=>'<li class="lunch-order-item '+(id===latest?'just-picked':'')+'"><span class="lunch-order-number">'+(i+1)+'번</span><strong>'+escapeHtml(nameOf(id))+'</strong><span class="lunch-order-icon">'+lunchPlush[i%lunchPlush.length]+'</span></li>').join('');
- const clawPrize=lunchDrawing&&lunchSelectedIds.length?lunchPlush[(q.order.length)%lunchPlush.length]:'🐰';
+ const toyMarkup=toys.map((p,i)=>'<div class="lunch-toy '+(lunchDrawing&&p.id===lunchSelectedIds[0]?'is-target':'')+'" data-lunch-id="'+escapeHtml(p.id)+'" style="--x:'+p.x+'%;--y:'+p.y+'%;--delay:'+(i%5)*.13+'s"><span class="lunch-toy-emoji">'+p.emoji+'</span><span class="lunch-toy-label">'+escapeHtml(nameOf(p.id))+'</span></div>').join('');
+ const completed=q.order.map((id,i)=>'<li class="lunch-order-item '+(id===latest?'just-picked':'')+'"><span class="lunch-order-number">'+(i+1)+'번</span><strong>'+escapeHtml(nameOf(id))+'</strong><span class="lunch-order-icon">'+lunchAnimal(id)+'</span></li>').join('');
+ const clawId=lunchDrawing?lunchSelectedIds[0]:null;
+ const clawPrize=clawId?lunchAnimal(clawId):'';
+ const clawLabel=clawId?escapeHtml(nameOf(clawId)):'';
  return title('학급 운영','급식 줄서기','인형뽑기 집게가 학생 이름을 하나씩 뽑아 급식 순서를 정합니다.','🧸')+
  '<section class="lunch-container">'+
  '<div class="lunch-top"><div><span class="lunch-kicker">🍚 오늘의 급식 순서 · '+escapeHtml(activeClass().name)+'</span><h2>우리 반 인형뽑기</h2></div><div class="lunch-totals"><span>뽑음 <b>'+done+'</b>명</span><span>남음 <b>'+remaining.length+'</b>명</span></div></div>'+
@@ -127,9 +139,9 @@ function renderLunch(){
  '<div class="lunch-layout"><div class="lunch-left">'+
  '<div class="lunch-machine '+(lunchDrawing?'is-playing':'')+'" style="--grab-x:'+lunchCraneX+'%">'+
  '<div class="lunch-machine-header"><span>★</span><strong>우리 반 인형뽑기</strong><span>★</span></div>'+
- '<div class="lunch-glass"><div class="lunch-light"></div><div class="lunch-crane"><div class="lunch-crane-rail"></div><div class="lunch-cable"></div><div class="lunch-hook">⌄</div><div class="lunch-caught">'+clawPrize+'</div></div>'+
+ '<div class="lunch-glass"><div class="lunch-light"></div><div class="lunch-crane"><div class="lunch-crane-rail"></div><div class="lunch-cable"></div><div class="lunch-hook">⌄</div><div class="lunch-caught" data-lunch-id="'+escapeHtml(clawId||'')+'"><span class="lunch-caught-emoji">'+clawPrize+'</span><span class="lunch-caught-name">'+clawLabel+'</span></div></div>'+
  '<div class="lunch-toys">'+toyMarkup+'</div><div class="lunch-machine-floor"></div></div>'+
- '<div class="lunch-machine-bottom"><div class="lunch-prize-window"><small>🎁 뽑힌 학생</small><strong aria-live="polite">'+(lunchDrawing?'뽑는 중…':latest?escapeHtml(nameOf(latest)):'누가 나올까요?')+'</strong></div><div class="lunch-joystick" aria-hidden="true"><div class="lunch-stick"></div><div class="lunch-button-decoration"></div></div></div><div class="lunch-machine-feet"><span></span><span></span></div></div>'+
+ '<div class="lunch-machine-bottom"><div class="lunch-prize-window"><small>🎁 뽑힌 학생</small><strong aria-live="polite">'+(lunchDrawing?'뽑는 중…':latest?lunchAnimal(latest)+' '+escapeHtml(nameOf(latest)):'누가 나올까요?')+'</strong></div><div class="lunch-joystick" aria-hidden="true"><div class="lunch-stick"></div><div class="lunch-button-decoration"></div></div></div><div class="lunch-machine-feet"><span></span><span></span></div></div>'+
  '<div class="lunch-controls"><button id="lunchPickBtn" class="btn btn-primary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>'+(lunchDrawing?'🕹️ 인형 뽑는 중…':'🕹️ 한 명 뽑기 (3초)')+'</button><button id="lunchAllBtn" class="btn btn-secondary btn-large" '+(lunchDrawing||!remaining.length?'disabled':'')+'>🎰 남은 학생 전체 순서 뽑기</button></div>'+
  '<p class="lunch-tip">학생 한 명씩 뽑거나, 집게를 한 번 움직여 남은 학생의 순서를 모두 정할 수 있어요. 뽑힌 학생은 중복되지 않습니다.</p></div>'+
  '<div class="lunch-right"><div class="lunch-result-head"><h3>🏅 급식 순서표</h3><small>'+done+' / '+ss.length+'명</small></div>'+
@@ -145,7 +157,7 @@ async function saveNow(){clearTimeout(saveTimer);saveTimer=null;try{if(storageMo
 function save(){setIndicator('● 저장 중…',true);clearTimeout(saveTimer);saveTimer=setTimeout(saveNow,250);}
 function history(type,text){state.history.push({type,classId:activeClass().id,text,date:dateString()});if(state.history.length>500)state.history.shift();}
 function requireStudents(){if(participants().length){return true;}toast('먼저 학급 명단에 참여 학생을 등록해 주세요.');navigate('roster');return false;}
-function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.10`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
+function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.10.1`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
 function setUiTheme(value){uiTheme=value==='middle'?'middle':'elementary';applyTheme();try{localStorage.setItem('classroom-toolbox-ui-theme',uiTheme);}catch(err){}render();}
 function renderTop(){const select=$('#activeClassSelect');select.innerHTML=state.classes.map(c=>`<option value="${escapeHtml(c.id)}" ${c.id===state.activeClassId?'selected':''}>${escapeHtml(c.name)}</option>`).join('');const themeSelect=$('#themeSelect');if(themeSelect)themeSelect.value=uiTheme;document.querySelectorAll('[data-view]').forEach(btn=>btn.classList.toggle('active',btn.dataset.view===currentView));applyTheme();}
 function renderAll(){renderTop();render();}
