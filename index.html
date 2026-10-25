@@ -34,14 +34,14 @@
       </nav>
       <div class="sidebar-foot">
         <div class="privacy-mini"><span class="privacy-lock">🔒</span><span><strong>로컬 저장 방식</strong><small>학생 정보 서버 전송 없음</small></span></div>
-        <span class="version">초등형 캐릭터 버전 · v1.6</span>
+        <span class="version" id="themeVersion">초등 맞춤 귀여운 화면 · v1.7</span>
       </div>
     </aside>
     <div class="workarea">
       <header class="topbar">
         <div class="topbar-inner">
           <div class="mobile-brand">🌈 별이와 송이의 수업도구 상자</div>
-          <div class="class-switch"><label for="activeClassSelect">현재 학급</label><select id="activeClassSelect" aria-label="현재 학급 선택"></select><button id="newClassBtn" class="icon-button" type="button" title="새 학급 추가" aria-label="새 학급 추가">＋</button></div>
+          <div class="topbar-controls"><div class="class-switch"><label for="activeClassSelect">현재 학급</label><select id="activeClassSelect" aria-label="현재 학급 선택"></select><button id="newClassBtn" class="icon-button" type="button" title="새 학급 추가" aria-label="새 학급 추가">＋</button></div><div class="theme-switch"><label for="themeSelect">화면</label><select id="themeSelect" aria-label="화면 스타일 선택"><option value="elementary">초등 맞춤 귀여운 화면</option><option value="middle">중등 맞춤 깔끔한 화면</option></select></div></div>
           <div class="top-actions"><span id="saveIndicator" class="saved" aria-live="polite">● PC에 자동 저장</span><button id="backupBtn" class="btn btn-outline btn-small" type="button">⬇ 백업</button><button id="restoreBtn" class="btn btn-outline btn-small" type="button">⬆ 복원</button><input id="restoreFile" type="file" accept=".json,application/json" hidden /></div>
         </div>
       </header>

@@ -349,3 +349,42 @@ a{color:inherit}
 .race-fairness{text-align:center;margin:16px 0 3px;line-height:1.7}
 @media(max-width:560px){.race-podium{gap:7px;margin:20px auto}.race-podium-card{padding:13px 4px 11px;border-radius:17px 17px 12px 12px;min-height:147px}.race-podium-card.rank-1{min-height:186px}.race-podium-card.rank-2{min-height:160px}.race-podium-card.rank-3{min-height:142px}.race-podium-medal{font-size:22px}.race-podium-rank{font-size:11px;padding:4px 9px}.race-ranking-row{gap:9px;padding:9px 10px}.race-result-buttons .btn{flex:1 1 43%}.race-ranking-list{max-height:350px}.lane-name{width:68px}}
 @media(prefers-reduced-motion:reduce){.race-lanes.racing .runner{animation:none}}
+
+/* v1.7 테마 선택 관련 레이아웃 */
+.topbar-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.theme-switch{display:flex;align-items:center;gap:9px}
+.theme-switch label{white-space:nowrap;font-size:13px;color:var(--ink-soft);font-weight:800}
+.theme-switch select{border:1px solid var(--line-strong);background:#fff;border-radius:14px;padding:10px 30px 10px 13px;font-weight:700;min-width:190px;box-shadow:var(--shadow-soft)}
+
+/* v1.7 테마 선택 */
+body[data-ui-theme="middle"]{background:linear-gradient(180deg,#eff4f8 0%,#f7fafc 100%)}
+body[data-ui-theme="middle"] .sidebar{background:linear-gradient(180deg,#486981 0%,#5c7f99 48%,#7aa1b4 100%);box-shadow:12px 0 34px rgba(61,87,111,.18)}
+body[data-ui-theme="middle"] .brand-logo{background:linear-gradient(135deg,#edf4f9,#d3e1ed);color:#486981;box-shadow:0 8px 22px rgba(57,81,103,.18)}
+body[data-ui-theme="middle"] .nav-link.active{color:#45657f}
+body[data-ui-theme="middle"] .welcome{background:linear-gradient(135deg,#f5f8fb 0%,#eef4f8 42%,#e8eff5 100%);border-color:#d7e2ea}
+body[data-ui-theme="middle"] .welcome::before,body[data-ui-theme="middle"] .welcome::after{background:rgba(255,255,255,.4)}
+body[data-ui-theme="middle"] .mascot-badge{color:#47657f}
+body[data-ui-theme="middle"] .mascot-badge.mint{color:#2b7d86}
+body[data-ui-theme="middle"] .mascot-card{background:rgba(255,255,255,.88);border-color:#d8e2eb;box-shadow:0 18px 34px rgba(87,111,138,.14)}
+body[data-ui-theme="middle"] .mascot-card::before{background:linear-gradient(135deg,#bcd7e8,#d8e6ef)}
+body[data-ui-theme="middle"] .mascot-card::after{background:linear-gradient(135deg,#d7e3ec,#adc3d6)}
+body[data-ui-theme="middle"] .cute-banner,body[data-ui-theme="middle"] .middle-banner{background:linear-gradient(135deg,#ffffff 0%,#f2f6f9 46%,#edf3f8 100%);border-color:#dce5ec}
+body[data-ui-theme="middle"] .cute-banner-icon{background:linear-gradient(135deg,#dbe8f1,#b9cfdf);box-shadow:0 10px 22px rgba(111,138,160,.2)}
+body[data-ui-theme="middle"] .cute-banner-body strong{color:#44647f}
+body[data-ui-theme="middle"] .cute-banner-tags span{color:#466780;border-color:#d7e2eb}
+body[data-ui-theme="middle"] .tool-card{background:linear-gradient(180deg,#ffffff 0%,#f8fbfd 100%);border-color:#dde5ec;box-shadow:0 6px 18px rgba(103,121,146,.08)}
+body[data-ui-theme="middle"] .tool-card:hover{box-shadow:0 16px 30px rgba(93,115,141,.14);border-color:#ccd7e0}
+body[data-ui-theme="middle"] .metric{background:linear-gradient(180deg,#ffffff 0%,#f4f8fb 100%);border-color:#dde6ed}
+body[data-ui-theme="middle"] .notice{background:linear-gradient(135deg,#fff,#f4f8fb);border-color:#dde5ec}
+body[data-ui-theme="middle"] .panel{background:rgba(255,255,255,.9);border-color:#dce5ec;box-shadow:0 10px 24px rgba(108,126,149,.08)}
+body[data-ui-theme="middle"] .btn{background:linear-gradient(135deg,#5a7d98,#6b8ba3)}
+body[data-ui-theme="middle"] .btn-primary{background:linear-gradient(135deg,#557792,#6688a1)}
+body[data-ui-theme="middle"] .btn-dark{background:linear-gradient(135deg,#455f77,#5d7890)}
+body[data-ui-theme="middle"] .btn-outline{background:#fff;color:#49657d;border-color:#d5dfe7}
+body[data-ui-theme="middle"] .page-header-icon{filter:drop-shadow(0 8px 12px rgba(113,133,154,.18))}
+
+@media(max-width:720px){
+  .topbar-controls{width:100%;justify-content:space-between}
+  .theme-switch label{display:none}
+  .theme-switch select{min-width:170px;max-width:190px;padding:7px;font-size:12px}
+}
