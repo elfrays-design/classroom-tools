@@ -1,0 +1,45 @@
+/* v1.20 학생 참여 — 선택 룰렛 */
+.roulette-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(280px,.72fr);gap:18px;align-items:start}
+.roulette-stage{min-width:0;display:flex;flex-direction:column;align-items:center;gap:16px;padding:20px 24px!important;overflow:hidden}
+.roulette-stage-header{display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px;flex-wrap:wrap}
+.roulette-stage-header strong{color:#4d6686;font-size:19px;font-weight:900}
+.roulette-stage-header span{font-size:13px;font-weight:800;color:#8593a5}
+.roulette-figure{position:relative;width:min(100%,600px);aspect-ratio:1/1;margin:7px auto 0;display:flex;align-items:center;justify-content:center;isolation:isolate}
+.roulette-disc{width:95%;height:95%;aspect-ratio:1;border-radius:50%;box-shadow:0 10px 32px rgba(91,108,161,.22),0 0 0 8px rgba(204,217,242,.8);overflow:hidden;will-change:transform;transform-origin:center center;background:#eef1fb}
+.roulette-disc canvas{display:block;width:100%;height:100%;border-radius:50%}
+.roulette-pointer{position:absolute;top:-5px;left:50%;z-index:4;transform:translateX(-50%);height:62px;width:60px;display:grid;place-items:center;pointer-events:none;filter:drop-shadow(0 5px 3px #4e587b66)}
+.roulette-pointer::before{content:"";width:28px;height:20px;background:#4c5caf;border:5px solid #fff;border-radius:30px;position:absolute;top:0;z-index:1;box-shadow:0 1px 3px #778}
+.roulette-pointer span{font-size:65px;line-height:1;color:#4c5caf;text-shadow:0 1px #fff,2px 0 #fff,-2px 0 #fff;font-family:Arial,sans-serif;position:absolute;top:4px}
+.roulette-selection{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:98px;text-align:center;background:linear-gradient(120deg,#fff9df,#f7edff);border:1px solid #eadff3;border-radius:18px;padding:13px 17px;width:100%}
+.roulette-selection .roulette-label{font-size:15px;font-weight:900;color:#8b69b2}
+.roulette-selection strong{font-size:clamp(30px,4.4vw,50px);line-height:1.28;letter-spacing:-1px;font-weight:900;color:#3d5480;overflow-wrap:anywhere}
+.roulette-wait{font-size:17px;font-weight:900;color:#617a99;line-height:1.6}
+.roulette-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
+.roulette-buttons .btn{font-weight:900;font-size:16px;padding:13px 21px}
+.roulette-footnote{text-align:center;font-size:12px;color:#8591a4;margin:0;line-height:1.8}
+.roulette-info{display:flex;flex-direction:column;gap:13px;min-width:0}
+.roulette-info .panel{padding:19px}
+.roulette-info h2{font-size:17px;color:#506a8a;margin:0 0 13px}
+.roulette-check{display:flex;align-items:center;gap:10px;background:#f0f7ff;padding:14px 12px;border-radius:15px;cursor:pointer}
+.roulette-check input{accent-color:#786cea;width:21px;height:21px;flex:0 0 21px}
+.roulette-check span{display:flex;flex-direction:column;gap:4px}
+.roulette-check strong{font-size:13px;color:#496686}
+.roulette-check small{font-size:11px;color:#8a99ac}
+.roulette-hint{font-size:12px;color:#8394a8;line-height:1.6}
+.roulette-stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:16px}
+.roulette-stat-row>div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 5px;background:#f7faff;border:1px solid #e8eef8;border-radius:13px}
+.roulette-stat-row small{font-size:11px;color:#8696a8}
+.roulette-stat-row strong{font-size:24px;color:#6274be}
+.roulette-chips{display:flex;flex-wrap:wrap;gap:7px;max-height:192px;overflow-y:auto}
+.roulette-chip{font-size:12px;font-weight:900;color:#506983;border-radius:9px;border:1px solid #dce7f5;padding:7px 10px;background:#f5f9ff}
+.roulette-chip.roulette-picked{background:#edf0f4;color:#94a0ad;border-color:#e1e5e9;text-decoration:line-through}
+.roulette-chip.roulette-most-recent{background:#fff1cb;color:#926225;text-decoration:none;border-color:#e8ca7f}
+.roulette-past-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.roulette-past-head h2{margin:0}
+.roulette-history{margin:13px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;max-height:230px;overflow-y:auto}
+.roulette-history li{padding:9px 11px;border-radius:11px;background:#f7faff;display:flex;align-items:center;justify-content:space-between;gap:9px}
+.roulette-history strong{font-size:13px;color:#536985}
+.roulette-history small{font-size:10px;color:#8191a6}
+@media(max-width:1080px){.roulette-layout{grid-template-columns:1fr}.roulette-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.roulette-past{grid-column:1/-1}.roulette-figure{max-width:550px}}
+@media(max-width:700px){.roulette-stage{padding:14px!important}.roulette-figure{width:100%}.roulette-pointer{transform:translateX(-50%) scale(.72);top:-14px}.roulette-info{display:flex}.roulette-stage-header strong{font-size:16px}.roulette-buttons .btn{font-size:14px;padding:11px 12px}.roulette-selection{min-height:86px}.roulette-layout{gap:13px}}
+@media(prefers-reduced-motion:reduce){.roulette-disc{transition-duration:0.5s!important}}
