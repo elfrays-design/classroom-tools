@@ -644,3 +644,32 @@ body[data-ui-theme="middle"] .gacha-orb{border-color:#c8dbe8}
 .notice-present-exit{padding:11px 17px;border:1px solid #90b49e;background:white;color:#28583d;border-radius:12px;font-size:14px;font-weight:900;cursor:pointer}
 @media(max-width:900px){.notice-edit-fields{grid-template-columns:1fr}.notice-config{grid-template-columns:repeat(2,minmax(0,1fr))}.notice-chalkboard{padding:23px 28px}}
 @media(max-width:720px){.notice-editor-actions{flex-direction:column;align-items:stretch;padding:14px}.notice-edit-heading,.notice-config{grid-template-columns:1fr}.notice-chalkboard{padding:18px 15px;border-width:10px;min-height:550px}.notice-chalk-sections{grid-template-columns:1fr;grid-template-rows:auto;gap:8px}.notice-chalk-section{padding:8px 3px}.notice-chalk-heading h1{font-size:clamp(30px,7vw,48px)}.notice-chalk-label{font-size:clamp(24px,5vw,32px);margin-bottom:6px}.notice-chalkboard.font-large .notice-chalk-value{font-size:clamp(28px,5.3vw,40px)}.notice-chalkboard.font-extra .notice-chalk-value{font-size:clamp(33px,6.4vw,48px)}.notice-chalk-preview .notice-chalk-sections{grid-template-columns:1fr;grid-template-rows:auto}.notice-chalk-preview{min-height:620px}.notice-present-bar{font-size:12px;flex-wrap:wrap}.notice-present-exit{font-size:12px}}
+
+/* v1.13 비밀친구 */
+.secret-panel{padding:23px;border:1px solid #efddec;border-radius:23px;background:rgba(255,255,255,.95);box-shadow:var(--shadow-soft)}
+.secret-intro{display:flex;align-items:center;gap:18px;border-bottom:1px solid #f1e4ed;padding-bottom:18px;margin-bottom:18px}
+.secret-intro>span{font-size:60px}.secret-intro h2{font-size:23px;color:#7e527f;margin:0 0 8px}.secret-intro p{font-size:13px;color:#7f8596;margin:0;line-height:1.7}
+.secret-editor{max-width:750px;display:flex;flex-direction:column;gap:12px;margin:0 auto}.secret-editor label{font-size:15px;color:#745b7d;font-weight:900}.secret-editor select.field{max-width:400px;font-size:16px}
+.secret-textarea{width:100%;resize:vertical;min-height:264px;font-size:15px;line-height:1.7}
+.secret-summary{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:11px;padding:15px;background:#fff4fa;border:1px solid #f0dfee;border-radius:17px;margin-bottom:18px}
+.secret-summary strong{color:#865b88;font-size:15px}.secret-summary span{font-size:12px;color:#926a90}
+.secret-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.13fr);gap:16px}
+.secret-roster,.secret-card{padding:16px;background:#fcfaff;border:1px solid #ecdfec;border-radius:19px;min-width:0}
+.secret-roster h3,.secret-card h3{font-size:16px;color:#7d5a89;margin:0 0 14px}
+.secret-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.secret-person{min-height:75px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;padding:8px 4px;background:#fff;border:1px solid #e7d5e9;color:#755d80;border-radius:14px}
+.secret-person span{font-size:23px}.secret-person strong{font-size:13px;overflow-wrap:anywhere}
+.secret-person:hover,.secret-person.selected{background:#fff0fa;border-color:#ce91bf}
+.secret-seal{min-height:280px;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:12px;text-align:center;border:2px dashed #edd1e2;background:linear-gradient(130deg,#fff7fc,#f2f7ff);border-radius:19px;padding:20px}
+.secret-seal>span{font-size:66px}.secret-seal h3{margin:0;font-size:21px}.secret-seal p{font-size:13px;line-height:1.7;color:#8c7b91;margin:0}
+.secret-reveal{min-height:330px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;text-align:center;padding:22px 13px;border:3px solid #efbfe0;border-radius:20px;background:linear-gradient(140deg,#fff1fa,#f5edff,#f0faff);animation:secret-pop .3s ease-out}
+.secret-reveal>span:first-child{font-size:28px}.secret-reveal small{font-size:15px;color:#94709e;font-weight:900}
+.secret-reveal>strong{font-size:clamp(32px,4vw,48px);color:#a14b95;font-weight:900}
+.secret-mission{color:#67517d;font-size:clamp(19px,2.5vw,25px);font-weight:900;line-height:1.5}
+.secret-reveal #secretTicker{border-radius:90px;border:1px solid #e6cce1;background:#fff;color:#a85d8d;padding:7px 13px;font-size:12px}
+.secret-buttons{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.secret-warning{margin:17px 0 0;border:1px solid #eee0bd;background:#fff8e7;border-radius:13px;padding:15px;font-size:13px;line-height:1.75;color:#7b6b4b}
+.secret-notice{font-size:12px;color:#8492a1;margin:17px 2px;line-height:1.7}
+@keyframes secret-pop{from{opacity:.15;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@media(max-width:1000px){.secret-layout{grid-template-columns:1fr}.secret-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:720px){.secret-panel{padding:12px}.secret-intro{gap:10px}.secret-intro>span{font-size:40px}.secret-intro h2{font-size:18px}.secret-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.secret-person{min-height:67px}.secret-card,.secret-roster{padding:11px}.secret-reveal>strong{font-size:33px}}
