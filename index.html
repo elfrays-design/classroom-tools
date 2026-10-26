@@ -10,6 +10,9 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="icon" href="./icon-192.png" sizes="192x192" />
   <link rel="stylesheet" href="./style.css" />
+  <script defer src="./wall-config.js"></script>
+  <script defer src="./qrcode.min.js"></script>
+  <script defer src="./wall.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -26,6 +29,7 @@
         <button type="button" class="nav-link" data-view="dashboard"><span>🖥️</span> 우리 반 전자칠판</button>
         <button type="button" class="nav-link" data-view="notice"><span>📋</span> 알림장 칠판</button>
         <button type="button" class="nav-link" data-view="secret"><span>💝</span> 마니또 · 비밀친구</button>
+        <button type="button" class="nav-link" data-view="wall"><span>🗒️</span> 협업 포스트잇</button>
         <button type="button" class="nav-link" data-view="roster"><span>☷</span> 학급 명단 관리</button>
         <div class="nav-label nav-label-inside">수업 도구</div>
         <button type="button" class="nav-link" data-view="race"><span>🐰</span> 발표 레이스</button>
@@ -38,8 +42,8 @@
         <button type="button" class="nav-link" data-view="lunch"><span>🎰</span> 급식 줄서기</button>
       </nav>
       <div class="sidebar-foot">
-        <div class="privacy-mini"><span class="privacy-lock">🔒</span><span><strong>로컬 저장 방식</strong><small>학생 정보 서버 전송 없음</small></span></div>
-        <span class="version" id="themeVersion">초등 맞춤 귀여운 화면 · v1.13</span>
+        <div class="privacy-mini"><span class="privacy-lock">🔒</span><span><strong>기존 도구 로컬 저장</strong><small>협업 포스트잇은 별도 연결</small></span></div>
+        <span class="version" id="themeVersion">초등 맞춤 귀여운 화면 · v1.14</span>
       </div>
     </aside>
     <div class="workarea">
@@ -51,7 +55,7 @@
         </div>
       </header>
       <main id="content" tabindex="-1" aria-live="polite"><div class="loading">수업도구를 준비하고 있어요…</div></main>
-      <footer class="main-footer">별도 로그인 없이 이용하세요. 학생 명단과 기록은 이 기기의 브라우저에만 저장됩니다. 중요한 자료는 정기적으로 백업해 주세요.</footer>
+      <footer class="main-footer">기존 수업도구 자료는 이 기기에 저장됩니다. 협업 포스트잇을 활성화하면 의견만 Firebase에 저장됩니다.</footer>
     </div>
   </div>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>

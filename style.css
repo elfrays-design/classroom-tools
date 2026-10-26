@@ -673,3 +673,52 @@ body[data-ui-theme="middle"] .gacha-orb{border-color:#c8dbe8}
 @keyframes secret-pop{from{opacity:.15;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
 @media(max-width:1000px){.secret-layout{grid-template-columns:1fr}.secret-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 @media(max-width:720px){.secret-panel{padding:12px}.secret-intro{gap:10px}.secret-intro>span{font-size:40px}.secret-intro h2{font-size:18px}.secret-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.secret-person{min-height:67px}.secret-card,.secret-roster{padding:11px}.secret-reveal>strong{font-size:33px}}
+
+/* v1.14 협업 포스트잇 */
+.wall-login{display:flex;flex-direction:column;gap:12px;max-width:420px}
+.wall-login label{display:flex;flex-direction:column;gap:8px;font-size:14px;font-weight:900}
+.wall-setup{font-size:14px;line-height:1.85}
+.wall-error{background:#fff0f0;color:#9d4444;border:1px solid #ecc3c3;padding:15px;border-radius:14px;margin-bottom:15px}
+.wall-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#wallCreate{margin-top:16px}
+#wallCreate label{display:block;font-weight:900;font-size:14px;margin-bottom:9px}
+.wall-row{display:flex;gap:11px}
+.wall-row input{flex:1;min-width:0;font-size:16px}
+.wall-live-head{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.wall-live-head h2{margin:4px 0 8px;font-size:23px}
+.wall-live-head small,.wall-live-head p{font-size:13px;color:#73889a}
+.wall-invite{display:grid;grid-template-columns:236px minmax(0,1fr);gap:24px;align-items:center;margin-top:20px;padding:18px;border-radius:18px;background:#f4faff;border:1px solid #e0eaf4}
+.wall-qr{display:grid;place-items:center;width:235px;height:235px;border-radius:16px;background:#fff;border:1px solid #dde7ef;padding:12px;box-sizing:border-box}
+.wall-qr img,.wall-qr canvas{width:210px;height:210px}
+.wall-invite>div:last-child{display:flex;flex-direction:column;gap:11px;min-width:0}
+.wall-invite h3{margin:0;font-size:17px}
+.wall-invite p,.wall-invite small{font-size:12px;color:#718298;line-height:1.7;margin:0}
+.wall-invite input{min-width:0;width:100%;font-size:12px}
+.wall-results-title{display:flex;justify-content:space-between;align-items:center;margin:20px 0 14px}
+.wall-results-title h2{margin:0;font-size:21px}.wall-results-title span{color:#7990a1;font-size:13px}
+.wall-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.wall-note{background:#fff1b3;min-height:170px;display:flex;flex-direction:column;gap:12px;box-shadow:3px 5px 0 rgba(155,133,80,.09),0 7px 18px rgba(85,100,126,.10);padding:17px;border-radius:3px;overflow-wrap:anywhere}
+.wall-note.color-1{background:#dff7e9}.wall-note.color-2{background:#ffdded}.wall-note.color-3{background:#dbe9ff}.wall-note.color-4{background:#f2e1ff}.wall-note.color-5{background:#ffe5d3}
+.wall-note small{font-size:11px;color:#7c7482;font-weight:900}
+.wall-note p{flex:1;margin:0;font-size:clamp(18px,2vw,23px);color:#3f5165;font-weight:900;line-height:1.5;white-space:pre-wrap}
+.wall-note button{align-self:flex-end;border:1px solid rgba(0,0,0,.1);background:rgba(255,255,255,.65);border-radius:9px;font-size:11px;color:#778394;padding:6px 10px}
+.wall-empty{grid-column:1/-1;background:#f9fbff;border:2px dashed #e2eaf5;border-radius:17px;text-align:center;color:#7f92a8;padding:55px 20px}
+.wall-student-mode .sidebar,.wall-student-mode .topbar,.wall-student-mode .main-footer{display:none!important}
+.wall-student-mode .app-shell{display:block;min-height:100vh}
+.wall-student-mode .workarea{margin:0}
+.wall-student-mode #content{max-width:none;width:100%;padding:17px;margin:0}
+.wall-student{max-width:640px;margin:20px auto}
+.wall-student header{font-size:22px;font-weight:900;color:#6b63b2;margin-bottom:22px}
+.wall-student-card{padding:26px;border:1px solid #e4e8f1;border-radius:25px;background:linear-gradient(130deg,#fffdf2,#f5f8ff);box-shadow:var(--shadow-soft)}
+.wall-student-card>div{font-size:13px;color:#917d86;font-weight:900}
+.wall-student-card h1{font-size:clamp(24px,5vw,35px);line-height:1.45;margin:12px 0 22px}
+.wall-student-card form{display:flex;flex-direction:column;gap:13px}
+.wall-student-card label{font-size:15px;font-weight:900}
+.wall-student-card textarea{min-height:155px;border:1px solid #dce4f2;border-radius:14px;padding:14px;font-size:18px;line-height:1.6;resize:vertical}
+.wall-student-card small{font-size:12px;color:#7c899a;line-height:1.7}
+.wall-student footer{text-align:center;margin-top:22px;color:#8896a5;font-size:12px}
+.wall-thanks{text-align:center;background:#effaf1;border-radius:20px;padding:62px 20px}
+.wall-thanks span{font-size:52px}.wall-thanks h2{font-size:25px}
+.wall-thanks p{color:#54765b}
+@media(max-width:1000px){.wall-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.wall-grid{grid-template-columns:1fr}.wall-row{flex-direction:column}.wall-invite{grid-template-columns:1fr;justify-items:center}.wall-invite>div:last-child{width:100%}.wall-student-card{padding:18px}}
