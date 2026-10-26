@@ -113,3 +113,7 @@ python -m http.server 8000
 - 교사 주제 생성, 참여용 QR/URL, 학생 180자 익명 의견, 포스트잇 3초 간격 갱신, 숨김·마감·CSV.
 - 실제 다른 기기간 실시간 통신에는 Firebase 프로젝트·권한 설정이 필요합니다. 기본 설정은 빈 값이며 실제 의견 제출은 비활성화됩니다.
 - 데이터베이스 보안 규칙 wall-rules.json 및 설정 절차 WALL_SETUP.md 참고. 기존 학생 명단은 Firebase로 전송하지 않습니다.
+
+### Firebase 연결 정보 (2026-10-26)
+- Firebase 프로젝트 `classroom-tools-21bfd`의 웹 API 키와 Realtime Database URL을 `wall-config.js`에 반영했습니다.
+- **중요:** Firebase Authentication 이메일/비밀번호 및 익명 로그인 활성화, 교사 UID의 `wall-rules.json` 반영, 실제 Firebase 보안 규칙 게시와 실기기 제출 테스트는 아직 필요합니다.
