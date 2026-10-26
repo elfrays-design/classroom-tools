@@ -91,6 +91,21 @@ function normalizeGrading(raw,valid){const x=raw&&typeof raw==='object'?raw:{},s
 function gradingState(){const c=activeClass();if(!c.grading)c.grading=makeDefaultGrading();return c.grading;}
 function gradingJoin(id){const q=gradingState();if(!participants().some(s=>s.id===id))return toast('참여 중인 학생만 줄설 수 있어요.');if(q.waiting.includes(id)||q.current===id)return toast('이미 채점을 기다리는 중입니다.');q.waiting.push(id);save();render();toast(nameOf(id)+' 학생이 줄을 섰어요.');}
 function gradingCall(){const q=gradingState();if(q.current)return toast('현재 학생의 채점을 먼저 완료해 주세요.');if(!q.waiting.length)return toast('기다리는 학생이 없습니다.');q.current=q.waiting.shift();save();render();toast(nameOf(q.current)+' 학생을 호출했어요.');}
+
+function gradingCompleteAndNext(){
+ const q=gradingState();
+ if(!q.current){
+  if(!q.waiting.length)return toast('대기 중인 학생이 없습니다.');
+  q.current=q.waiting.shift();
+  save();render();toast(nameOf(q.current)+' 학생을 호출했습니다.');return;
+ }
+ const finished=nameOf(q.current);
+ q.completed.push({id:q.current,at:dateString()});
+ q.completed=q.completed.slice(-500);
+ q.current=q.waiting.length?q.waiting.shift():null;
+ save();render();
+ toast(q.current?finished+' 채점 완료! '+nameOf(q.current)+' 학생을 이어서 호출했습니다.':finished+' 학생 채점 완료! 대기자가 없습니다.');
+}
 function gradingComplete(){const q=gradingState();if(!q.current)return;const n=nameOf(q.current);q.completed.push({id:q.current,at:dateString()});q.completed=q.completed.slice(-500);q.current=null;save();render();toast(n+' 학생 채점 완료!');}
 function gradingUncall(){const q=gradingState();if(!q.current)return;q.waiting.unshift(q.current);q.current=null;save();render();toast('호출을 취소했습니다.');}
 function gradingLeave(id){const q=gradingState();if(!q.waiting.includes(id))return;q.waiting=q.waiting.filter(x=>x!==id);save();render();toast(nameOf(id)+' 학생이 대기열에서 빠졌어요.');}
@@ -101,8 +116,10 @@ const ss=participants(),q=gradingState(),rank=new Map(q.waiting.map((id,i)=>[id,
 const students=ss.map(s=>{const i=rank.get(s.id),called=q.current===s.id;return '<button class="grading-person '+(i?'waiting':'')+' '+(called?'called':'')+'" data-grade-join="'+escapeHtml(s.id)+'" '+(i||called?'disabled':'')+'><strong>'+escapeHtml(s.name)+'</strong><small>'+(called?'📣 채점 중':i?'대기 '+i+'번':q.completed.some(o=>o.id===s.id)?'＋ 다시 줄서기':'＋ 줄서기')+'</small></button>';}).join('');
 const queue=q.waiting.map((id,i)=>'<div class="grading-wait-row"><span class="grading-number">'+(i+1)+'</span><strong>'+escapeHtml(nameOf(id))+'</strong>'+(gradingFullScreen?'':'<button data-grade-leave="'+escapeHtml(id)+'" aria-label="'+escapeHtml(nameOf(id))+' 대기 취소">취소</button>')+'</div>').join('');
 const head=gradingFullScreen?'<div class="grading-full-head"><strong>📝 채점 줄서기</strong><button id="gradeToggle" class="btn btn-outline btn-small">관리 화면으로</button></div>':title('학급 운영','채점 줄서기','이름을 눌러 대기하고, 선생님이 차례대로 호출합니다.','📝');
-const controls='<div class="grading-control"><h3>👩‍🏫 선생님 관리</h3><div class="grading-actions"><button id="gradeCall" class="btn btn-primary" '+(q.current||!q.waiting.length?'disabled':'')+'>📣 다음 학생 호출</button><button id="gradeDone" class="btn btn-secondary" '+(!q.current?'disabled':'')+'>✓ 채점 완료</button><button id="gradeUncall" class="btn btn-outline" '+(!q.current?'disabled':'')+'>↩ 호출 취소</button></div><div class="grading-actions grading-small"><button id="gradeToggle" class="btn btn-outline btn-small">⛶ 학생용 크게 보기</button><button id="gradeCopy" class="btn btn-outline btn-small" '+(!q.current&&!q.waiting.length?'disabled':'')+'>대기 순서 복사</button><button id="gradeClear" class="btn btn-danger btn-small">대기열 초기화</button></div></div><div class="grading-history"><strong>✅ 채점 완료 '+q.completed.length+'건</strong><p>'+(q.completed.length?q.completed.slice(-25).reverse().map(o=>escapeHtml(nameOf(o.id))).join(' · '):'아직 완료된 학생이 없습니다.')+'</p></div>';
-return head+'<section class="grading-panel"><div class="grading-top"><div><small>현재 학급</small><h2>'+escapeHtml(activeClass().name)+'</h2></div><div class="grading-stats"><span>대기 <b>'+q.waiting.length+'</b>명</span><span>완료 <b>'+q.completed.length+'</b>건</span></div></div><div class="grading-now"><span>📣 지금 채점받을 학생</span><strong>'+(q.current?escapeHtml(nameOf(q.current)):'호출을 기다리는 중')+'</strong><small>'+(q.current?'채점이 끝나면 완료 버튼을 눌러주세요.':'대기열의 첫 번째 학생부터 호출하세요.')+'</small></div><div class="grading-layout"><div class="grading-roster"><h3>✋ 내 이름을 눌러 줄서기</h3>'+(ss.length?'<div class="grading-people">'+students+'</div>':noStudents('먼저 학급 명단을 등록해 주세요.'))+'</div><div class="grading-queue"><h3>📋 기다리는 학생 · '+q.waiting.length+'명</h3><div class="grading-wait-list">'+(queue||'<p class="grading-empty">아직 줄 선 학생이 없어요.</p>')+'</div></div></div>'+(gradingFullScreen?'':controls)+'<p class="grading-note">🔒 이 대기열은 현재 기기의 브라우저에만 저장됩니다. 다른 PC·독립형 전자칠판과 자동 연동하지 않습니다.</p></section>';
+const controls='<div class="grading-control"><h3>👩‍🏫 선생님 관리</h3><div class="grading-actions"><button id="gradeCall" class="btn btn-primary" '+(q.current||!q.waiting.length?'disabled':'')+'>📣 다음 학생 호출</button><button id="gradeDoneNext" class="btn btn-primary" '+(!q.current?'disabled':'')+'>✓ 채점 완료 + 다음 호출</button><button id="gradeDone" class="btn btn-secondary" '+(!q.current?'disabled':'')+'>✓ 채점 완료</button><button id="gradeUncall" class="btn btn-outline" '+(!q.current?'disabled':'')+'>↩ 호출 취소</button></div><div class="grading-actions grading-small"><button id="gradeToggle" class="btn btn-outline btn-small">⛶ 학생용 크게 보기</button><button id="gradeCopy" class="btn btn-outline btn-small" '+(!q.current&&!q.waiting.length?'disabled':'')+'>대기 순서 복사</button><button id="gradeClear" class="btn btn-danger btn-small">대기열 초기화</button></div></div><div class="grading-history"><strong>✅ 채점 완료 '+q.completed.length+'건</strong><p>'+(q.completed.length?q.completed.slice(-25).reverse().map(o=>escapeHtml(nameOf(o.id))).join(' · '):'아직 완료된 학생이 없습니다.')+'</p></div>';
+const dock=gradingFullScreen?'<div class="grading-teacher-dock" role="region" aria-label="교사용 채점 조작"><div class="grading-dock-info"><strong>👩‍🏫 교사용 조작</strong><span>현재: '+escapeHtml(q.current?nameOf(q.current):'호출 대기')+' · 다음: '+escapeHtml(q.waiting.length?nameOf(q.waiting[0]):'대기 학생 없음')+'</span></div><div class="grading-dock-buttons"><button type="button" id="gradeDoneNext" class="btn btn-primary" '+(!q.current?'disabled':'')+'>'+(q.waiting.length?'✓ 채점 완료 + 다음 호출':'✓ 마지막 학생 채점 완료')+'</button><button type="button" id="gradeCall" class="btn btn-secondary" '+(q.current||!q.waiting.length?'disabled':'')+'>📣 학생 호출</button><button type="button" id="gradeDone" class="btn btn-outline" '+(!q.current?'disabled':'')+'>✓ 채점 완료만</button><button type="button" id="gradeUncall" class="btn btn-outline" '+(!q.current?'disabled':'')+'>↩ 호출 취소</button></div></div>':'';
+
+return head+dock+'<section class="grading-panel"><div class="grading-top"><div><small>현재 학급</small><h2>'+escapeHtml(activeClass().name)+'</h2></div><div class="grading-stats"><span>대기 <b>'+q.waiting.length+'</b>명</span><span>완료 <b>'+q.completed.length+'</b>건</span></div></div><div class="grading-now"><span>📣 지금 채점받을 학생</span><strong>'+(q.current?escapeHtml(nameOf(q.current)):'호출을 기다리는 중')+'</strong><small>'+(q.current?'채점이 끝나면 완료 버튼을 눌러주세요.':'대기열의 첫 번째 학생부터 호출하세요.')+'</small></div><div class="grading-layout"><div class="grading-roster"><h3>✋ 내 이름을 눌러 줄서기</h3>'+(ss.length?'<div class="grading-people">'+students+'</div>':noStudents('먼저 학급 명단을 등록해 주세요.'))+'</div><div class="grading-queue"><h3>📋 기다리는 학생 · '+q.waiting.length+'명</h3><div class="grading-wait-list">'+(queue||'<p class="grading-empty">아직 줄 선 학생이 없어요.</p>')+'</div></div></div>'+(gradingFullScreen?'':controls)+'<p class="grading-note">🔒 이 대기열은 현재 기기의 브라우저에만 저장됩니다. 다른 PC·독립형 전자칠판과 자동 연동하지 않습니다.</p></section>';
 }
 
 /* 급식 줄서기 v1.11 — 가챠 캡슐 뽑기. 학생 명단과 급식 순서는 브라우저에만 저장됩니다. */
@@ -339,7 +356,7 @@ async function saveNow(){clearTimeout(saveTimer);saveTimer=null;try{if(storageMo
 function save(){setIndicator('● 저장 중…',true);clearTimeout(saveTimer);saveTimer=setTimeout(saveNow,250);}
 function history(type,text){state.history.push({type,classId:activeClass().id,text,date:dateString()});if(state.history.length>500)state.history.shift();}
 function requireStudents(){if(participants().length){return true;}toast('먼저 학급 명단에 참여 학생을 등록해 주세요.');navigate('roster');return false;}
-function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.17`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
+function applyTheme(){document.body.dataset.uiTheme=uiTheme;const versionEl=document.getElementById('themeVersion');if(versionEl)versionEl.textContent=`${themeLabels[uiTheme]||themeLabels.elementary} · v1.18`;const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',uiTheme==='middle'?'#4d6f8e':'#7c6cf2');}
 function setUiTheme(value){uiTheme=value==='middle'?'middle':'elementary';applyTheme();try{localStorage.setItem('classroom-toolbox-ui-theme',uiTheme);}catch(err){}render();}
 function renderTop(){const select=$('#activeClassSelect');select.innerHTML=state.classes.map(c=>`<option value="${escapeHtml(c.id)}" ${c.id===state.activeClassId?'selected':''}>${escapeHtml(c.name)}</option>`).join('');const themeSelect=$('#themeSelect');if(themeSelect)themeSelect.value=uiTheme;document.querySelectorAll('[data-view]').forEach(btn=>{const v=btn.dataset.view;btn.classList.toggle('active',v===currentView||(btn.closest('#navList')&&v===groupForTool(currentView)));});applyTheme();}
 function renderAll(){renderTop();render();}
@@ -468,6 +485,7 @@ if(btn.id==='secretStartBtn')return secretAssign();
  if(btn.dataset.gradeLeave)return gradingLeave(btn.dataset.gradeLeave);
  if(btn.id==='gradeCall')return gradingCall();
  if(btn.id==='gradeDone')return gradingComplete();
+ if(btn.id==='gradeDoneNext')return gradingCompleteAndNext();
  if(btn.id==='gradeUncall')return gradingUncall();
  if(btn.id==='gradeClear')return gradingClear();
  if(btn.id==='gradeCopy'){const q=gradingState();return copyText([...(q.current?[`채점 중: ${nameOf(q.current)}`]:[]),...q.waiting.map((id,i)=>`${i+1}번: ${nameOf(id)}`)].join('\n'));}

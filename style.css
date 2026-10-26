@@ -768,3 +768,31 @@ body[data-ui-theme="middle"] .gacha-orb{border-color:#c8dbe8}
 @media(max-width:1180px){.compact-group-grid{gap:12px}.compact-category{padding:13px}.compact-card-grid{grid-template-columns:1fr}.compact-tool-open{min-height:57px}.compact-home-intro{padding:16px}}
 @media(max-width:880px){.compact-group-grid{grid-template-columns:1fr}.compact-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.compact-category-page .compact-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:540px){.compact-home-stats{justify-content:flex-start}.compact-home-intro{align-items:flex-start}.compact-category{padding:12px}.compact-card-grid,.compact-category-page .compact-card-grid{grid-template-columns:1fr}.compact-tool-open{min-height:59px}.compact-category-heading h2{font-size:15px}.compact-home-stats>div{padding:6px 8px}.compact-category-header{gap:5px}}
+
+/* v1.18 채점 줄서기: 학생용 대형 화면에서도 교사용 조작 유지 */
+body.grading-fullscreen #content{padding-bottom:145px}
+.grading-teacher-dock{
+ position:fixed;left:0;right:0;bottom:0;z-index:70;
+ display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+ padding:12px max(18px,calc((100vw - 1460px)/2));
+ background:rgba(253,254,255,.97);border-top:2px solid #d2deef;
+ box-shadow:0 -10px 32px rgba(64,79,110,.18);backdrop-filter:blur(12px)
+}
+.grading-dock-info{display:flex;flex-direction:column;gap:4px;min-width:0}
+.grading-dock-info strong{font-size:16px;color:#486887}
+.grading-dock-info span{font-size:12px;font-weight:800;color:#768ba2;overflow-wrap:anywhere}
+.grading-dock-buttons{display:flex;flex-wrap:wrap;gap:9px;justify-content:flex-end}
+.grading-dock-buttons .btn{min-height:49px;padding:10px 16px;font-size:14px;font-weight:900}
+.grading-teacher-dock .btn:disabled{opacity:.44}
+@media(max-width:950px){
+ body.grading-fullscreen #content{padding-bottom:185px}
+ .grading-teacher-dock{padding:9px 12px;gap:8px;justify-content:center}
+ .grading-dock-info{flex:1 1 100%;align-items:center;text-align:center}
+ .grading-dock-buttons{justify-content:center}
+ .grading-dock-buttons .btn{min-height:43px;padding:8px 12px;font-size:12px}
+}
+@media(max-width:480px){
+ body.grading-fullscreen #content{padding-bottom:218px}
+ .grading-dock-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ .grading-dock-buttons .btn{min-width:0;min-height:39px;padding:7px 5px;font-size:11px}
+}
