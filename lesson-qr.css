@@ -1,0 +1,48 @@
+/* v1.21 — 채움AI 수업 QR 안내화면 */
+.lesson-qr-layout{display:grid;grid-template-columns:minmax(320px,.85fr) minmax(400px,1.15fr);gap:18px;align-items:start}
+.lesson-qr-layout>.panel{padding:22px;min-width:0}
+.lesson-qr-editor h2,.lesson-qr-preview h2{font-size:19px;margin:0 0 13px;color:#415c80}
+.lesson-qr-editor p{font-size:13px;color:#6b819a;line-height:1.7}
+.lesson-qr-editor form{display:flex;flex-direction:column;gap:11px;margin-top:19px}
+.lesson-qr-editor label{font-size:13px;font-weight:900;color:#4f6989}
+.lesson-qr-editor .field{width:100%;font-size:15px}
+.lesson-qr-input{resize:vertical;line-height:1.65;min-height:105px;overflow-wrap:anywhere}
+.lesson-qr-editor-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:7px}
+.lesson-qr-editor-actions .btn{font-size:14px}
+.lesson-qr-error:not([hidden]){padding:10px 13px;border-radius:12px;background:#fff0f0;color:#a04151;border:1px solid #f0bdc5;font-size:13px;font-weight:800}
+.lesson-qr-privacy{font-size:12px;color:#317b6b;background:#edfbf7;padding:12px;border-radius:13px;line-height:1.7;margin-top:20px}
+.lesson-qr-help{color:#8b7590!important;font-size:12px!important}
+.lesson-qr-preview-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.lesson-qr-preview-head h2{margin:0}
+.lesson-qr-preview-head>span{font-size:12px;color:#8a99aa;overflow-wrap:anywhere}
+.lesson-qr-display{background:linear-gradient(155deg,#f5ecff 0%,#eaf5ff 52%,#eafbf5 100%);border:2px solid #e6dbf7;border-radius:27px;box-shadow:0 8px 25px #9493d81b;display:flex;flex-direction:column;align-items:center;text-align:center;padding:21px 18px 23px;gap:8px;overflow:hidden;min-width:0}
+.lesson-qr-display-label{font-size:14px;color:#8b6ac6;font-weight:900}
+.lesson-qr-display h2{font-size:clamp(21px,2.5vw,33px);line-height:1.35;margin:2px 0 0;color:#385477;font-weight:900;overflow-wrap:anywhere}
+.lesson-qr-instruction{font-size:clamp(13px,1.45vw,19px);color:#687e9b;font-weight:800;line-height:1.4;margin:0 0 9px}
+.lesson-qr-white{display:grid;place-items:center;background:#fff;padding:19px;border-radius:18px;box-shadow:0 10px 30px #7789b929;width:min(100%,440px);aspect-ratio:1;min-width:0;box-sizing:border-box}
+.lesson-qr-code{width:100%;height:100%;display:grid;place-items:center}
+.lesson-qr-code img,.lesson-qr-code canvas,.lesson-qr-code table{width:100%!important;height:100%!important;object-fit:contain;image-rendering:pixelated;display:block}
+.lesson-qr-domain{font-size:13px;color:#52789b;font-weight:900;overflow-wrap:anywhere}
+.lesson-qr-steps{margin:2px 0 0;color:#617a99;font-weight:900;font-size:13px;line-height:1.55}
+.lesson-qr-preview-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:15px}
+.lesson-qr-preview-actions .btn{font-size:14px}
+.lesson-qr-placeholder{min-height:400px;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;gap:13px;background:#f6f9ff;border:2px dashed #dce6f4;border-radius:23px;padding:22px;color:#6c86a4}
+.lesson-qr-placeholder>span{font-size:62px}
+.lesson-qr-placeholder strong{font-size:18px}
+.lesson-qr-placeholder p{font-size:13px;line-height:1.65;margin:0}
+body.lesson-qr-expanded{background:#e9f5fc}
+body.lesson-qr-expanded .sidebar,body.lesson-qr-expanded .topbar,body.lesson-qr-expanded .main-footer{display:none!important}
+body.lesson-qr-expanded .app-shell{display:block;min-height:100vh}
+body.lesson-qr-expanded .workarea{margin:0;min-height:100vh}
+body.lesson-qr-expanded #content{max-width:none;padding:12px 24px 28px;width:100%}
+.lesson-qr-expanded-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:0 3px 12px}
+.lesson-qr-expanded-head strong{font-size:18px;color:#456789}
+body.lesson-qr-expanded .lesson-qr-display{min-height:calc(100vh - 100px);justify-content:center;padding:17px 24px;gap:clamp(7px,1.2vh,16px);box-sizing:border-box}
+body.lesson-qr-expanded .lesson-qr-display-label{font-size:clamp(16px,2.6vw,30px)}
+body.lesson-qr-expanded .lesson-qr-display h2{font-size:clamp(28px,5vw,62px);max-width:95%}
+body.lesson-qr-expanded .lesson-qr-instruction{font-size:clamp(17px,2.5vw,32px);margin:0}
+body.lesson-qr-expanded .lesson-qr-white{width:min(66vh,60vw,660px);max-width:100%;padding:clamp(12px,2vw,25px);box-shadow:0 10px 34px #8594b940}
+body.lesson-qr-expanded .lesson-qr-domain{font-size:clamp(14px,1.8vw,21px)}
+body.lesson-qr-expanded .lesson-qr-steps{font-size:clamp(15px,1.9vw,24px)}
+@media(max-width:1150px){.lesson-qr-layout{grid-template-columns:1fr}.lesson-qr-white{width:min(100%,480px)}}
+@media(max-width:720px){.lesson-qr-layout{gap:12px}.lesson-qr-layout>.panel{padding:15px}.lesson-qr-display{padding:17px 10px}.lesson-qr-display h2{font-size:23px}.lesson-qr-white{padding:14px}.lesson-qr-placeholder{min-height:250px}body.lesson-qr-expanded #content{padding:9px}body.lesson-qr-expanded .lesson-qr-white{width:min(80vw,58vh)}body.lesson-qr-expanded .lesson-qr-display{min-height:calc(100vh - 75px)}.lesson-qr-expanded-head strong{font-size:14px}}
