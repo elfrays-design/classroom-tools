@@ -14,7 +14,8 @@ const lessonTools=[
  {id:'dashboard',name:'🖥️ 우리 반 전자칠판'},
  {id:'notice',name:'📋 알림장 칠판'},
  {id:'picker',name:'🎯 랜덤 발표자'},
- {id:'roulette',name:'🎡 선택 룰렛'}
+ {id:'roulette',name:'🎡 선택 룰렛'},
+ {id:'quiz',name:'💡 즉석 확인 퀴즈판'}
 ];
 function lessonPresetSteps(minutes){
  const defs=minutes===45?[
