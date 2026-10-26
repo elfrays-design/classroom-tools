@@ -1,5 +1,5 @@
 /* 로컬 캐시만 사용합니다. 교사 데이터에는 접근하지 않습니다. */
-const CACHE_NAME='classroom-toolbox-static-v1.24';
+const CACHE_NAME='classroom-toolbox-static-v1.25';
 const ASSETS=['./','./index.html','./style.css','./roles.css','./roles.js','./roulette.css','./roulette.js','./lesson-qr.css','./qrcode.min.js','./lesson-qr.js','./debate.css','./debate.js','./lesson.css','./lesson.js','./quiz.css','./quiz.js','./app.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./byeol-songi-custom.jpg'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('classroom-toolbox-static-')&&k!==CACHE_NAME).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});

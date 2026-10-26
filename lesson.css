@@ -94,3 +94,27 @@ body.lesson-fullscreen .lesson-actions{position:fixed;bottom:0;left:0;right:0;z-
 @media(max-width:1280px){.lesson-workflow-layout{grid-template-columns:1fr}.lesson-step-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:900px){.lesson-step-list{grid-template-columns:1fr}body.lesson-fullscreen #content{padding-bottom:190px}}
 @media(max-width:640px){.lesson-editor,.lesson-template-panel,.lesson-overview{padding:12px!important}.lesson-presentation{padding:12px;min-height:380px}.lesson-clock{font-size:clamp(65px,15vw,103px)}.lesson-step-editor{gap:5px}.lesson-actions{flex-direction:column}.lesson-actions-buttons{justify-content:center}body.lesson-fullscreen #content{padding:10px 10px 245px}body.lesson-fullscreen .lesson-actions-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}body.lesson-fullscreen .lesson-actions-buttons .btn{font-size:11px;padding:7px 5px;min-height:39px}body.lesson-fullscreen .lesson-actions{padding:10px}.lesson-presentation-main h3{font-size:32px}}
+
+/* v1.25 연결 도구에서 수업 단계 진행판으로 빠르게 복귀 */
+.lesson-return-dock{position:fixed;z-index:2500;top:76px;right:18px;width:min(450px,calc(100vw - 28px));box-sizing:border-box;background:rgba(255,255,255,.97);border:2px solid #9bb9e3;border-radius:19px;padding:12px 13px;display:flex;flex-direction:column;gap:9px;box-shadow:0 9px 32px rgba(61,83,141,.29);backdrop-filter:blur(13px)}
+.lesson-return-dock[hidden]{display:none!important}
+.lesson-return-summary{display:flex;align-items:center;gap:5px 10px;flex-wrap:wrap;min-width:0}
+.lesson-return-summary span{font-size:11px;font-weight:900;color:#6681a4;white-space:nowrap}
+.lesson-return-summary strong{flex:1;min-width:120px;font-size:14px;color:#435e83;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.lesson-return-summary small{font-size:11px;font-weight:900;color:#b17a36;white-space:nowrap}
+.lesson-return-buttons{display:flex;gap:6px;align-items:stretch}
+.lesson-return-buttons>.btn{padding:10px 8px;font-size:12px;font-weight:900;min-height:42px;white-space:nowrap}
+.lesson-return-buttons>.btn:first-child{flex:2}
+.lesson-return-buttons>.btn:nth-child(2){flex:1}
+.lesson-return-dismiss{border:1px solid #d9e1ed;border-radius:10px;background:#f5f7fb;color:#718299;min-width:35px;min-height:42px;font-weight:900;cursor:pointer}
+.lesson-return-dismiss:hover{background:#e6ebf5}
+body:is(.grading-fullscreen,.debate-fullscreen,.quiz-fullscreen,.lesson-qr-expanded,.notice-presenting,.board-presenting,.roles-fullscreen,.speaker-fullscreen) .lesson-return-dock{top:12px;right:12px}
+@media(max-width:610px){
+ .lesson-return-dock{top:9px;right:9px;width:min(420px,calc(100vw - 18px));padding:8px 9px;border-radius:13px;gap:6px}
+ .lesson-return-summary{gap:3px 8px}
+ .lesson-return-summary span{font-size:10px}
+ .lesson-return-summary strong{font-size:12px}
+ .lesson-return-summary small{font-size:10px}
+ .lesson-return-buttons>.btn{font-size:11px;min-height:38px;white-space:normal;padding:7px}
+ .lesson-return-dismiss{min-height:38px}
+}

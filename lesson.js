@@ -259,12 +259,62 @@ function lessonToggleFull(){
  render();if(lessonFullscreen)window.scrollTo({top:0,behavior:'instant'});
 }
 function lessonExitFull(){lessonFullscreen=false;document.body.classList.remove('lesson-fullscreen');}
+
+// v1.25 수업 단계 → 연결 도구 → 수업 단계 복귀
+let lessonReturnContext=null;
+const LESSON_RETURN_KEY='classroom-toolbox-lesson-return';
+function lessonReturnSave(){
+ try{if(lessonReturnContext)sessionStorage.setItem(LESSON_RETURN_KEY,JSON.stringify(lessonReturnContext));else sessionStorage.removeItem(LESSON_RETURN_KEY);}catch(e){}
+}
+function lessonReturnLoad(){
+ try{
+  const x=JSON.parse(sessionStorage.getItem(LESSON_RETURN_KEY)||'null');
+  if(x&&typeof x.classId==='string'&&typeof x.stepId==='string'&&typeof x.tool==='string'&&x.classId.length<=100&&x.stepId.length<=100&&tools.some(t=>t.id===x.tool))lessonReturnContext={classId:x.classId,stepId:x.stepId,tool:x.tool};
+ }catch(e){}
+}
+function lessonReturnClear(){
+ lessonReturnContext=null;lessonReturnSave();
+ const target=document.getElementById('lessonReturnDock');
+ if(target){target.hidden=true;target.innerHTML='';}
+ document.body.classList.remove('has-lesson-return');
+}
+function lessonReturnStart(step,tool){
+ if(!step||!tools.some(t=>t.id===tool))return;
+ lessonReturnContext={classId:activeClass().id,stepId:step.id,tool};
+ lessonReturnSave();
+}
+function lessonReturnRender(){
+ const dock=document.getElementById('lessonReturnDock');
+ if(!dock)return;
+ const ctx=lessonReturnContext;
+ if(!ctx||currentView==='lesson'){dock.hidden=true;dock.innerHTML='';document.body.classList.remove('has-lesson-return');return;}
+ const c=activeClass(),d=lessonData(),step=lessonCurrent(d);
+ if(ctx.classId!==c.id||!step||ctx.stepId!==step.id||d.status==='complete'){lessonReturnClear();return;}
+ const paused=d.status==='paused'?'⏸ 타이머 일시정지':d.status==='timeup'?'⏰ 예정시간 종료':d.status==='ready'?'▶ 시작 대기':'⏸ 수업 진행 대기';
+ dock.hidden=false;document.body.classList.add('has-lesson-return');
+ dock.innerHTML='<div class="lesson-return-summary"><span>📚 수업 단계 진행판 · '+(d.index+1)+'/'+d.steps.length+'</span><strong title="'+escapeHtml(step.name)+'">'+escapeHtml(step.name)+'</strong><small>'+paused+'</small></div>'+
+ '<div class="lesson-return-buttons"><button type="button" class="btn btn-primary" id="lessonReturnBack">↩ 수업 단계로 돌아가기</button>'+
+ '<button type="button" class="btn btn-outline" id="lessonReturnFinish">✓ 완료하고 다음</button>'+
+ '<button type="button" id="lessonReturnDismiss" class="lesson-return-dismiss" aria-label="수업 단계 연결 해제" title="연결 해제">✕</button></div>';
+}
+function lessonReturnBack(){
+ if(!lessonReturnContext)return;
+ navigate('lesson'); // 연결 도구의 크게 보기/타이머 종료 등 기존 화면 정리 절차 이용
+ toast('📚 수업 단계로 돌아왔습니다. 필요한 경우 「계속」을 눌러 타이머를 재개하세요.');
+}
+function lessonReturnFinish(){
+ if(!lessonReturnContext)return;
+ navigate('lesson'); // 완료 확인은 lessonNext에서 처리. 취소해도 수업 단계 화면으로 복귀
+ lessonNext();
+}
+
 function lessonOpenTool(){
  const d=lessonData(),step=lessonCurrent(d);
  if(!step?.tool)return;
  lessonPause();if(lessonFullscreen)lessonExitFull();
+ lessonReturnStart(step,step.tool);
  navigate(step.tool);
- toast('수업 단계 타이머가 일시정지되었습니다. 돌아와 계속할 수 있습니다.');
+ toast('⏸ 단계 타이머를 일시정지했습니다. 화면의 「수업 단계로 돌아가기」 버튼을 이용하세요.');
 }
 function lessonActions(){
  const d=lessonData(),start=d.status==='ready'||d.status==='paused',running=d.status==='running';
