@@ -1,0 +1,67 @@
+/* v1.22 — 찬반 토론 진행판 */
+.debate-settings{padding:17px 22px!important;margin-bottom:17px}
+.debate-setting-title{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:11px;flex-wrap:wrap}
+.debate-setting-title h2{font-size:18px;color:#4f6585;margin:0}.debate-setting-title span{font-size:11px;color:#8e9caf}
+.debate-setting-fields{display:grid;grid-template-columns:minmax(220px,1.2fr) minmax(250px,1fr);gap:18px;align-items:start}
+.debate-setting-fields>label{font-size:13px;color:#506581;font-weight:900;display:flex;flex-direction:column;gap:9px}
+.debate-setting-fields>label .field{width:100%;font-size:15px}
+.debate-duration>span{display:block;font-size:13px;color:#506581;font-weight:900;margin-bottom:8px}
+.debate-duration>div:not(.debate-presets){display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:13px;color:#657b92}
+.debate-duration input.field{width:62px;max-width:62px;text-align:center;padding:8px;font-size:16px}
+.debate-presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.debate-presets button{font-size:11px!important}
+.debate-settings-bottom{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:13px;border-top:1px solid #e9edf5;padding-top:13px}
+.debate-settings-bottom>span:first-child{font-size:13px;font-weight:900;color:#546d8d}
+.debate-help{color:#8593a6;font-size:12px}
+.debate-board{padding:17px;border:1px solid #dde7f6;border-radius:24px;background:linear-gradient(160deg,#f4f9ff,#fff7f9 78%);box-shadow:var(--shadow-soft)}
+.debate-topic-banner{text-align:center;margin:0 auto 17px;max-width:950px}
+.debate-topic-banner>span{font-size:13px;font-weight:900;color:#64789d}
+.debate-topic-banner h2{font-size:clamp(22px,3.6vw,41px);color:#3c5275;line-height:1.35;margin:7px 0 0;overflow-wrap:anywhere}
+.debate-match{display:grid;grid-template-columns:minmax(0,1fr) 54px minmax(0,1fr);gap:12px;align-items:center}
+.debate-match>div:first-child,.debate-match>div:last-child{min-width:0}
+.debate-vs{font-size:21px;font-weight:900;color:#9e8fbb;text-align:center;text-shadow:0 2px #fff}
+.debate-team-card{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;border-radius:20px;padding:17px;background:#fff;border:3px solid transparent;text-align:center;box-shadow:0 4px 17px #8694bc14;transition:border-color .2s}
+.debate-pro{background:linear-gradient(140deg,#e3f1ff,#f5faff);border-color:#a2c6ee}
+.debate-con{background:linear-gradient(140deg,#ffe9e8,#fff9f5);border-color:#f0b6b0}
+.debate-pro.is-speaking{border-color:#477cca;box-shadow:0 0 0 5px #467ac52f,0 7px 25px #5a83b340}
+.debate-con.is-speaking{border-color:#d46865;box-shadow:0 0 0 5px #e2918133,0 7px 25px #e29c8540}
+.debate-team-icon{font-size:36px;line-height:1.2}
+.debate-team-card h2{font-size:clamp(24px,4vw,40px);color:#4b6588;margin:6px 0 7px}
+.debate-con h2{color:#a1585b}
+.debate-team-status{border-radius:30px;padding:5px 13px;font-size:13px;font-weight:900;background:#ffffffc7;color:#657995}
+.debate-team-metrics{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.debate-team-metrics>div{display:flex;flex-direction:column;gap:4px;background:#ffffffb5;border-radius:12px;padding:9px 13px;min-width:100px}
+.debate-team-metrics small{font-size:11px;color:#8191a5}.debate-team-metrics strong{font-size:19px;color:#506987}
+.debate-center-clock{margin:17px auto 0;max-width:750px;background:#fff;border:1px solid #e4e9f5;border-radius:22px;padding:15px 25px;text-align:center}
+.debate-center-clock>span{font-size:16px;color:#60799c;font-weight:900}
+.debate-countdown{font-size:clamp(72px,9vw,132px);font-weight:900;letter-spacing:-4px;line-height:1.16;color:#4f70b6;font-variant-numeric:tabular-nums}
+.debate-center-clock.is-timeup .debate-countdown{color:#d55e67}
+.debate-progress-track{height:12px;max-width:510px;margin:7px auto 11px;border-radius:12px;background:#e6ecf7;overflow:hidden}
+.debate-progress-fill{height:100%;border-radius:12px;background:linear-gradient(90deg,#69b5e1,#6c7bcd);transition:width .1s}
+.debate-center-clock p{font-size:13px;color:#788da5;margin:0;line-height:1.5}
+.debate-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;margin:13px 0;background:#fff;border:1px solid #e4eaf3;border-radius:18px;flex-wrap:wrap}
+.debate-controls-identity{display:flex;flex-direction:column;gap:5px}
+.debate-controls-identity strong{font-size:14px;color:#4b6687}
+.debate-controls-identity span{font-size:12px;color:#8694a7}
+.debate-controls-buttons{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.debate-controls-buttons .btn{font-size:13px;font-weight:900;min-height:45px;padding:10px 14px}
+.debate-records{padding:18px 22px!important}
+.debate-records>div:first-child{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:11px}
+.debate-records h2{font-size:18px;color:#536b8b;margin:0}
+.debate-record-buttons{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.debate-records p{font-size:13px;color:#8393aa}
+.debate-records ol{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+.debate-records li{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px solid #edf0f7;background:#f8faff;padding:9px 12px;border-radius:11px}
+.debate-records li strong{font-size:13px;color:#55728c}.debate-records li span{font-weight:900;color:#60759d}
+.debate-records li small{color:#94a0ad;font-size:11px}
+.debate-full-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.debate-full-head strong{color:#4d6688;font-size:22px}
+body.debate-fullscreen .sidebar,body.debate-fullscreen .topbar,body.debate-fullscreen .main-footer{display:none!important}
+body.debate-fullscreen #content{max-width:none;width:100%;padding:14px 22px 150px}
+body.debate-fullscreen .debate-board{min-height:calc(100vh - 200px);display:flex;flex-direction:column;justify-content:center}
+body.debate-fullscreen .debate-team-card{min-height:30vh}
+body.debate-fullscreen .debate-team-card h2{font-size:clamp(34px,5vw,66px)}
+body.debate-fullscreen .debate-countdown{font-size:clamp(90px,12vw,176px)}
+body.debate-fullscreen .debate-controls{position:fixed;bottom:0;left:0;right:0;margin:0;z-index:85;background:#fffffff7;border-radius:0;border:0;border-top:2px solid #d5dfea;box-shadow:0 -12px 32px #65759030;backdrop-filter:blur(10px);padding:14px 25px}
+@media(max-width:980px){.debate-setting-fields{grid-template-columns:1fr}.debate-team-card{min-height:195px}.debate-controls{flex-direction:column}.debate-controls-buttons{justify-content:center}body.debate-fullscreen #content{padding-bottom:190px}}
+@media(max-width:680px){.debate-board{padding:10px}.debate-match{grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr);gap:4px}.debate-vs{font-size:13px}.debate-team-card{min-height:175px;padding:10px 4px}.debate-team-card h2{font-size:24px}.debate-team-icon{font-size:26px}.debate-team-metrics{gap:4px}.debate-team-metrics>div{min-width:0;padding:6px}.debate-team-metrics strong{font-size:15px}.debate-team-status{font-size:11px;padding:5px}.debate-center-clock{padding:12px}.debate-countdown{font-size:clamp(58px,14vw,102px)}.debate-settings{padding:13px!important}.debate-controls-buttons .btn{font-size:12px;min-height:41px;padding:8px 11px}body.debate-fullscreen #content{padding:10px 10px 235px}body.debate-fullscreen .debate-controls-buttons{display:grid;grid-template-columns:1fr 1fr;width:100%}body.debate-fullscreen .debate-controls-buttons .btn{font-size:11px}body.debate-fullscreen .debate-team-card{min-height:190px}}
