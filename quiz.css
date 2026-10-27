@@ -76,3 +76,28 @@ body.quiz-fullscreen .quiz-controls{position:fixed;bottom:0;left:0;right:0;z-ind
 @media(max-width:1250px){.quiz-layout{grid-template-columns:1fr}.quiz-student-board{min-height:420px}}
 @media(max-width:760px){body.quiz-fullscreen #content{padding:10px 10px 190px}body.quiz-fullscreen .quiz-controls{flex-direction:column}.quiz-controls-buttons{justify-content:center}.quiz-student-board{padding:12px}.quiz-student-main h2{font-size:24px}.quiz-options-choice{grid-template-columns:1fr}.quiz-answer-tile{padding:10px}.quiz-student-header strong{font-size:13px}.quiz-student-main{gap:11px}}
 @media(max-width:480px){.quiz-option-edit{grid-template-columns:1fr}body.quiz-fullscreen #content{padding-bottom:210px}.quiz-controls-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}.quiz-controls-buttons .btn{min-width:0;font-size:11px;padding:9px 6px}.quiz-options-ox{gap:7px}.quiz-tile-ox{min-height:115px}.quiz-tile-ox .quiz-answer-letter{font-size:41px;width:auto;height:auto}}
+
+/* v1.26 — 퀴즈판에 수업 단계 복귀·완료 버튼을 직접 표시 */
+.quiz-controls:has(.quiz-lesson-bridge){gap:11px}
+.quiz-lesson-bridge{display:flex;align-items:center;justify-content:space-between;flex-basis:100%;width:100%;gap:12px;padding:12px 14px;background:linear-gradient(100deg,#e7f4ff,#ebfcef);border:2px solid #89bae4;border-radius:13px;box-sizing:border-box}
+.quiz-lesson-bridge>span{font-size:13px;color:#506b94;font-weight:900;line-height:1.5;min-width:0;overflow-wrap:anywhere}
+.quiz-lesson-bridge>span strong{display:inline;color:#365a84}
+.quiz-lesson-bridge-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.quiz-lesson-bridge-actions .btn{font-size:13px;font-weight:900;min-height:44px;padding:10px 13px}
+.quiz-fullscreen-head-buttons{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+body.quiz-fullscreen .quiz-lesson-bridge{background:linear-gradient(110deg,#dfecff,#e5fce9);border-color:#80b6e1;padding:11px 13px}
+body.quiz-fullscreen #content:has(.quiz-lesson-bridge){padding-bottom:260px}
+body.quiz-fullscreen .lesson-return-dock{display:none!important}
+@media(max-width:880px){
+ .quiz-lesson-bridge{flex-direction:column;align-items:stretch;gap:8px}
+ .quiz-lesson-bridge-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+ .quiz-lesson-bridge-actions .btn{font-size:12px;white-space:normal;padding:8px;min-height:42px}
+ body.quiz-fullscreen #content:has(.quiz-lesson-bridge){padding-bottom:315px}
+}
+@media(max-width:480px){
+ body.quiz-fullscreen #content:has(.quiz-lesson-bridge){padding-bottom:380px}
+ body.quiz-fullscreen .quiz-controls{padding:8px}
+ body.quiz-fullscreen .quiz-lesson-bridge{padding:8px}
+ body.quiz-fullscreen .quiz-lesson-bridge>span{font-size:11px}
+ .quiz-fullscreen-head-buttons .btn{font-size:11px;padding:7px}
+}

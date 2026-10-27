@@ -136,7 +136,7 @@ function quizControls(){
  '<button class="btn btn-primary" type="button" id="quizReveal" '+(q.revealed?'disabled':'')+'>✨ 정답 공개</button>'+
  '<button class="btn btn-outline" type="button" id="quizHide" '+(!q.revealed?'disabled':'')+'>🙈 정답 가리기</button>'+
  '<button class="btn btn-secondary" type="button" id="quizNext" '+(isLast?'disabled':'')+'>다음 문제 →</button>'+
- '</div></div>';
+ '</div>'+lessonReturnInline()+'</div>';
 }
 function quizStudentView(){
  const q=quizState(),item=quizCurrent(q),isOX=item.type==='ox';
@@ -193,7 +193,7 @@ function quizEditor(){
 function renderQuiz(){
  const q=quizState();
  const headline=title('수업 진행','즉석 확인 퀴즈판','OX 또는 4지선다 문제를 내고 학생들이 답한 뒤 정답·해설을 공개합니다.','💡');
- if(quizFullscreen)return '<div class="quiz-fullscreen-head"><strong>💡 즉석 확인 퀴즈판</strong><button type="button" id="quizExit" class="btn btn-outline btn-small">✕ 편집 화면으로</button></div>'+
+ if(quizFullscreen)return '<div class="quiz-fullscreen-head"><strong>💡 즉석 확인 퀴즈판</strong><div class="quiz-fullscreen-head-buttons">'+(lessonReturnValid()?'<button type="button" class="btn btn-primary btn-small" data-lesson-bridge="back">↩ 수업 단계로 돌아가기</button>':'<button type="button" class="btn btn-primary btn-small" data-view="lesson">↩ 수업 단계 진행판으로</button>')+'<button type="button" id="quizExit" class="btn btn-outline btn-small">✕ 편집 화면으로</button></div></div>'+
  quizStudentView()+quizControls();
  return headline+'<div class="quiz-layout"><div class="quiz-left">'+quizEditor()+'</div>'+
  '<div class="quiz-right"><div class="quiz-preview-head"><h2>② 학생용 미리보기</h2><span>현재 출제 문제 '+(q.index+1)+'번</span></div>'+

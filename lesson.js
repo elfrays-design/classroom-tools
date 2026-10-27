@@ -283,13 +283,39 @@ function lessonReturnStart(step,tool){
  lessonReturnContext={classId:activeClass().id,stepId:step.id,tool};
  lessonReturnSave();
 }
+
+function lessonReturnValid(){
+ const ctx=lessonReturnContext;
+ if(!ctx)return false;
+ const d=lessonData(),step=lessonCurrent(d);
+ return activeClass().id===ctx.classId&&!!step&&ctx.stepId===step.id&&d.status!=='complete';
+}
+function lessonReturnEnsure(tool){
+ if(currentView==='lesson'||lessonReturnContext)return;
+ const d=lessonData(),step=lessonCurrent(d);
+ if(step&&d.status!=='complete'&&step.tool===tool&&tools.some(t=>t.id===tool)){
+  lessonPause();
+  lessonReturnStart(step,tool);
+ }
+}
+function lessonReturnInline(){
+ if(!lessonReturnValid())return '<div class="quiz-lesson-bridge quiz-lesson-bridge-plain" role="group" aria-label="수업 단계 진행판으로 이동"><span>📚 수업 단계 진행판도 바로 열 수 있어요.</span><div class="quiz-lesson-bridge-actions"><button type="button" class="btn btn-primary" data-view="lesson">↩ 수업 단계 진행판으로 이동</button></div></div>';
+ const d=lessonData(),last=d.index===d.steps.length-1;
+ return '<div class="quiz-lesson-bridge" role="group" aria-label="수업 단계 진행판 복귀와 다음 단계">'+
+  '<span>📚 수업 단계 · '+(d.index+1)+'/'+d.steps.length+'단계 <strong>'+escapeHtml(lessonCurrent(d).name)+'</strong></span>'+
+  '<div class="quiz-lesson-bridge-actions">'+
+  '<button type="button" class="btn btn-primary" data-lesson-bridge="back">↩ 수업 단계로 돌아가기</button>'+
+  '<button type="button" class="btn btn-secondary" data-lesson-bridge="next">✓ '+(last?'현재 수업 완료':(d.index+1)+'단계 완료 → '+(d.index+2)+'단계')+'</button>'+
+  '</div></div>';
+}
+
 function lessonReturnRender(){
  const dock=document.getElementById('lessonReturnDock');
  if(!dock)return;
  const ctx=lessonReturnContext;
  if(!ctx||currentView==='lesson'){dock.hidden=true;dock.innerHTML='';document.body.classList.remove('has-lesson-return');return;}
  const c=activeClass(),d=lessonData(),step=lessonCurrent(d);
- if(ctx.classId!==c.id||!step||ctx.stepId!==step.id||d.status==='complete'){lessonReturnClear();return;}
+ if(!lessonReturnValid()){lessonReturnClear();return;}
  const paused=d.status==='paused'?'⏸ 타이머 일시정지':d.status==='timeup'?'⏰ 예정시간 종료':d.status==='ready'?'▶ 시작 대기':'⏸ 수업 진행 대기';
  dock.hidden=false;document.body.classList.add('has-lesson-return');
  dock.innerHTML='<div class="lesson-return-summary"><span>📚 수업 단계 진행판 · '+(d.index+1)+'/'+d.steps.length+'</span><strong title="'+escapeHtml(step.name)+'">'+escapeHtml(step.name)+'</strong><small>'+paused+'</small></div>'+
