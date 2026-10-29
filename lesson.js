@@ -20,7 +20,8 @@ const lessonTools=[
  {id:'signal',name:'🚦 집중 신호등'},
  {id:'goals',name:'🎯 학습 목표 달성판'},
  {id:'mystery',name:'🎁 미스터리 상자 열기'},
- {id:'bingo',name:'🟦 교실 빙고'}
+ {id:'bingo',name:'🟦 교실 빙고'},
+ {id:'initial',name:'🔤 초성 맞히기'}
 ];
 function lessonPresetSteps(minutes){
  const defs=minutes===45?[

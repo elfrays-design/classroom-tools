@@ -1,6 +1,6 @@
 // Offline-ready service worker — v1.26
-const CACHE_NAME='classroom-toolbox-static-v1.29';
-const ASSETS=['./','./index.html','./style.css','./roles.css','./roles.js','./roulette.css','./roulette.js','./lesson-qr.css','./qrcode.min.js','./lesson-qr.js','./debate.css','./debate.js','./lesson.css','./lesson.js','./quiz.css','./quiz.js','./classroom-extras.css','./extras-extra.css','./group-progress.js','./signal.js','./goals.js','./mystery.css','./mystery.js','./bingo.css','./bingo.js','./app.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./byeol-songi-custom.jpg'];
+const CACHE_NAME='classroom-toolbox-static-v1.30';
+const ASSETS=['./','./index.html','./style.css','./roles.css','./roles.js','./roulette.css','./roulette.js','./lesson-qr.css','./qrcode.min.js','./lesson-qr.js','./debate.css','./debate.js','./lesson.css','./lesson.js','./quiz.css','./quiz.js','./classroom-extras.css','./extras-extra.css','./group-progress.js','./signal.js','./goals.js','./mystery.css','./mystery.js','./bingo.css','./bingo.js','./initial.css','./initial.js','./app.js','./manifest.webmanifest','./icon-192.png','./icon-512.png','./byeol-songi-custom.jpg'];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
