@@ -15,7 +15,10 @@ const lessonTools=[
  {id:'notice',name:'📋 알림장 칠판'},
  {id:'picker',name:'🎯 랜덤 발표자'},
  {id:'roulette',name:'🎡 선택 룰렛'},
- {id:'quiz',name:'💡 즉석 확인 퀴즈판'}
+ {id:'quiz',name:'💡 즉석 확인 퀴즈판'},
+ {id:'groupProgress',name:'🧩 모둠 활동 진행판'},
+ {id:'signal',name:'🚦 집중 신호등'},
+ {id:'goals',name:'🎯 학습 목표 달성판'}
 ];
 function lessonPresetSteps(minutes){
  const defs=minutes===45?[

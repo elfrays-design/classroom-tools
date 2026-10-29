@@ -1,0 +1,43 @@
+/* v1.27 세 가지 교실 수업도구 */
+.gp-settings{display:flex;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:14px;padding:16px!important}
+.gp-settings>label{display:flex;flex-direction:column;gap:7px;color:#59728e;font-weight:900;font-size:12px}
+.gp-settings input.field{width:min(310px,65vw)}.gp-settings select.field{min-width:95px}
+.gp-settings .gp-sound{flex-direction:row;align-items:center;padding:10px 0}
+.gp-sound input{width:18px;height:18px;accent-color:#668cde}
+.gp-board{border:2px solid #cfdaf0;border-radius:24px;padding:20px;background:linear-gradient(145deg,#f2f8ff,#f1fff6 60%,#fff8ed);box-shadow:var(--shadow-soft)}
+.gp-board-head{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.gp-board-head small{font-size:13px;font-weight:900;color:#7891ac}
+.gp-board-head h2{color:#456587;font-size:clamp(24px,3.5vw,42px);margin:4px 0}
+.gp-stat{font-size:14px;font-weight:900;color:#6585a1}
+.gp-timer{text-align:center;display:flex;flex-direction:column;gap:0;margin:10px 0}
+.gp-timer span{font-size:12px;font-weight:900;color:#8598b0}
+.gp-timer strong{font-size:clamp(62px,9vw,112px);font-weight:900;line-height:1.17;letter-spacing:-3px;color:#5977c1;font-variant-numeric:tabular-nums}
+.gp-progress{height:12px;background:#e3ebf7;border-radius:20px;overflow:hidden;margin-bottom:19px}
+.gp-progress>div{height:100%;background:linear-gradient(90deg,#62c3bb,#68b96b);transition:width .25s}
+.gp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}
+.gp-team{border:3px solid #d5dff0;border-radius:19px;padding:14px;background:#fff;display:flex;flex-direction:column;gap:11px;min-height:150px}
+.gp-team-working{background:#fff8df;border-color:#e0bb61}
+.gp-team-done{background:#e8f9ee;border-color:#68bb81}
+.gp-team header{display:flex;align-items:center;justify-content:space-between;gap:7px}
+.gp-team header strong{font-size:clamp(23px,2.3vw,34px);color:#4b6688}
+.gp-team header span{font-size:12px;font-weight:900;color:#7f91a7;border-radius:20px;background:#fff8;padding:6px 12px}
+.gp-team-working header span{color:#a17b25}.gp-team-done header span{color:#298356}
+.gp-members{font-size:14px;line-height:1.7;color:#657c94;flex:1;overflow-wrap:anywhere}
+.gp-team-buttons{display:flex;flex-wrap:wrap;gap:5px}
+.gp-team-buttons .btn{font-size:12px;min-height:36px;padding:7px 10px}
+.gp-empty{padding:45px;text-align:center;color:#748aa6;font-weight:900}
+.gp-celebrate{margin-top:20px;text-align:center;border-radius:14px;padding:15px;background:#d9f9e4;color:#36794d;font-size:20px;font-weight:900}
+.gp-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff;border:1px solid #dbe5f0;border-radius:17px;padding:13px;margin-top:12px}
+.gp-actions strong{font-size:14px;color:#526c8a}.gp-action-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.gp-action-buttons .btn{font-size:12px;font-weight:900;min-height:43px}
+.gp-footnote{font-size:12px;color:#8193a8}
+.gp-full-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:11px}
+.gp-full-head strong{font-size:21px;color:#56708f}
+body.group-progress-fullscreen .sidebar,body.group-progress-fullscreen .topbar,body.group-progress-fullscreen .main-footer{display:none!important}
+body.group-progress-fullscreen .app-shell{display:block}
+body.group-progress-fullscreen .workarea{margin:0;min-height:100vh}
+body.group-progress-fullscreen #content{max-width:none;padding:12px 20px 145px}
+body.group-progress-fullscreen .gp-board{min-height:calc(100vh - 220px)}
+body.group-progress-fullscreen .gp-team{min-height:170px}
+body.group-progress-fullscreen .gp-actions{position:fixed;bottom:0;left:0;right:0;z-index:96;background:#fffffff2;margin:0;border-radius:0;padding:14px 24px;border-top:2px solid #cfdaee;box-shadow:0 -10px 30px #566d9233}
+@media(max-width:690px){.gp-settings{gap:8px}.gp-board{padding:12px}.gp-grid{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}.gp-team{min-height:130px}.gp-actions{flex-direction:column}.gp-action-buttons{justify-content:center}body.group-progress-fullscreen #content{padding:8px 9px 190px}body.group-progress-fullscreen .gp-team{min-height:150px}body.group-progress-fullscreen .gp-actions{padding:10px}.gp-action-buttons .btn{font-size:11px}}

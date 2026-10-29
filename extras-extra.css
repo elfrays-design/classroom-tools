@@ -1,0 +1,71 @@
+
+/* 집중 신호등 */
+.signal-settings{display:flex;align-items:end;gap:13px;flex-wrap:wrap;padding:16px!important;margin-bottom:14px}
+.signal-settings>label{display:flex;flex-direction:column;gap:7px;color:#576d8b;font-size:13px;font-weight:900}
+.signal-settings input.field{width:min(300px,72vw)}.signal-settings select.field{min-width:85px}
+.signal-settings .signal-check{flex-direction:row;align-items:center;padding:9px}
+.signal-check input{width:18px;height:18px;accent-color:#6288d6}
+.signal-board{min-height:560px;border-radius:25px;padding:20px;background:linear-gradient(145deg,#e9fff0,#f2fff5);border:3px solid #8ed5a3;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;box-shadow:var(--shadow-soft)}
+.signal-board.signal-yellow{background:linear-gradient(145deg,#fff5d7,#fffdf0);border-color:#d9ba54}
+.signal-board.signal-red{background:linear-gradient(145deg,#ffe7e8,#fff4f3);border-color:#db8c93}
+.signal-board-top{display:flex;flex-direction:column;gap:4px;color:#65869a;font-weight:900;font-size:13px;max-width:100%}
+.signal-board-top strong{font-size:clamp(16px,2vw,23px);color:#59758c;overflow-wrap:anywhere}
+.signal-light-stack{display:flex;gap:14px;padding:15px 20px;background:#44586b;border-radius:75px}
+.signal-bulb{height:clamp(49px,7vw,76px);width:clamp(49px,7vw,76px);border-radius:50%;opacity:.22;box-shadow:inset 0 4px 9px #0008}
+.signal-bulb-green{background:#26d45c}.signal-bulb-yellow{background:#f8d424}.signal-bulb-red{background:#f65766}
+.signal-bulb.signal-is-on{opacity:1;box-shadow:0 0 24px currentColor,inset 0 2px 7px #fff8}
+.signal-bulb-green.signal-is-on{color:#40db76}.signal-bulb-yellow.signal-is-on{color:#ffe361}.signal-bulb-red.signal-is-on{color:#ff7b86}
+.signal-main-icon{font-size:48px}.signal-board h2{font-size:clamp(38px,7vw,95px);margin:0;color:#298856;line-height:1.17}
+.signal-board.signal-yellow h2{color:#a98120}.signal-board.signal-red h2{color:#c24d57}
+.signal-board p{font-size:clamp(18px,2.8vw,33px);font-weight:900;color:#637c95;margin:4px 0}
+.signal-remaining,.signal-status-pill{padding:14px 23px;background:#ffffffb8;border-radius:17px;font-size:clamp(16px,2.3vw,29px);color:#8b6f2d;font-weight:900}
+.signal-remaining strong{font-size:clamp(30px,5vw,63px);color:#a98226}
+.signal-status-pill{color:#567e69}
+.signal-actions,.goal-actions{display:flex;align-items:center;justify-content:space-between;gap:11px;flex-wrap:wrap;border-radius:15px;background:#fff;border:1px solid #e0e7f0;padding:13px;margin-top:11px}
+.signal-actions>strong,.goal-actions>strong{font-size:14px;color:#4f6c8a}
+.signal-action-buttons,.goal-actions>div{display:flex;flex-wrap:wrap;gap:7px}
+.signal-action-buttons .btn,.goal-actions .btn{font-size:12px;font-weight:900;min-height:43px}
+.signal-note{font-size:12px;color:#8293a5}
+.signal-full-head,.goal-full-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px}
+.signal-full-head strong,.goal-full-head strong{font-size:20px;color:#4b6583}
+body.signal-fullscreen .sidebar,body.signal-fullscreen .topbar,body.signal-fullscreen .main-footer,body.goals-fullscreen .sidebar,body.goals-fullscreen .topbar,body.goals-fullscreen .main-footer{display:none!important}
+body:is(.signal-fullscreen,.goals-fullscreen) .app-shell{display:block}
+body:is(.signal-fullscreen,.goals-fullscreen) .workarea{margin:0;min-height:100vh}
+body:is(.signal-fullscreen,.goals-fullscreen) #content{max-width:none;padding:12px 20px 150px}
+body:is(.signal-fullscreen,.goals-fullscreen) .signal-board,body.goals-fullscreen .goal-board{min-height:calc(100vh - 245px)}
+body:is(.signal-fullscreen,.goals-fullscreen) .signal-actions,body.goals-fullscreen .goal-actions{position:fixed;bottom:0;left:0;right:0;z-index:95;background:#fffffff5;padding:14px 22px;margin:0;border-radius:0;border:0;border-top:2px solid #cbd7e8;box-shadow:0 -10px 32px #536a8833}
+/* 오늘의 학습 목표 달성판 */
+.goal-layout{display:grid;grid-template-columns:minmax(310px,.82fr) minmax(425px,1.18fr);gap:16px;align-items:start}
+.goal-editor{padding:18px!important}.goal-editor h2,.goal-preview>h2{font-size:18px;color:#506985;margin:0 0 14px}
+.goal-editor>label{display:flex;flex-direction:column;gap:8px;color:#5b718e;font-size:12px;font-weight:900}
+.goal-editor>label .field{width:100%}
+.goal-edit-list{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.goal-edit-row{display:grid;grid-template-columns:24px minmax(0,1fr) 30px;gap:8px;align-items:start;padding:10px;background:#f7f9fe;border:1px solid #e3eaf5;border-radius:13px}
+.goal-edit-row>span{display:grid;place-items:center;background:#e8eefb;color:#6a7e9b;border-radius:7px;height:27px;font-weight:900}
+.goal-edit-row textarea.field{width:100%;min-width:0;font-size:13px;resize:vertical}
+.goal-edit-acts{display:flex;flex-direction:column;gap:4px}
+.goal-edit-acts .btn{min-height:26px;padding:3px 5px;font-size:12px}
+.goal-editor-bottom{display:flex;gap:8px;flex-wrap:wrap;margin:13px 0}
+.goal-editor-bottom .btn{font-size:12px}
+.goal-editor>p{color:#8a99aa;font-size:12px;line-height:1.6}
+.goal-board{border:2px solid #d8dff4;border-radius:24px;padding:22px;background:linear-gradient(135deg,#f1eaff,#eaf7ff 65%,#eefcf4);min-height:490px;box-shadow:var(--shadow-soft)}
+.goal-board>header{text-align:center;margin-bottom:18px}
+.goal-board>header>span{font-size:13px;font-weight:900;color:#8875c1}
+.goal-board>header h2{font-size:clamp(23px,3.5vw,42px);margin:5px 0;color:#526b8f;overflow-wrap:anywhere}
+.goal-progress-title{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:14px;font-weight:900;color:#667fa1}
+.goal-progress-title strong{color:#547ac2}
+.goal-progress{height:12px;background:#e0e9f5;border-radius:12px;overflow:hidden;margin:10px 0 20px}
+.goal-progress>div{height:100%;background:linear-gradient(90deg,#64aedf,#4ebf98);transition:width .23s}
+.goal-card-list{display:flex;flex-direction:column;gap:11px}
+.goal-card{display:flex;gap:12px;align-items:center;border:2px solid #dce6f2;border-radius:17px;background:#fff;padding:15px;text-align:left;width:100%;min-height:81px}
+.goal-card.is-achieved{background:#e5f9ed;border-color:#75c998}
+.goal-number{display:grid;place-items:center;background:#e8effb;border-radius:11px;color:#5e82b4;min-width:38px;height:38px;font-weight:900}
+.goal-card>strong{flex:1;font-size:clamp(16px,2vw,24px);line-height:1.5;color:#4f6683;overflow-wrap:anywhere;white-space:pre-wrap}
+.goal-check{font-size:13px;font-weight:900;white-space:nowrap;color:#7f91a8}
+.goal-card.is-achieved .goal-check{color:#32895b}
+.goal-congrats{font-size:19px;color:#358757;background:#dcf9e6;padding:14px;text-align:center;border-radius:14px;margin-top:15px;font-weight:900}
+.goal-empty{padding:55px 15px;color:#8395ad;text-align:center;font-weight:900}
+body.goals-fullscreen .goal-card{min-height:105px;padding:20px}
+body.goals-fullscreen .goal-card>strong{font-size:clamp(21px,3.4vw,37px)}
+@media(max-width:1100px){.goal-layout{grid-template-columns:1fr}}
+@media(max-width:680px){.signal-board{padding:12px;min-height:430px}.signal-actions,.goal-actions{flex-direction:column}body:is(.signal-fullscreen,.goals-fullscreen) #content{padding:9px 9px 230px}body:is(.signal-fullscreen,.goals-fullscreen) .signal-actions,body.goals-fullscreen .goal-actions{padding:10px}.signal-action-buttons{justify-content:center}.signal-action-buttons .btn{font-size:11px;min-height:37px}.goal-board{padding:13px}.goal-card{padding:10px;gap:7px}.goal-number{min-width:28px;height:30px}.goal-check{font-size:11px}}
