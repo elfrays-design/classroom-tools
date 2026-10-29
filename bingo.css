@@ -1,0 +1,64 @@
+/* v1.29 교실 빙고 */
+.bingo-layout{display:grid;grid-template-columns:minmax(285px,.78fr) minmax(480px,1.25fr);gap:17px;align-items:start}
+.bingo-editor{padding:19px!important}.bingo-editor h2,.bingo-preview>h2{margin:0 0 13px;color:#556b8b;font-size:18px}
+.bingo-label,.bingo-settings label{display:flex;flex-direction:column;gap:7px;color:#657992;font-size:12px;font-weight:900}
+.bingo-label .field{width:100%}.bingo-settings{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}
+.bingo-settings select.field{width:100%;min-width:0;font-size:12px}
+.bingo-editor-actions{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.bingo-editor-actions .btn{font-size:12px}
+.bingo-edit-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.bingo-edit-item{padding:9px;border:1px solid #e4e9f3;border-radius:12px;background:#f8faff;display:flex;flex-direction:column;gap:6px;min-width:0}
+.bingo-edit-item span{font-size:11px;font-weight:900;color:#7387a4}
+.bingo-edit-item textarea.field{width:100%;min-width:0;resize:vertical;padding:9px 10px;line-height:1.5;font-size:12px}
+.bingo-sound-setting{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:900;color:#637c98;margin:13px 0}
+.bingo-sound-setting input{width:17px;height:17px;accent-color:#7c75d4}
+.bingo-editor-note{color:#8193a9;font-size:12px;line-height:1.7}
+.bingo-board{position:relative;padding:18px;border:2px solid #d5d9fa;border-radius:24px;min-height:495px;background:radial-gradient(circle at 10% 10%,#fce0f2 0,transparent 32%),radial-gradient(circle at 90% 90%,#e0fff4 0,transparent 35%),linear-gradient(150deg,#f1eafa,#e5f3ff 55%,#f8fcff);box-shadow:var(--shadow-soft);overflow:hidden}
+.bingo-board-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.bingo-board-head>div{flex:1;min-width:0}.bingo-board-head small{font-size:12px;font-weight:900;color:#8476b5}
+.bingo-board-head h2{font-size:clamp(24px,3.2vw,39px);color:#536995;line-height:1.3;margin:5px 0;overflow-wrap:anywhere}
+.bingo-line-score{border:1px solid #d4bdec;border-radius:15px;background:#fff9;padding:9px 15px;display:flex;flex-direction:column;gap:3px;align-items:center}
+.bingo-line-score strong{font-size:clamp(20px,2.2vw,32px);font-weight:900;color:#8262bd}.bingo-line-score small{color:#8293ac;font-size:11px;font-weight:900}
+.bingo-intro{font-size:12px;font-weight:800;color:#7289a8;text-align:center;margin:14px 0}
+.bingo-grid{display:grid;gap:9px;max-width:870px;margin:0 auto}
+.bingo-grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.bingo-grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.bingo-grid-5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.bingo-cell{position:relative;min-width:0;aspect-ratio:1.05;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:3px solid #c3c8f1;background:linear-gradient(155deg,#fff,#f7f0ff);border-radius:17px;box-shadow:0 6px 17px #8b8abd25;color:#6a76aa;transition:transform .17s,box-shadow .17s}
+.bingo-cell:nth-child(3n+2){background:linear-gradient(145deg,#fff,#e9f7ff);border-color:#b9d9ee}
+.bingo-cell:nth-child(3n){background:linear-gradient(145deg,#fff,#e9fff0);border-color:#b4dfc6}
+.bingo-cell:hover{transform:translateY(-3px);box-shadow:0 10px 22px #6d80b933}
+.bingo-cell:active{transform:scale(.96)}.bingo-cell-stamped{background:#dcf5e8!important;border-color:#65be92!important}
+.bingo-cell-winning{background:#fff3bc!important;border-color:#ebba54!important;box-shadow:0 0 0 3px #f5d76a9c,0 8px 15px #b49b453a}
+.bingo-cell-symbol,.bingo-check{font-size:clamp(29px,4.4vw,55px);line-height:1.2;filter:drop-shadow(0 2px 2px #8995b73a)}
+.bingo-cell strong{font-weight:900;font-size:clamp(13px,1.6vw,20px)}
+.bingo-cell small{font-size:10px;font-weight:900;color:#8d96ad;text-align:center}
+.bingo-grid-5 .bingo-cell{border-radius:12px;gap:1px}
+.bingo-grid-5 .bingo-cell-symbol,.bingo-grid-5 .bingo-check{font-size:clamp(23px,3.1vw,39px)}
+.bingo-grid-5 .bingo-cell small{font-size:9px}
+.bingo-progress{height:10px;border-radius:12px;background:#fff9;margin:19px 0 0;overflow:hidden}
+.bingo-progress>div{height:100%;background:linear-gradient(90deg,#7cbbe4,#62cba2);transition:width .3s}
+.bingo-win-banner{text-align:center;margin-top:14px;padding:13px;border-radius:14px;background:#fff0a9;color:#9b6927;font-weight:900;font-size:clamp(15px,2.3vw,23px);animation:bingoWin .6s ease-out}
+.bingo-reveal-overlay{position:absolute;inset:0;background:#fff9;backdrop-filter:blur(7px);display:flex;justify-content:center;align-items:center;padding:15px;z-index:7;animation:bingoFade .18s ease}
+.bingo-reveal-card{background:linear-gradient(145deg,#fffaf2,#f5e6ff 60%,#e3f9ff);border:4px solid #d5bded;border-radius:25px;box-shadow:0 14px 40px #64688d50;width:min(610px,100%);max-height:100%;overflow:auto;text-align:center;padding:20px 16px;animation:bingoReveal .4s cubic-bezier(.17,1.22,.46,1)}
+.bingo-reveal-star{font-size:clamp(28px,4vw,44px);animation:bingoWin 1.4s ease-in-out infinite alternate}
+.bingo-reveal-card>span{display:block;color:#8c79ac;font-size:13px;font-weight:900;margin-top:7px}
+.bingo-reveal-card h3{color:#576393;font-size:clamp(23px,3.7vw,46px);line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere;margin:18px 0 24px}
+.bingo-reveal-buttons{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.bingo-reveal-buttons .btn{font-weight:900;font-size:13px;min-height:43px}
+.bingo-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:11px;padding:12px;background:#fff;border:1px solid #d9e1f0;border-radius:16px;margin-top:13px}
+.bingo-controls>strong{color:#5d7495;font-size:13px}.bingo-controls>div{display:flex;gap:7px;flex-wrap:wrap}
+.bingo-controls .btn{font-weight:900;font-size:12px;min-height:42px}
+.bingo-full-head{display:flex;align-items:center;justify-content:space-between;gap:11px;margin-bottom:11px}.bingo-full-head strong{font-size:21px;color:#516994}
+body.bingo-fullscreen .sidebar,body.bingo-fullscreen .topbar,body.bingo-fullscreen .main-footer{display:none!important}
+body.bingo-fullscreen .app-shell{display:block}
+body.bingo-fullscreen .workarea{min-height:100vh;margin:0}
+body.bingo-fullscreen #content{max-width:none;padding:12px 20px 148px}
+body.bingo-fullscreen .bingo-board{min-height:calc(100vh - 220px)}
+body.bingo-fullscreen .bingo-cell{aspect-ratio:1.45;min-height:90px}
+body.bingo-fullscreen .bingo-grid-5 .bingo-cell{aspect-ratio:1.2}
+body.bingo-fullscreen .bingo-controls{position:fixed;bottom:0;left:0;right:0;z-index:95;padding:14px 24px;background:#fffffff3;box-shadow:0 -10px 28px #6a7b9a35;border:0;border-top:2px solid #d4dded;border-radius:0;margin:0}
+@keyframes bingoFade{from{opacity:0}to{opacity:1}}@keyframes bingoReveal{from{transform:scale(.5) rotate(-3deg);opacity:.25}to{transform:scale(1);opacity:1}}
+@keyframes bingoWin{from{transform:scale(.95)}to{transform:scale(1.04)}}
+@media(prefers-reduced-motion:reduce){.bingo-cell,.bingo-reveal-overlay,.bingo-reveal-card,.bingo-win-banner,.bingo-reveal-star{animation:none!important;transition:none!important}}
+@media(max-width:1130px){.bingo-layout{grid-template-columns:1fr}.bingo-edit-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:690px){.bingo-edit-list{grid-template-columns:repeat(2,minmax(0,1fr))}.bingo-board{padding:11px;min-height:380px}.bingo-grid{gap:5px}.bingo-cell{border-width:2px;border-radius:9px;aspect-ratio:1.1;min-height:64px}.bingo-cell-symbol,.bingo-check{font-size:27px}.bingo-cell small{display:none}.bingo-grid-5 .bingo-cell-symbol,.bingo-grid-5 .bingo-check{font-size:21px}.bingo-cell strong{font-size:12px}.bingo-controls{flex-direction:column}.bingo-controls>div{justify-content:center}.bingo-controls .btn{font-size:11px}body.bingo-fullscreen #content{padding:8px 8px 195px}body.bingo-fullscreen .bingo-cell{aspect-ratio:1.1;min-height:58px}body.bingo-fullscreen .bingo-grid-5 .bingo-cell{aspect-ratio:1.08;min-height:49px}body.bingo-fullscreen .bingo-controls{padding:9px}body.bingo-fullscreen .bingo-controls>div{display:grid;grid-template-columns:1fr 1fr;width:100%}body.bingo-fullscreen .bingo-reveal-card{padding:12px}.bingo-reveal-card h3{font-size:clamp(20px,5vw,31px)}}

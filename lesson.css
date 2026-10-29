@@ -108,7 +108,7 @@ body.lesson-fullscreen .lesson-actions{position:fixed;bottom:0;left:0;right:0;z-
 .lesson-return-buttons>.btn:nth-child(2){flex:1}
 .lesson-return-dismiss{border:1px solid #d9e1ed;border-radius:10px;background:#f5f7fb;color:#718299;min-width:35px;min-height:42px;font-weight:900;cursor:pointer}
 .lesson-return-dismiss:hover{background:#e6ebf5}
-body:is(.grading-fullscreen,.debate-fullscreen,.quiz-fullscreen,.lesson-qr-expanded,.notice-presenting,.board-presenting,.roles-fullscreen,.speaker-fullscreen,.mystery-fullscreen) .lesson-return-dock{top:12px;right:12px}
+body:is(.grading-fullscreen,.debate-fullscreen,.quiz-fullscreen,.lesson-qr-expanded,.notice-presenting,.board-presenting,.roles-fullscreen,.speaker-fullscreen,.mystery-fullscreen,.bingo-fullscreen) .lesson-return-dock{top:12px;right:12px}
 @media(max-width:610px){
  .lesson-return-dock{top:9px;right:9px;width:min(420px,calc(100vw - 18px));padding:8px 9px;border-radius:13px;gap:6px}
  .lesson-return-summary{gap:3px 8px}

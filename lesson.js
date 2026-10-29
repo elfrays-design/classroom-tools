@@ -19,7 +19,8 @@ const lessonTools=[
  {id:'groupProgress',name:'🧩 모둠 활동 진행판'},
  {id:'signal',name:'🚦 집중 신호등'},
  {id:'goals',name:'🎯 학습 목표 달성판'},
- {id:'mystery',name:'🎁 미스터리 상자 열기'}
+ {id:'mystery',name:'🎁 미스터리 상자 열기'},
+ {id:'bingo',name:'🟦 교실 빙고'}
 ];
 function lessonPresetSteps(minutes){
  const defs=minutes===45?[
