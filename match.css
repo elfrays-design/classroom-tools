@@ -1,0 +1,43 @@
+/* v1.31 기억력 짝찾기 — 초등/중등 테마 공통 */
+.match-layout{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(430px,1.2fr);gap:18px;align-items:start}
+.match-editor{padding:18px!important}.match-editor h2,.match-play>h2{font-size:18px;color:#526b8c;margin:0 0 10px}
+.match-editor>p{font-size:13px;color:#6a7895;line-height:1.6}
+.match-field,.match-options>label{display:flex;flex-direction:column;gap:7px;font-weight:800;color:#597190;font-size:13px}
+.match-field{margin:14px 0}.match-field input{width:100%}
+.match-options{display:flex;flex-wrap:wrap;align-items:center;gap:15px;margin:12px 0}
+.match-options .field{min-width:135px}.match-options .match-sound{flex-direction:row;align-items:center}
+.match-sound input{width:17px;height:17px;accent-color:#776ac4}
+.match-editor-list{max-height:680px;overflow:auto;display:grid;gap:10px;padding:3px}
+.match-pair-edit{background:#f8faff;border:1px solid #dce5f2;border-radius:14px;padding:10px;display:grid;gap:7px}
+.match-pair-edit strong{font-size:13px;color:#59719e}.match-pair-edit textarea{resize:vertical}
+.match-editor-foot{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:13px}
+.match-editor-foot small,.match-editor-note{color:#75859d;font-size:12px;line-height:1.6}
+.match-board{background:linear-gradient(140deg,#e7f1ff,#fff4fb);padding:20px;border:1px solid #d5e0fa;border-radius:22px;box-shadow:0 10px 24px #556fa021}
+.match-board-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.match-board-head small{font-size:12px;color:#6f82a0;font-weight:800}
+.match-board-head h2{font-size:clamp(20px,2.5vw,30px);color:#415d8d;margin:5px 0}
+.match-stats{display:flex;gap:8px;flex-wrap:wrap}.match-stats span{border-radius:12px;background:#fff;padding:9px 11px;border:1px solid #dee5f4;color:#58749a;font-size:12px;font-weight:700}
+.match-board-tip{text-align:center;font-size:14px;color:#63799d;font-weight:800;margin:15px 0}
+.match-card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.match-card{min-width:0;min-height:118px;border-radius:17px;border:2px solid #b7c8ed;background:linear-gradient(140deg,#819dee,#ba9ef3);color:#fff;cursor:pointer;box-shadow:0 5px 8px #7385bc2c;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;padding:10px;position:relative;transition:transform .16s,background .2s,border-color .2s;overflow-wrap:anywhere;word-break:keep-all}
+.match-card:not([disabled]):hover{transform:translateY(-3px);filter:brightness(1.04)}
+.match-card:focus-visible{outline:3px solid #ff9b46;outline-offset:2px}
+.match-card-back{font-size:40px;font-weight:900;text-shadow:0 2px 6px #4d598e45}
+.match-card small{font-size:11px;opacity:.9;font-weight:800}.match-card strong{font-size:clamp(13px,1.45vw,19px);line-height:1.35}
+.match-card.is-open{background:#fff;color:#395b8c;border-color:#8db2ec}.match-card.is-matched{background:#dcf7e5;border-color:#58c990;color:#246b55}
+.match-check{position:absolute;right:7px;top:5px;font-size:15px;color:#2d9867}
+.match-board-footer{text-align:center;margin-top:14px;font-size:14px;font-weight:800;color:#607998}
+.match-controls{margin-top:12px;padding:13px 15px;border-radius:15px;border:1px solid #dce3f3;background:#fff}
+.match-controls>strong{font-size:13px;color:#596f95}.match-control-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}
+.match-full-head{display:flex;justify-content:space-between;align-items:center;padding:8px 4px 15px;font-size:19px;color:#526a95}
+body.match-fullscreen .sidebar,body.match-fullscreen .topbar,body.match-fullscreen .main-footer{display:none!important}
+body.match-fullscreen .app-shell{display:block}
+body.match-fullscreen .workarea{margin:0;min-height:100vh}
+body.match-fullscreen #content{max-width:none;padding:12px 18px 130px}
+body.match-fullscreen .match-board{min-height:calc(100vh - 210px)}
+body.match-fullscreen .match-card{min-height:clamp(110px,15vh,175px)}
+body.match-fullscreen .match-card strong{font-size:clamp(18px,2.5vw,31px)}
+body.match-fullscreen .match-controls{position:fixed;bottom:0;left:0;right:0;z-index:95;border-radius:0;border:0;border-top:2px solid #d5dceb;margin:0;padding:12px 22px;background:#fffffff5;box-shadow:0 -10px 32px #5c6f9e35}
+@media(max-width:1100px){.match-layout{grid-template-columns:1fr}.match-editor-list{max-height:420px}}
+@media(max-width:620px){.match-board{padding:11px;border-radius:14px}.match-card-grid{gap:5px}.match-card{min-height:78px;padding:5px;border-radius:10px}.match-card strong{font-size:11px}.match-card small{font-size:9px}.match-card-back{font-size:24px}.match-board-head h2{font-size:18px}.match-stats{gap:4px}.match-stats span{padding:5px;font-size:10px}.match-board-tip,.match-board-footer{font-size:11px}.match-controls{padding:9px}.match-control-buttons .btn{font-size:11px;padding:8px}.match-pair-edit textarea{min-height:55px}body.match-fullscreen #content{padding:8px 7px 180px}body.match-fullscreen .match-controls{padding:8px}body.match-fullscreen .match-card{min-height:clamp(80px,12vh,110px)}body.match-fullscreen .match-card strong{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.match-card{transition:none!important}}
