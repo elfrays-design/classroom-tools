@@ -45,7 +45,7 @@ function shadowPredictionOptions(model){
  return {options,correctIndex:options.findIndex(x=>JSON.stringify(x)===JSON.stringify(correct))};
 }
 function shadowNewState(){
- const base={mode:'match',level:'easy',round:1,winCount:0,attempts:0,hint:false,solved:false,sound:true,
+ const base={mode:'match',level:'easy',round:1,winCount:0,attempts:0,hint:false,solved:false,awarded:false,sound:true,
   lightX:145,lightY:50,rotations:[0,0],objects:['rabbit'],target:null,options:[],correctIndex:0,
   choice:null,revealed:false};
  return shadowGenerate(base,true);
@@ -56,7 +56,7 @@ function shadowGenerate(s,initial=false){
  s.lightX=s.mode==='predict'?target.lightX:145;
  s.lightY=s.mode==='predict'?target.lightY:50;
  s.rotations=s.mode==='predict'?target.rotations.slice():[0,0];
- s.attempts=0;s.hint=false;s.solved=false;s.choice=null;s.revealed=false;
+ s.attempts=0;s.hint=false;s.solved=false;s.awarded=false;s.choice=null;s.revealed=false;
  if(s.mode==='predict'){const made=shadowPredictionOptions(target);s.options=made.options;s.correctIndex=made.correctIndex;}
  else{s.options=[];s.correctIndex=0;}
  if(s.mode==='free'&&!initial){s.lightX=145;s.lightY=50;s.rotations=[0,0];}
@@ -79,7 +79,7 @@ function normalizeShadow(raw){
  s.lightY=level==='easy'&&mode!=='free'?50:shadowBound(v.lightY??50,35,65);
  s.rotations=[0,1].map(i=>level==='easy'&&mode!=='free'?0:Math.floor(shadowBound(v.rotations?.[i]??0,0,359)/45)*45);
  s.attempts=shadowBound(Math.floor(Number(v.attempts)||0),0,9999);
- s.hint=v.hint===true;s.solved=v.solved===true;s.revealed=v.revealed===true;
+ s.hint=v.hint===true;s.solved=v.solved===true;s.awarded=v.awarded===true||s.solved;s.revealed=v.revealed===true;
  if(mode==='predict'){
   const choices=Array.isArray(v.options)&&v.options.length===4?v.options:null;
   s.options=choices&&choices.every(o=>o&&Number.isFinite(o.lightX)&&Number.isFinite(o.lightY)&&Array.isArray(o.rotations))?
@@ -163,6 +163,7 @@ function shadowMatchScore(s){
 }
 function shadowAnswerText(s){
  const target=s.target;
+ if(shadowMatchScore(s)>=90)return '거의 똑같은 그림자예요! 이제 일치 확인 버튼을 눌러 보세요.';
  if(s.level==='easy'){
   return s.lightX<target.lightX?'손전등을 물체 쪽으로 조금 더 가까이 움직여 보세요.':'손전등을 물체에서 조금 더 멀리 움직여 보세요.';
  }
@@ -219,7 +220,7 @@ function shadowJudge(){
  if(s.solved)return toast('이미 완성했어요! 다음 문제로 이동해 주세요.');
  s.attempts++;const score=shadowMatchScore(s);
  if(score>=90){
-  s.solved=true;s.winCount=Math.min(9999,s.winCount+1);
+  s.solved=true;if(!s.awarded){s.winCount=Math.min(9999,s.winCount+1);s.awarded=true;}
   shadowInfo='🎉 송이가 기뻐해요! 목표 그림자와 '+score+'% 일치했어요!';
   if(s.sound){soundUnlock();beep();}
  }else{
@@ -231,7 +232,7 @@ function shadowPredictAnswer(index){
  const s=shadowState();if(s.mode!=='predict'||s.revealed||!Number.isInteger(index)||index<0||index>=4)return;
  s.choice=index;s.revealed=true;s.attempts++;
  s.solved=index===s.correctIndex;
- if(s.solved){s.winCount=Math.min(9999,s.winCount+1);shadowInfo='🎉 맞았어요! 빛의 위치를 보고 그림자를 잘 예상했네요!';if(s.sound){soundUnlock();beep();}}
+ if(s.solved){if(!s.awarded){s.winCount=Math.min(9999,s.winCount+1);s.awarded=true;}shadowInfo='🎉 맞았어요! 빛의 위치를 보고 그림자를 잘 예상했네요!';if(s.sound){soundUnlock();beep();}}
  else shadowInfo='🌷 아쉽지만 괜찮아요. 정답 그림자와 비교해 보세요!';
  save();render();
 }
@@ -255,7 +256,7 @@ function shadowControls(){
  const s=shadowState(),disabled=s.mode==='predict',noY=disabled||s.level==='easy'&&s.mode!=='free';
  const slider=(id,label,min,max,value,disabled)=>
  '<label class="shadow-control-label" for="'+id+'"><span>'+label+'</span><strong>'+Math.round(value)+'</strong></label>'+
- '<input type="range" id="'+id+'" min="'+min+'" max="'+max+'" step="5" value="'+Math.round(value)+'" '+(disabled?'disabled':'')+' class="shadow-range">';
+ '<input type="range" id="'+id+'" min="'+min+'" max="'+max+'" step="'+(id==='shadowLightHeight'?'1':'5')+'" value="'+Math.round(value)+'" '+(disabled?'disabled':'')+' class="shadow-range">';
  return '<section class="shadow-controls"><div class="shadow-controls-title"><strong>🧪 실험 조작대</strong><span>'+(disabled?'이 모드에서는 위치를 관찰하고 그림자를 예상해요':'손전등을 끌거나 슬라이더를 움직여 보세요')+'</span></div>'+
  '<div class="shadow-slider-grid"><div>'+slider('shadowLightDistance','🔦 빛의 거리 (오른쪽일수록 물체에 가까움)',90,220,s.lightX,disabled)+'</div>'+
  '<div>'+slider('shadowLightHeight','↕ 손전등 높이 (위쪽 ~ 아래쪽)',35,65,s.lightY,noY)+'</div></div>'+
