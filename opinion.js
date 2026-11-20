@@ -33,7 +33,9 @@ function opinionArchiveNormalize(raw){
 }
 function normalizeOpinion(raw){
  const d=makeDefaultOpinion(),v=raw&&typeof raw==='object'?raw:{};
- const options=opinionNormalizeOptions(v.options,d.options),counts=options.map((_,i)=>opinionClamp(v.counts?.[i]));
+ const incoming=opinionNormalizeOptions(v.options,[]);
+ const options=incoming.length?incoming:d.options;
+ const counts=options.map((_,i)=>incoming.length?opinionClamp(v.counts?.[i]):0);
  const archives=Array.isArray(v.archives)?v.archives.slice(-OPINION_MAX_ARCHIVES).map(opinionArchiveNormalize).filter(Boolean):[];
  return {title:String(v.title??d.title).trim().slice(0,100)||d.title,
   options,counts,view:v.view==='picture'?'picture':'bar',archives};
