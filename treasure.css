@@ -1,0 +1,83 @@
+/* 송이의 보물찾기 미션 — 초등학교 전자칠판 동화 지도 */
+.treasure-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,1fr);align-items:start;gap:16px;max-width:1500px;margin:0 auto}
+.treasure-board{background:linear-gradient(155deg,#fffdf2,#eef8ff 59%,#fef0f8);border:2px solid #dddaef;border-radius:26px;overflow:hidden;box-shadow:0 12px 32px #8572a321;min-width:0}
+.treasure-hero{padding:23px 25px;display:flex;justify-content:space-between;gap:16px;align-items:center;background:radial-gradient(ellipse at 84% 15%,#fff3bc 0,transparent 43%),linear-gradient(120deg,#e6f5eb,#e7e4fd 65%,#f7e4f7)}
+.treasure-hero>div:first-child{min-width:0}.treasure-hero span{font-size:13px;color:#8664a4;font-weight:900}
+.treasure-hero h2{margin:7px 0;font-size:clamp(24px,2.9vw,38px);line-height:1.3;color:#614b8e;font-weight:950;overflow-wrap:anywhere}
+.treasure-hero p{margin:0;font-size:clamp(12px,1.25vw,16px);color:#71648e;font-weight:750;line-height:1.55}
+.treasure-mascot{font-size:clamp(40px,5vw,75px);filter:drop-shadow(0 8px 8px #88749c50);white-space:nowrap;animation:treasureFloat 2s ease-in-out infinite alternate}
+.treasure-stats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding:14px 10px}
+.treasure-stats span{font-size:12px;color:#655683;font-weight:850;background:#fff;border:1px solid #e9e1f1;border-radius:40px;padding:7px 12px}
+.treasure-stats strong{color:#9c65a6;font-weight:950}
+.treasure-map-wrapper{margin:0 16px 19px;padding:17px;border-radius:22px;border:3px solid #b6dfbb;background:radial-gradient(ellipse at 12% 70%,#e0f4bf 0,transparent 35%),radial-gradient(ellipse at 83% 24%,#d8eafc 0,transparent 38%),linear-gradient(135deg,#f2fae9,#f0fff1 48%,#f4fbff);position:relative;overflow:hidden}
+.treasure-map-wrapper::before{content:'✦    🌼        ✧     ☁️        ✧    🌷';position:absolute;left:6%;top:2%;font-size:21px;opacity:.38;letter-spacing:8px;pointer-events:none;white-space:nowrap}
+.treasure-map-heading{position:relative;display:flex;gap:7px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin:0 0 15px}
+.treasure-map-heading strong{font-size:clamp(17px,1.9vw,24px);font-weight:950;color:#51765c}
+.treasure-map-heading span{font-size:12px;color:#7b7e62;font-weight:800}
+.treasure-grid{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.treasure-tile{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:6px;min-width:0;min-height:149px;position:relative;border:3px solid #dfc8a4;border-radius:21px;padding:12px 7px;cursor:pointer;color:#6d6082;background:linear-gradient(145deg,#fffef1,#fff4dc);box-shadow:0 7px 0 #dac5a4,0 12px 18px #8d8e8925;transition:transform .2s,box-shadow .2s,border-color .2s;touch-action:manipulation}
+.treasure-tile:nth-child(4n+2){background:linear-gradient(145deg,#f7faff,#e8f3ff);border-color:#b7cce6;box-shadow:0 7px 0 #b7cee4,0 12px 18px #8d8e8925}
+.treasure-tile:nth-child(4n+3){background:linear-gradient(145deg,#fff,#fff0fa);border-color:#e9c5dc;box-shadow:0 7px 0 #e1c3d7,0 12px 18px #8d8e8925}
+.treasure-tile:nth-child(4n+4){background:linear-gradient(145deg,#fff,#e9f9e9);border-color:#c0e1bf;box-shadow:0 7px 0 #bddcbe,0 12px 18px #8d8e8925}
+.treasure-tile:not(:disabled):hover{transform:translateY(-4px);border-color:#f4aa65;box-shadow:0 11px 0 #efd1a0,0 16px 24px #917c8438}
+.treasure-tile:not(:disabled):active{transform:translateY(2px);box-shadow:0 3px 0 #d0c5b8}
+.treasure-tile:focus-visible,.treasure-controls button:focus-visible,.treasure-mission button:focus-visible{outline:4px solid #7653d7;outline-offset:4px}
+.treasure-tile:disabled{cursor:default;opacity:1}
+.treasure-tile-active{border-color:#f3ad52!important;box-shadow:0 0 0 5px #ffe5a5,0 7px 0 #ecc38d!important}
+.treasure-tile-done{background:linear-gradient(130deg,#e7fbe8,#f9fff0)!important;border-color:#8bcaa6!important;box-shadow:0 7px 0 #aad8b8!important}
+.treasure-tile-locked{filter:saturate(.65);background:linear-gradient(130deg,#f5f1fa,#ede8f6)!important;border-color:#d2c7dc!important}
+.treasure-tile-final{border-color:#bca4f1!important;background:linear-gradient(130deg,#f5edff,#fff4d6)!important}
+.treasure-tile-final.treasure-tile-done{background:linear-gradient(130deg,#fef6b9,#e2fae9)!important;border-color:#f1c66f!important}
+.treasure-spot-badge{font-size:11px;color:#8c7795;font-weight:850;background:#fff9;border-radius:50px;padding:3px 8px}
+.treasure-spot-icon{font-size:clamp(35px,4.3vw,60px);line-height:1.2;filter:drop-shadow(0 6px 5px #928f9442)}
+.treasure-tile strong{font-size:clamp(13px,1.4vw,19px);font-weight:950;line-height:1.3;overflow-wrap:anywhere}
+.treasure-tile small{font-size:clamp(10px,.95vw,13px);color:#8d8097;font-weight:750;line-height:1.3}
+.treasure-map-foot{position:relative;margin:15px 3px 1px;font-size:12px;line-height:1.6;color:#72917e;font-weight:780;text-align:center}
+.treasure-message{margin:0 16px 16px;padding:15px;border:2px solid #dfd0ea;background:#fff5ff;color:#7c5992;text-align:center;border-radius:15px;font-size:clamp(14px,1.6vw,19px);font-weight:900;line-height:1.55}
+.treasure-victory{margin:0 16px 20px;border:3px solid #f2d682;background:linear-gradient(135deg,#fff9cc,#fbe8f4,#e5f8e9);border-radius:20px;padding:22px;text-align:center}
+.treasure-victory span{display:block;font-size:clamp(40px,5vw,70px);animation:treasureFloat 1.2s ease-in-out infinite alternate}
+.treasure-victory h3{margin:8px 0;font-size:clamp(22px,2.7vw,36px);font-weight:950;color:#7a5593}
+.treasure-victory p{font-size:clamp(14px,1.6vw,19px);line-height:1.6;font-weight:850;color:#665d83}
+.treasure-mission{min-height:365px;display:flex;flex-direction:column;gap:13px;border:2px solid #e6d9eb;border-radius:24px;background:linear-gradient(150deg,#fffdf6,#f7f3ff);box-shadow:0 9px 25px #9d87b322;padding:22px;min-width:0}
+.treasure-mission-idle{align-items:center;justify-content:center;text-align:center}
+.treasure-mission-idle>div{font-size:65px}
+.treasure-mission-idle h3{font-size:clamp(20px,2.3vw,28px);color:#6c5890;font-weight:950;margin:6px 0}
+.treasure-mission-idle p{font-size:15px;line-height:1.6;color:#897c99;font-weight:700;margin:0}
+.treasure-mission-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.treasure-mission-head strong{font-size:clamp(16px,1.7vw,23px);font-weight:950;color:#76578c}
+.treasure-question{border:3px dashed #eac38a;border-radius:18px;background:linear-gradient(145deg,#fffefb,#fff6e1);padding:21px 15px;text-align:center;min-height:175px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.treasure-question span{font-size:15px;font-weight:900;color:#af8a4d}
+.treasure-question p{font-size:clamp(22px,2.3vw,36px);line-height:1.45;font-weight:950;color:#524575;overflow-wrap:anywhere;white-space:pre-wrap;margin:0}
+.treasure-hint,.treasure-answer{border-radius:15px;padding:14px 16px;font-size:clamp(15px,1.7vw,21px);line-height:1.55;font-weight:900;overflow-wrap:anywhere}
+.treasure-hint{background:#fff6d2;color:#907131}
+.treasure-answer{background:#e6f9ed;color:#337a54}
+.treasure-mission-help{text-align:center;font-size:12px;line-height:1.6;color:#857d97;font-weight:780}
+.treasure-mission-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:auto}
+.treasure-mission-actions .btn{min-height:52px;font-size:13px;font-weight:900;padding:8px 7px;white-space:normal}
+.treasure-controls{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:center;gap:9px;background:#fff;border:1px solid #e7dded;padding:14px;border-radius:17px}
+.treasure-controls .btn{min-height:43px;font-size:13px;font-weight:900}
+.treasure-controls .btn:disabled{opacity:.42;cursor:not-allowed}
+.treasure-editor{grid-column:1/-1}
+.treasure-editor h2{color:#695688;font-size:21px;margin:0 0 9px}
+.treasure-editor-help{color:#8b8198;line-height:1.65;font-size:13px;margin:8px 0 15px}
+.treasure-editor label{font-size:14px;font-weight:850;color:#6c5c83;display:grid;gap:7px;margin:14px 0}
+.treasure-editor input,.treasure-editor select,.treasure-editor textarea{width:100%;min-width:0;font-weight:550}
+.treasure-preset-row{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.treasure-preset-row label{flex:1 1 240px;max-width:460px}
+.treasure-questions-input{min-height:260px;resize:vertical;line-height:1.75;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px}
+.treasure-editor-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.treasure-privacy{grid-column:1/-1;text-align:center;color:#857c96;font-size:12px;line-height:1.5}
+.treasure-full-head{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#655487;font-weight:900;font-size:19px;grid-column:1/-1}
+body.treasure-fullscreen .sidebar,body.treasure-fullscreen .topbar,body.treasure-fullscreen .main-footer{display:none!important}
+body.treasure-fullscreen .app-shell{display:block}
+body.treasure-fullscreen .workarea{margin:0;min-height:100vh}
+body.treasure-fullscreen #content{max-width:none;padding:15px 19px 24px}
+body.treasure-fullscreen .treasure-layout{max-width:none}
+body.treasure-fullscreen .treasure-map-wrapper{padding:14px}
+body.treasure-fullscreen .treasure-tile{min-height:clamp(115px,16vh,190px)}
+body.treasure-fullscreen .treasure-mission{min-height:clamp(350px,65vh,850px)}
+body.treasure-fullscreen .treasure-controls{position:sticky;bottom:0;z-index:45;box-shadow:0 -8px 26px #71659c2d;background:#fffc;backdrop-filter:blur(8px)}
+@keyframes treasureFloat{from{transform:translateY(-4px) rotate(-4deg)}to{transform:translateY(5px) rotate(4deg)}}
+@media(max-width:1120px){.treasure-layout{grid-template-columns:1fr}.treasure-board{grid-column:1}.treasure-mission{grid-column:1;min-height:290px}.treasure-controls{grid-column:1}.treasure-hero h2{font-size:clamp(24px,4vw,38px)}}
+@media(max-width:640px){.treasure-hero{padding:16px}.treasure-mascot{font-size:42px}.treasure-stats{gap:5px}.treasure-stats span{font-size:10px;padding:5px 8px}.treasure-map-wrapper{margin:0 9px 12px;padding:11px}.treasure-grid{gap:9px}.treasure-tile{min-height:120px;padding:8px 4px;border-width:2px;border-radius:16px}.treasure-spot-icon{font-size:36px}.treasure-tile strong{font-size:12px}.treasure-tile small,.treasure-spot-badge{font-size:9px}.treasure-map-heading span{font-size:10px}.treasure-mission{padding:13px;min-height:265px}.treasure-question{padding:15px 10px;min-height:145px}.treasure-question p{font-size:clamp(20px,5vw,29px)}.treasure-mission-actions{gap:6px}.treasure-mission-actions .btn{font-size:11px;min-height:45px}.treasure-controls .btn{flex:1 1 42%;font-size:11px;padding:7px 5px}body.treasure-fullscreen #content{padding:7px 7px 20px}}
+@media(prefers-reduced-motion:reduce){.treasure-mascot,.treasure-victory span{animation:none!important}.treasure-tile{transition:none!important}}
