@@ -158,7 +158,7 @@ function trainBoard(){
   const bad=s.checked&&trainBadSlots.includes(i);
   return '<div class="train-wagon'+(id!==null?' train-wagon-filled':'')+(bad?' train-wagon-error':'')+'">'+
   '<span class="train-wagon-number">'+(i+1)+'번 칸</span>'+
-  '<button type="button" class="train-wagon-target" data-train-slot="'+i+'" aria-label="'+(i+1)+'번 칸'+(id===null?' 비어 있음':', '+escapeHtml(s.cards[id]))+'">'+
+  '<button type="button" class="train-wagon-target" data-train-slot="'+i+'" draggable="'+(id!==null&&!s.completed)+'" '+(id!==null?'data-train-card="'+id+'"':'') aria-label="'+(i+1)+'번 칸'+(id===null?' 비어 있음':', '+escapeHtml(s.cards[id]))+'">'+
   (id===null?'<span class="train-wagon-empty">여기에 쏙!</span>':'<span class="train-wagon-text">'+escapeHtml(s.cards[id])+'</span>')+'</button>'+
   (id!==null&&!s.completed?'<button type="button" class="train-wagon-remove" data-train-remove="'+i+'" aria-label="'+(i+1)+'번 칸 비우기">✕</button>':'')+
   '<div class="train-wheels" aria-hidden="true">⚫ ⚫</div></div>';
@@ -178,7 +178,7 @@ function trainControls(){
  (!s.completed?'<button type="button" class="btn btn-primary" id="trainCheck" '+(stat.placed!==stat.total?'disabled':'')+'>✅ 순서 확인하기</button>':'')+
  '<button type="button" class="btn btn-outline" id="trainHint">💡 '+(s.hintShown?'힌트 가리기':'힌트 보기')+'</button>'+
  '<button type="button" class="btn btn-outline" id="trainAnswer">🔑 '+(s.answerShown?'정답 가리기':'정답 공개')+'</button>'+
- (!s.completed?'<button type="button" class="btn btn-outline" id="trainUndo" '+(!stat.placed?'disabled':'')+'>↩ 마지막 카드 빼기</button>':'')+
+ (!s.completed?'<button type="button" class="btn btn-outline" id="trainUndo" '+(!stat.placed?'disabled':'')+'>↩ 오른쪽 카드 빼기</button>':'')+
  '<button type="button" class="btn btn-secondary" id="trainRestart">🔄 다시 시작</button>'+
  '<button type="button" class="btn btn-outline" id="trainShuffle">🎲 카드 다시 섞기</button>'+
  '<button type="button" class="btn btn-outline" id="trainFull">'+(trainFull?'✕ 관리 화면':'⛶ 전자칠판 크게')+'</button>'+
