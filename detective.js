@@ -55,7 +55,7 @@ function detectiveFromPreset(p){
  const questions=p.questions.map(x=>({markup:x[0],correction:x[1],hint:x[2],explanation:x[3]}));
  return {title:p.title,questions,order:questions.map((_,i)=>i),index:0,outcomes:[],mistakes:Array(questions.length).fill(0),hintShown:false,revealed:false,sound:true};
 }
-function makeDefaultDetective(){return detectiveFromPreset(DETECTIVE_PRESETS[3]);}
+function makeDefaultDetective(){return detectiveFromPreset(DETECTIVE_PRESETS[4]);}
 function normalizeDetective(raw){
  const d=makeDefaultDetective(),v=raw&&typeof raw==='object'?raw:{};
  const questions=Array.isArray(v.questions)?v.questions.slice(0,DETECTIVE_MAX).map(q=>({
