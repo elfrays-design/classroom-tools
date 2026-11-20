@@ -1,0 +1,61 @@
+/* 별이의 우주탐험 — 초등 교실 전자칠판 전용 */
+.space-layout{display:grid;gap:15px;max-width:1380px;margin:0 auto}
+.space-board{overflow:hidden;background:linear-gradient(160deg,#f5efff,#eaf5ff 58%,#fff8e9);border:2px solid #d8cafa;border-radius:25px;box-shadow:0 12px 34px #8879ac1a}
+.space-sky{position:relative;display:flex;justify-content:space-between;align-items:center;gap:14px;background:radial-gradient(ellipse at 85% 18%,#4a77b2 0,transparent 42%),linear-gradient(120deg,#453c90,#252e6e 70%,#354f91);color:#fff;padding:25px 29px;overflow:hidden}
+.space-sky-stars{position:absolute;inset:0;letter-spacing:26px;opacity:.35;pointer-events:none;white-space:nowrap;font-size:25px}
+.space-sky-title{position:relative;z-index:1}.space-sky-title>span{font-size:13px;font-weight:800;letter-spacing:.05em;color:#ffe8a9}
+.space-sky-title h2{font-size:clamp(25px,3.6vw,43px);line-height:1.25;margin:7px 0;font-weight:900;color:#fff}
+.space-sky-title p{font-size:13px;margin:0;color:#e1eaff;line-height:1.5}
+.space-sky-mascot{position:relative;font-size:clamp(44px,7.6vw,92px);filter:drop-shadow(0 8px 15px #0005);animation:spaceFloat 3s ease-in-out infinite alternate}
+.space-lanes{padding:20px;display:grid;gap:15px}
+.space-lane{border:2px solid #e4ddfa;border-radius:17px;padding:15px;background:#fffdfd;box-shadow:0 4px 12px #b9b0d51e}
+.space-lane-active{border-color:#ffa45e;background:linear-gradient(140deg,#fffdf9,#fff6ea)}
+.space-lane-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;color:#3a3c73;flex-wrap:wrap}
+.space-lane-head strong{font-weight:900;font-size:18px}.space-lane-head span{font-weight:900;font-size:14px;background:#eceeff;border-radius:99px;padding:6px 11px}
+.space-route{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:5px}
+.space-stop{position:relative;display:grid;justify-items:center;align-content:center;gap:6px;min-width:0;min-height:94px;border:1px solid #eee9fc;border-radius:12px;background:#f6f6fd;color:#817aa2;text-align:center;opacity:.58}
+.space-stop:not(:last-child)::after{content:'›';position:absolute;right:-8px;top:33px;z-index:2;font-size:18px;color:#a2a0c8;font-weight:900}
+.space-stop span{font-size:clamp(19px,3vw,34px);line-height:1.1}
+.space-stop small{font-weight:800;font-size:clamp(9px,.85vw,12px);line-height:1.3;word-break:keep-all;overflow-wrap:anywhere}
+.space-stop-done{opacity:1;background:#e6f8ee;color:#247552;border-color:#b4e1c7}
+.space-stop-here{opacity:1;background:linear-gradient(140deg,#fff8ca,#ffe3ac);border:2px solid #ffbe57;color:#654b31;box-shadow:0 3px 13px #ffcf5c4d;transform:translateY(-2px)}
+.space-stop-here span{animation:spaceRocket 1.2s ease-in-out infinite alternate;filter:drop-shadow(0 5px 5px #cd793e66)}
+.space-question{margin:0 20px 21px;padding:24px;border:2px solid #c5d9fb;border-radius:20px;background:#fff;box-shadow:0 8px 17px #9099bc1a;text-align:center}
+.space-question-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;font-weight:900;color:#7863bb;margin-bottom:13px}
+.space-question-meta strong{background:#fcefd8;color:#946027;padding:7px 15px;border-radius:30px}
+.space-question-text{font-size:clamp(24px,3.8vw,46px);font-weight:900;line-height:1.4;color:#333766;white-space:pre-wrap;overflow-wrap:anywhere;margin:18px 0 16px;min-height:72px}
+.space-hint,.space-answer{padding:13px 16px;border-radius:12px;margin:10px auto;max-width:880px;font-size:clamp(17px,2.5vw,27px);font-weight:850;line-height:1.5;overflow-wrap:anywhere}
+.space-hint{background:#fff7d6;color:#70572b}.space-answer{background:#e8f9eb;color:#22754a}
+.space-question-note{font-size:13px;color:#7d809e;margin:15px 0 0}
+.space-victory{margin:0 20px 22px;padding:20px;border:3px solid #ffdb78;border-radius:19px;text-align:center;background:linear-gradient(120deg,#fff9d6,#ffe9f4,#ecf9ff)}
+.space-victory span{display:block;font-size:clamp(40px,7vw,80px);animation:spaceFloat .9s ease-in-out infinite alternate}
+.space-victory h3{font-weight:900;color:#7f4995;font-size:clamp(25px,4vw,45px);margin:8px 0}
+.space-victory p{color:#665f88;font-weight:800}
+.space-controls{background:#fff;border:1px solid #e3dcf2;border-radius:18px;padding:14px;box-shadow:0 5px 17px #8b7fa51b}
+.space-control-buttons{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center}
+.space-control-buttons .btn{font-size:13px;font-weight:900;min-height:46px}
+.space-controls .btn:disabled{opacity:.4;cursor:not-allowed}
+.space-editor h2{font-size:21px;margin:0 0 9px;color:#50457d}
+.space-editor-note{font-size:13px;color:#747188;line-height:1.7;margin:6px 0 13px}
+.space-editor-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+.space-editor label{display:grid;gap:7px;font-size:13px;font-weight:850;color:#595473}
+.space-editor input,.space-editor select,.space-editor textarea{min-width:0;width:100%;font-weight:500}
+.space-names{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.space-question-label{margin-top:14px}
+.space-questions-input{min-height:220px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;line-height:1.65;resize:vertical}
+.space-editor-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.space-footnote{font-size:12px;color:#77728a;text-align:center}
+.space-full-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:18px;color:#55447f}
+body.space-fullscreen .sidebar,body.space-fullscreen .topbar,body.space-fullscreen .main-footer{display:none!important}
+body.space-fullscreen .app-shell{display:block}
+body.space-fullscreen .workarea{margin:0;min-height:100vh}
+body.space-fullscreen #content{max-width:none;padding:15px 20px 120px}
+body.space-fullscreen .space-layout{max-width:none}
+body.space-fullscreen .space-board{min-height:calc(100vh - 210px)}
+body.space-fullscreen .space-question-text{font-size:clamp(30px,4.3vw,64px)}
+body.space-fullscreen .space-controls{position:fixed;z-index:90;bottom:0;left:0;right:0;border-radius:0;box-shadow:0 -8px 25px #4039612d;background:#fffc;border:0;border-top:2px solid #ddd0f5;margin:0}
+@keyframes spaceFloat{from{transform:translateY(-4px) rotate(-3deg)}to{transform:translateY(6px) rotate(4deg)}}
+@keyframes spaceRocket{from{transform:translateY(-5px) rotate(-6deg)}to{transform:translateY(5px) rotate(5deg)}}
+@media(max-width:1000px){.space-route{grid-template-columns:repeat(3,minmax(0,1fr))}.space-stop:not(:last-child)::after{display:none}.space-editor-grid{grid-template-columns:1fr 1fr}.space-editor-grid>label:first-child{grid-column:1/-1}.space-names{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.space-sky{padding:16px}.space-lanes{padding:10px}.space-lane{padding:10px}.space-question{margin:0 10px 12px;padding:14px}.space-stop{min-height:68px}.space-question-meta{justify-content:center}.space-control-buttons .btn{flex:1 1 42%;font-size:12px;padding:8px 5px}.space-editor-grid{grid-template-columns:1fr}.space-editor-grid>label:first-child{grid-column:auto}.space-names{grid-template-columns:1fr 1fr}.space-sky-mascot{font-size:44px}body.space-fullscreen #content{padding:8px 8px 230px}body.space-fullscreen .space-controls{padding:8px}body.space-fullscreen .space-board{min-height:0}}
+@media(prefers-reduced-motion:reduce){.space-sky-mascot,.space-stop-here span,.space-victory span{animation:none}}
