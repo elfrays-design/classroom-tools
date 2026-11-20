@@ -1,0 +1,90 @@
+/* ⑥ 우리 반 생각 그래프 — 초등학교 교사 PC 전용 */
+.opinion-layout{max-width:1430px;margin:0 auto;display:grid;gap:15px}
+.opinion-board{background:linear-gradient(145deg,#fffdf3,#f0f7ff 62%,#fdf0f7);border:2px solid #e5daed;border-radius:26px;overflow:hidden;box-shadow:0 11px 34px #8b78ae24}
+.opinion-hero{display:flex;gap:15px;align-items:center;justify-content:space-between;padding:25px 28px;background:radial-gradient(ellipse at 85% 5%,#fff4c1,transparent 48%),linear-gradient(120deg,#f1e6fa,#e7f7ea 62%,#e3f0fe)}
+.opinion-hero>div:first-child{min-width:0}
+.opinion-hero span{font-size:13px;color:#9265a8;font-weight:900}
+.opinion-hero h2{font-size:clamp(26px,3.8vw,45px);font-weight:950;color:#5b4a90;line-height:1.3;margin:5px 0 10px;overflow-wrap:anywhere}
+.opinion-hero p{font-size:clamp(13px,1.5vw,19px);color:#73648d;font-weight:750;margin:0;line-height:1.5}
+.opinion-mascot{font-size:clamp(37px,6.2vw,77px);line-height:1.2;white-space:nowrap;filter:drop-shadow(0 7px 8px #89799d44);animation:opinionFloat 2.4s ease-in-out infinite alternate}
+.opinion-total{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:center;padding:19px;color:#635681}
+.opinion-total>span{font-size:17px;font-weight:900}
+.opinion-total>strong{font-size:clamp(25px,3vw,39px);color:#6550a1;font-weight:950;background:#fff6d5;border:2px solid #f2d9a1;padding:8px 24px;border-radius:20px}
+.opinion-total small{font-size:12px;color:#8b8198;font-weight:700}
+.opinion-chart-head{padding:12px 22px;display:flex;gap:11px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.opinion-chart-head h3{font-size:clamp(18px,2.1vw,25px);font-weight:950;color:#67558c;margin:0}
+.opinion-chart-switch{display:flex;flex-wrap:wrap;gap:7px}
+.opinion-chart-switch .btn{font-size:12px;font-weight:900;min-height:40px}
+.opinion-chart-area{background:#fff;border:2px solid #e7e1f2;border-radius:22px;margin:0 20px;padding:24px 23px;min-height:255px}
+.opinion-bars{display:grid;gap:22px}
+.opinion-bar-row{display:grid;grid-template-columns:minmax(100px,210px) minmax(50px,1fr) minmax(83px,115px);align-items:center;gap:15px}
+.opinion-bar-label{font-size:clamp(15px,1.7vw,22px);font-weight:900;color:#574b7c;line-height:1.4;overflow-wrap:anywhere}
+.opinion-bar-meter{height:43px;background:repeating-linear-gradient(90deg,#f7f5fd,#f7f5fd calc(25% - 1px),#e5e0ed 25%);border-radius:13px;overflow:hidden;border:1px solid #ede8f2}
+.opinion-bar-fill{height:100%;border-radius:11px;background:linear-gradient(90deg,#f6b8c6,#ef8cac);min-width:0;transition:width .25s ease-out;box-shadow:inset 0 -6px 10px #0001}
+.opinion-color-1{background:linear-gradient(90deg,#9bd6ba,#59be9d)}
+.opinion-color-2{background:linear-gradient(90deg,#a2c8fa,#7da8e8)}
+.opinion-color-3{background:linear-gradient(90deg,#ffe2a3,#eec06f)}
+.opinion-color-4{background:linear-gradient(90deg,#c8b1ff,#a48de6)}
+.opinion-color-5{background:linear-gradient(90deg,#b2e9e3,#6fcac6)}
+.opinion-bar-value{font-weight:950;font-size:clamp(16px,1.9vw,24px);color:#5d5087;text-align:right;white-space:nowrap}
+.opinion-bar-value small{display:block;font-weight:750;font-size:13px;color:#8d8497}
+.opinion-interpretation{text-align:center;margin:20px;background:#fff4d9;color:#876034;border:1px solid #f1d7a3;border-radius:16px;padding:14px;font-size:clamp(15px,1.8vw,22px);font-weight:900;line-height:1.5;overflow-wrap:anywhere}
+.opinion-pictures{display:grid;gap:15px}
+.opinion-unit{margin:0;color:#665686;background:#f6f0ff;border-radius:12px;padding:11px 14px;font-size:14px;line-height:1.55;font-weight:750}
+.opinion-picture-row{display:grid;grid-template-columns:minmax(110px,210px) minmax(50px,1fr) 90px;gap:12px;align-items:center;border-bottom:1px dashed #e7dfed;padding:11px 2px}
+.opinion-picture-label{font-size:clamp(15px,1.8vw,22px);font-weight:900;color:#635582;line-height:1.4;overflow-wrap:anywhere}
+.opinion-picture-icons{display:flex;flex-wrap:wrap;gap:3px 5px;align-items:center;min-height:40px;font-size:clamp(24px,2.8vw,35px)}
+.opinion-picture-icons>span{line-height:1.25}
+.opinion-no-votes{font-size:13px;color:#a19aae;font-weight:700}
+.opinion-remain{font-weight:900!important;font-size:15px!important;color:#9b6886;background:#fff3e6;border-radius:99px;padding:5px 9px}
+.opinion-picture-count{text-align:right;font-size:clamp(17px,2vw,25px);color:#615084;font-weight:950;white-space:nowrap}
+.opinion-vote-panel{background:#fff;border:2px solid #e4d8ef;border-radius:22px;padding:20px;box-shadow:0 6px 22px #9375b31c}
+.opinion-section-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:15px}
+.opinion-section-head h3{font-size:21px;font-weight:950;color:#685387;margin:0}
+.opinion-section-head span{font-size:12px;color:#898095;font-weight:750}
+.opinion-vote-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.opinion-vote-card{border:2px solid #efcfdf;background:linear-gradient(125deg,#fff,#fff2f6);padding:17px;border-radius:19px;display:flex;justify-content:space-between;align-items:center;gap:12px;min-width:0}
+.opinion-vote-1{border-color:#bee3d4;background:linear-gradient(125deg,#fff,#effbf3)}
+.opinion-vote-2{border-color:#c4dafa;background:linear-gradient(125deg,#fff,#eff6ff)}
+.opinion-vote-3{border-color:#f7dfa5;background:linear-gradient(125deg,#fff,#fff8e6)}
+.opinion-vote-4{border-color:#d6c3fa;background:linear-gradient(125deg,#fff,#f7f1ff)}
+.opinion-vote-5{border-color:#b9e8df;background:linear-gradient(125deg,#fff,#edfffa)}
+.opinion-vote-label{font-size:clamp(16px,1.65vw,22px);font-weight:950;color:#5c5080;line-height:1.4;overflow-wrap:anywhere;min-width:0}
+.opinion-vote-controls{display:flex;gap:7px;align-items:center;flex:0 0 auto}
+.opinion-vote-controls button{border:0;border-radius:13px;min-width:53px;min-height:52px;cursor:pointer;font-size:25px;font-weight:950;touch-action:manipulation}
+.opinion-plus{background:#7170db;color:#fff;box-shadow:0 4px 0 #4d4ba4}
+.opinion-minus{background:#f4eaf5;color:#7a5b8d;border:1px solid #ddcce8!important;font-size:28px!important}
+.opinion-vote-controls button:disabled{opacity:.36;cursor:not-allowed}
+.opinion-count-input{width:75px!important;min-height:52px!important;text-align:center!important;font-size:clamp(18px,2.2vw,25px)!important;font-weight:950!important;color:#5a497f!important;padding:5px!important;appearance:textfield}
+.opinion-count-input::-webkit-inner-spin-button,.opinion-count-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.opinion-controls{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;background:#fff;border:1px solid #e8dfed;border-radius:17px;padding:14px}
+.opinion-controls .btn{min-height:42px;font-size:13px;font-weight:850}
+.opinion-controls .btn:disabled{opacity:.42;cursor:not-allowed}
+.opinion-editor h2{font-size:22px;color:#695789;margin:0 0 12px}
+.opinion-editor p{font-size:13px;color:#80788f;line-height:1.6}
+.opinion-editor label{display:grid;gap:8px;font-size:14px;font-weight:900;color:#675a80;margin:10px 0}
+.opinion-editor input,.opinion-editor select,.opinion-editor textarea{width:100%;min-width:0;font-weight:500}
+.opinion-presets{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:15px 0}
+.opinion-presets label{flex:1 1 240px;max-width:510px}
+.opinion-options-input{min-height:170px;resize:vertical;line-height:1.65;font-size:15px}
+.opinion-archive-list{display:grid;gap:10px}
+.opinion-archive-item{border:1px solid #e5ddec;background:#fdfaff;padding:12px 16px;border-radius:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:11px}
+.opinion-archive-item>div:first-child{flex:1;min-width:190px;display:grid;gap:6px}
+.opinion-archive-item strong{font-size:15px;color:#5a4b7e;font-weight:900;overflow-wrap:anywhere}
+.opinion-archive-item small{font-size:12px;color:#8d849a}
+.opinion-archive-actions{display:flex;gap:7px;flex-wrap:wrap}
+.opinion-empty{text-align:center;color:#9b90a7;font-size:14px;padding:13px}
+.opinion-footnote{text-align:center;font-size:12px;color:#877c90}
+.opinion-full-head{display:flex;justify-content:space-between;align-items:center;gap:9px;color:#665488;font-size:19px;font-weight:900}
+body.opinion-fullscreen .sidebar,body.opinion-fullscreen .topbar,body.opinion-fullscreen .main-footer{display:none!important}
+body.opinion-fullscreen .app-shell{display:block}
+body.opinion-fullscreen .workarea{margin:0;min-height:100vh}
+body.opinion-fullscreen #content{max-width:none;padding:12px 17px 105px}
+body.opinion-fullscreen .opinion-layout{max-width:none}
+body.opinion-fullscreen .opinion-chart-area{min-height:290px}
+body.opinion-fullscreen .opinion-vote-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+body.opinion-fullscreen .opinion-controls{position:sticky;bottom:0;z-index:65;box-shadow:0 -6px 25px #8779a625;background:#fffc;backdrop-filter:blur(10px)}
+@keyframes opinionFloat{from{transform:rotate(-4deg) translateY(-4px)}to{transform:rotate(4deg) translateY(5px)}}
+@media(max-width:1050px){.opinion-vote-grid,body.opinion-fullscreen .opinion-vote-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.opinion-vote-card{padding:11px}.opinion-vote-controls{gap:4px}.opinion-vote-controls button{min-width:46px}}
+@media(max-width:760px){.opinion-hero{padding:18px 14px}.opinion-mascot{font-size:41px}.opinion-chart-area{margin:0 10px;padding:16px 10px}.opinion-bar-row{grid-template-columns:minmax(72px,110px) minmax(35px,1fr) minmax(58px,75px);gap:7px}.opinion-bar-label{font-size:13px}.opinion-bar-meter{height:33px}.opinion-bar-value{font-size:14px}.opinion-bar-value small{font-size:10px}.opinion-picture-row{grid-template-columns:minmax(66px,105px) minmax(40px,1fr) 52px;gap:5px}.opinion-picture-label{font-size:13px}.opinion-picture-icons{font-size:21px}.opinion-picture-count{font-size:14px}.opinion-vote-grid,body.opinion-fullscreen .opinion-vote-grid{grid-template-columns:1fr}.opinion-vote-card{min-height:78px}.opinion-chart-head{padding:10px}.opinion-chart-switch .btn{font-size:11px}.opinion-total small{width:100%;text-align:center}.opinion-section-head h3{font-size:18px}body.opinion-fullscreen #content{padding:8px 7px 140px}body.opinion-fullscreen .opinion-vote-grid{grid-template-columns:1fr}.opinion-controls .btn{flex:1 1 42%}}
+@media(prefers-reduced-motion:reduce){.opinion-mascot{animation:none!important}.opinion-bar-fill{transition:none!important}}
