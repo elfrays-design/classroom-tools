@@ -461,7 +461,7 @@ function renderHome(){
  ).join('')+'</div></section>'+
  '<section class="refined-section refined-games-section" aria-label="교실 놀이 및 게임 바로가기">'+
  '<div class="refined-section-heading"><div><span class="refined-section-kicker">CLASSROOM GAMES</span><h2>별이와 송이의 교실 놀이</h2>'+
- '<p>아이들과 바로 시작하는 10가지 참여형 놀이·게임</p></div>'+
+ '<p>아이들과 바로 시작하는 11가지 참여형 놀이·게임</p></div>'+
  '<button type="button" class="refined-view-all" data-view="games">게임 전체 보기 <span aria-hidden="true">→</span></button></div>'+
  '<div class="refined-games-grid">'+featured.map(t=>
  '<div class="refined-game-card-wrap"><button type="button" class="refined-game-card" data-view="'+t.id+'" aria-label="'+escapeHtml(t.title)+' 실행">'+
