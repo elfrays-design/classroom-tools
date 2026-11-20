@@ -411,11 +411,45 @@ function boardFieldInput(el){const b=activeBoard();if(el.dataset.boardField!==un
 
 function renderHome(){
  const c=activeClass(),count=c.students.length,part=participants().length;
- return '<div class="compact-home">'+
- '<section class="compact-home-intro"><div class="compact-home-title"><span>✨ 별이와 송이가 함께해요</span><h1>우리 반 수업도구 상자</h1><p>수업에 필요한 도구를 분야별로 골라 바로 사용하세요.</p></div>'+
- '<div class="compact-home-stats"><div><small>현재 학급</small><strong>'+escapeHtml(c.name)+'</strong></div><div><small>등록 학생</small><strong>'+count+'명</strong></div><div><small>참여 대상</small><strong>'+part+'명</strong></div><button type="button" class="btn btn-outline btn-small" data-view="roster">학급 명단 관리</button></div></section>'+
- '<div class="compact-group-grid">'+toolGroups.map(g=>compactGroup(g,true)).join('')+'</div>'+
- '<p class="compact-home-footnote">🔒 학생 명단과 수업 기록은 현재 기기의 브라우저에 저장됩니다. 다른 PC에서 사용하려면 백업·복원 기능을 이용하세요.</p></div>';
+ const featuredIds=['space','basket','train','detective','story','opinion','treasure','number','charades','coop'];
+ const featured=featuredIds.map(id=>tools.find(t=>t.id===id)).filter(Boolean);
+ return '<div class="refined-home">'+
+ '<section class="refined-hero" aria-label="수업도구 소개">'+
+ '<div class="refined-hero-copy"><span class="refined-overline">✨ 선생님의 수업 파트너</span>'+
+ '<h1>별이와 송이의<br><em>수업도구 상자</em></h1>'+
+ '<p>수업 준비는 더 간편하게, 우리 반 활동은 더 즐겁게.<br>필요한 도구를 골라 바로 시작해 보세요.</p>'+
+ '<div class="refined-hero-buttons"><button type="button" class="btn btn-primary" data-view="games">🎮 교실 놀이 시작하기</button>'+
+ '<button type="button" class="btn btn-outline" data-view="classflow">수업 진행 도구 보기</button></div>'+
+ '<div class="refined-hero-tags"><span>✓ 회원가입 없이</span><span>✓ 전자칠판에 맞게</span><span>✓ PC에 자동 저장</span></div></div>'+
+ '<div class="refined-hero-art"><div class="refined-mascot-wrap"><img src="./byeol-songi-custom.jpg" alt="별이와 송이 캐릭터" loading="eager" decoding="async"></div>'+
+ '<span class="refined-mascot-bubble refined-bubble-1" aria-hidden="true">⭐</span>'+
+ '<span class="refined-mascot-bubble refined-bubble-2" aria-hidden="true">🌸</span></div></section>'+
+ '<section class="refined-class-strip" aria-label="현재 학급 현황">'+
+ '<div class="refined-class-item"><span class="refined-strip-icon">🏫</span><span><small>현재 학급</small><strong>'+escapeHtml(c.name)+'</strong></span></div>'+
+ '<div class="refined-class-item"><span class="refined-strip-icon">👧</span><span><small>등록 학생</small><strong>'+count+'명</strong></span></div>'+
+ '<div class="refined-class-item"><span class="refined-strip-icon">🙋</span><span><small>참여 대상</small><strong>'+part+'명</strong></span></div>'+
+ '<button type="button" class="refined-class-manage" data-view="roster">학급 명단 관리 <span aria-hidden="true">→</span></button>'+
+ '</section>'+
+ '<section class="refined-section" aria-label="수업도구 분야">'+
+ '<div class="refined-section-heading"><div><span class="refined-section-kicker">CATEGORIES</span><h2>어떤 수업을 준비하시나요?</h2><p>필요한 도구를 분야별로 쉽게 찾아보세요.</p></div></div>'+
+ '<div class="refined-category-grid">'+toolGroups.map((g,i)=>
+ '<button type="button" class="refined-category-card refined-category-'+(i+1)+'" data-view="'+g.id+'" aria-label="'+escapeHtml(g.label)+' 도구 보기">'+
+ '<span class="refined-category-icon" aria-hidden="true">'+g.icon+'</span>'+
+ '<span class="refined-category-info"><strong>'+escapeHtml(g.label)+'</strong><small>'+escapeHtml(g.hint)+'</small>'+
+ '<span class="refined-category-bottom">'+g.items.length+'개 도구 <b aria-hidden="true">→</b></span></span></button>'
+ ).join('')+'</div></section>'+
+ '<section class="refined-section refined-games-section" aria-label="교실 놀이 및 게임 바로가기">'+
+ '<div class="refined-section-heading"><div><span class="refined-section-kicker">CLASSROOM GAMES</span><h2>별이와 송이의 교실 놀이</h2>'+
+ '<p>아이들과 바로 시작하는 10가지 참여형 놀이·게임</p></div>'+
+ '<button type="button" class="refined-view-all" data-view="games">게임 전체 보기 <span aria-hidden="true">→</span></button></div>'+
+ '<div class="refined-games-grid">'+featured.map(t=>
+ '<button type="button" class="refined-game-card" data-view="'+t.id+'" aria-label="'+escapeHtml(t.title)+' 실행">'+
+ '<span class="refined-game-icon" style="--game-color:'+t.color+'" aria-hidden="true">'+t.icon+'</span>'+
+ '<span class="refined-game-info"><strong>'+escapeHtml(t.title)+'</strong><small>'+escapeHtml(t.desc)+'</small></span>'+
+ '<span class="refined-game-go" aria-hidden="true">→</span></button>'
+ ).join('')+'</div></section>'+
+ '<p class="refined-home-footnote">🔒 학생 명단과 활동 기록은 이 PC의 브라우저에만 저장됩니다. 다른 기기에서 사용하려면 상단 백업·복원 기능을 이용하세요.</p>'+
+ '</div>';
 }
 function renderRoster(){const c=activeClass();const present=participants().length;return `${title('수업 준비','학급 명단 관리','한 번 등록한 명단을 여러 수업도구에서 공통으로 사용합니다.','📋')}<div class="two-col"><section class="panel"><h2>학생 추가</h2><p class="panel-sub">한 명씩 추가하거나 이름 목록을 한 번에 붙여넣으세요.</p><form id="addOneForm"><label for="studentName" class="form-label">학생 이름</label><div class="field-row"><input class="field" id="studentName" maxlength="60" placeholder="이름 입력" autocomplete="off" required/><button class="btn btn-primary" type="submit">＋ 추가</button></div></form><div class="soft-divider"></div><form id="addBulkForm"><label for="bulkNames" class="form-label">여러 명 한꺼번에 추가</label><textarea class="field textarea" id="bulkNames" placeholder="김○○\n이○○\n박○○\n(한 줄에 한 명)" maxlength="30000"></textarea><div class="field-row" style="justify-content:space-between;margin-top:11px"><span class="helper">중복 이름은 같은 이름으로 보아 추가하지 않습니다.</span><button class="btn btn-secondary" type="submit">일괄 등록</button></div></form></section><section class="panel"><h2>학급 설정</h2><p class="panel-sub">학급 이름을 변경하거나 현재 학급을 관리합니다.</p><form id="renameClassForm"><label for="className" class="form-label">학급 이름</label><div class="field-row"><input id="className" class="field" maxlength="60" value="${escapeHtml(c.name)}" required/><button class="btn btn-outline" type="submit">변경</button></div></form><div class="soft-divider"></div><div class="roster-summary">전체 <strong>${c.students.length}명</strong> · 참여 <strong>${present}명</strong> · 제외 <strong>${c.students.length-present}명</strong></div><p class="helper">학생 이름 옆의 ✓를 누르면 결석 등으로 오늘 활동에서 제외할 수 있습니다.</p><div class="btn-group" style="margin-top:17px"><button class="btn btn-outline" id="includeAllBtn">모두 참여</button><button class="btn btn-outline" id="exportRosterBtn">CSV 저장</button><button class="btn btn-danger" id="deleteClassBtn">이 학급 삭제</button></div></section></div><section class="panel"><div class="part-actions"><h2 style="margin:0">등록된 학생 (${c.students.length}명)</h2><button class="btn btn-outline btn-small" id="sampleBtn">예시 학생 8명 등록</button></div>${c.students.length?`<div class="student-list">${c.students.map(s=>`<span class="student-chip ${s.included===false?'muted':''}"><button class="present-toggle" data-toggle-student="${escapeHtml(s.id)}" type="button" title="참여 여부 전환" aria-label="${escapeHtml(s.name)} 참여 여부 전환">${s.included===false?'−':'✓'}</button>${escapeHtml(s.name)}<button class="remove" data-remove-student="${escapeHtml(s.id)}" type="button" title="학생 삭제" aria-label="${escapeHtml(s.name)} 삭제">×</button></span>`).join('')}</div>`:`<div class="empty"><span class="emoji">👩‍🏫</span><strong>아직 등록된 학생이 없습니다.</strong><p>왼쪽 입력란에서 학생을 등록하거나 예시 명단으로 먼저 체험해 보세요.</p></div>`}</section>`;}
 function raceAnimal(id){const idx=activeClass().students.findIndex(s=>s.id===id);return raceAnimals[(idx<0?0:idx)%raceAnimals.length];}
