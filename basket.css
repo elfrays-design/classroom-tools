@@ -1,0 +1,79 @@
+/* 송이의 분류 바구니 — 교실 전자칠판 · 반응형 */
+.basket-layout{display:grid;gap:14px;max-width:1400px;margin:0 auto}
+.basket-board{border:2px solid #e3d4ef;border-radius:25px;overflow:hidden;background:linear-gradient(165deg,#fff8e9,#f8f4ff 60%,#e6f8f7);box-shadow:0 12px 32px #9283b022}
+.basket-hero{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:25px 30px;background:radial-gradient(ellipse at 70% 20%,#fff0ac 0%,transparent 43%),linear-gradient(125deg,#fbe8fb,#e2f7ec 70%,#dbeaff);color:#594b83}
+.basket-hero small{display:block;color:#8c6095;font-weight:900;font-size:13px}
+.basket-hero h2{font-size:clamp(25px,3.5vw,43px);font-weight:950;line-height:1.25;margin:7px 0;color:#5b4b89}
+.basket-hero p{margin:0;color:#72618b;font-weight:700;font-size:14px;line-height:1.5}
+.basket-mascot{font-size:clamp(43px,7vw,85px);line-height:1.15;filter:drop-shadow(0 9px 9px #8b72a655);animation:basketWiggle 2.5s ease-in-out infinite alternate;white-space:nowrap}
+.basket-game-meta{display:flex;flex-wrap:wrap;gap:7px 12px;align-items:center;justify-content:space-around;padding:14px 20px;color:#615581;font-weight:900;font-size:14px}
+.basket-game-meta span{padding:7px 11px;border-radius:99px;background:#fff9;box-shadow:0 2px 8px #b6aac423}
+.basket-progress-track{height:13px;background:#e8e3f4;margin:0 20px;border-radius:99px;overflow:hidden}
+.basket-progress-track>span{display:block;height:100%;background:linear-gradient(90deg,#f6aa5b,#e98bbd,#8ccbd0);border-radius:99px;transition:width .3s}
+.basket-stage{display:flex;align-items:center;flex-direction:column;justify-content:center;padding:18px 16px 4px;min-height:240px}
+.basket-current-label{font-size:15px;font-weight:900;color:#9a6298;margin:3px 0 13px}
+.basket-item-card{width:min(600px,95%);min-height:158px;display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center;text-align:center;background:linear-gradient(155deg,#fff,#fff6d9);border:4px solid #ffc77f;border-radius:24px;padding:20px 18px;box-shadow:0 11px 0 #f6e6cd,0 15px 28px #ab9cba26;cursor:grab;transition:transform .2s,box-shadow .2s;touch-action:manipulation}
+.basket-item-card:hover{transform:translateY(-4px);box-shadow:0 14px 0 #f6e6cd,0 18px 32px #ab9cba30}
+.basket-item-card:active,.basket-item-selected{transform:scale(.98);background:#fff6d1}
+.basket-item-card:focus-visible,.basket-target:focus-visible{outline:4px solid #7158e7;outline-offset:4px}
+.basket-item-card strong{font-size:clamp(24px,4.2vw,50px);font-weight:950;line-height:1.35;color:#4f4480;overflow-wrap:anywhere;white-space:pre-wrap}
+.basket-item-card small{font-size:13px;font-weight:750;color:#806994;line-height:1.45}
+.basket-card-sparkles{font-size:22px;line-height:1;color:#f1b655;letter-spacing:.2em}
+.basket-being-dragged{opacity:.5}.basket-item-tryagain{animation:basketShake .3s ease-out}
+.basket-stage-arrow{color:#cd9cc1;font-size:33px;line-height:1;margin:18px 0 0;animation:basketDown 1s ease-in-out infinite alternate}
+.basket-feedback{margin:6px 24px 12px;border-radius:14px;padding:12px 18px;font-weight:900;font-size:clamp(15px,2vw,21px);text-align:center;line-height:1.5}
+.basket-feedback-correct{background:#e8faea;color:#2a7857}.basket-feedback-wrong{background:#fff1e4;color:#986125}
+.basket-feedback-skip{background:#f4f0ff;color:#75609b}
+.basket-targets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;padding:15px 19px 18px}
+.basket-targets-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.basket-targets-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.basket-target{display:flex;flex-direction:column;align-items:center;justify-content:start;gap:8px;min-height:184px;text-align:center;cursor:pointer;border:3px dashed #dbbad2;background:linear-gradient(155deg,#fff,#fff3f2);padding:18px 12px;border-radius:22px;color:#78506a;transition:transform .18s,box-shadow .18s,border-color .18s;min-width:0;touch-action:manipulation}
+.basket-target-1{background:linear-gradient(155deg,#fff,#edfff1);border-color:#b9dfc1;color:#3d805c}
+.basket-target-2{background:linear-gradient(155deg,#fff,#eef3ff);border-color:#c5d4f8;color:#4c6ba0}
+.basket-target-3{background:linear-gradient(155deg,#fff,#f7efff);border-color:#dfc7f4;color:#8357a6}
+.basket-target:hover,.basket-drop-hover{transform:translateY(-5px);box-shadow:0 12px 27px #9c85b639;border-style:solid;border-color:#edaa53}
+.basket-bucket-icon{font-size:clamp(42px,5.7vw,68px);line-height:1.15;filter:drop-shadow(0 6px 3px #c7a89948)}
+.basket-target strong{font-size:clamp(18px,2.2vw,26px);font-weight:950;overflow-wrap:anywhere;line-height:1.3}
+.basket-target small{font-size:12px;font-weight:900;opacity:.7}
+.basket-bucket-help{font-size:13px;color:#8b899e;font-weight:750;line-height:1.5}
+.basket-collected{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;align-content:start;min-height:32px}
+.basket-collected span{background:#fff;border:1px solid #e6ddf0;border-radius:50px;padding:4px 7px;font-size:12px;font-weight:750;max-width:100%;overflow-wrap:anywhere}
+.basket-board-instruction{text-align:center;margin:0 16px 20px;font-size:13px;line-height:1.65;color:#89819b;font-weight:650}
+.basket-finish{margin:16px 20px;padding:28px 20px;text-align:center;border-radius:20px;background:linear-gradient(120deg,#fff9d4,#ffeaf2,#e4f8f3);border:3px solid #f5d584;color:#654c83}
+.basket-finish div{font-size:clamp(38px,7vw,75px);animation:basketWiggle 1.3s ease-in-out infinite alternate}
+.basket-finish h3{font-size:clamp(24px,3.4vw,41px);font-weight:950;margin:9px 0}
+.basket-finish p{font-size:clamp(15px,2vw,21px);font-weight:800;line-height:1.5}
+.basket-controls{background:#fff;border:1px solid #e9dded;padding:14px;border-radius:17px;box-shadow:0 5px 12px #aa9fba20}
+.basket-control-buttons{display:flex;justify-content:center;gap:8px;align-items:center;flex-wrap:wrap}
+.basket-control-buttons .btn{min-height:44px;font-size:13px;font-weight:900}
+.basket-control-buttons .btn:disabled{opacity:.4;cursor:not-allowed}
+.basket-editor h2{font-size:21px;color:#61527d;margin:0 0 10px}
+.basket-editor-note{font-size:13px;color:#777188;line-height:1.65;margin:8px 0 14px}
+.basket-preset-row{display:flex;gap:11px;align-items:end;flex-wrap:wrap;margin:16px 0}
+.basket-preset-row label{flex:1 1 220px;max-width:390px}
+.basket-editor label{display:grid;gap:6px;font-size:13px;font-weight:900;color:#625c7b}
+.basket-editor-grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin:14px 0}
+.basket-editor input,.basket-editor select,.basket-editor textarea{width:100%;min-width:0;font-weight:500}
+.basket-category-editor{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.basket-category-editor [hidden]{display:none!important}
+.basket-items-label{display:block;margin-top:17px}
+.basket-items-editor{resize:vertical;min-height:220px;font-size:14px;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.basket-editor-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+.basket-privacy-note{text-align:center;color:#8c8597;font-size:12px}
+.basket-full-head{display:flex;justify-content:space-between;align-items:center;gap:10px;color:#65547e;font-size:19px}
+body.basket-fullscreen .sidebar,body.basket-fullscreen .topbar,body.basket-fullscreen .main-footer{display:none!important}
+body.basket-fullscreen .app-shell{display:block}
+body.basket-fullscreen .workarea{margin:0;min-height:100vh}
+body.basket-fullscreen #content{max-width:none;padding:14px 20px 120px}
+body.basket-fullscreen .basket-layout{max-width:none}
+body.basket-fullscreen .basket-stage{min-height:clamp(240px,28vh,390px)}
+body.basket-fullscreen .basket-item-card{min-height:clamp(160px,22vh,230px)}
+body.basket-fullscreen .basket-item-card strong{font-size:clamp(30px,4.6vw,64px)}
+body.basket-fullscreen .basket-target{min-height:clamp(160px,20vh,260px)}
+body.basket-fullscreen .basket-controls{position:fixed;bottom:0;left:0;right:0;z-index:90;border-radius:0;margin:0;border:0;border-top:2px solid #e5d5e9;background:#fffffff0;backdrop-filter:blur(12px);box-shadow:0 -7px 24px #5f54732a}
+@keyframes basketWiggle{from{transform:rotate(-3deg) translateY(-4px)}to{transform:rotate(3deg) translateY(5px)}}
+@keyframes basketDown{from{transform:translateY(-3px)}to{transform:translateY(5px)}}
+@keyframes basketShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@media(max-width:950px){.basket-targets-4{grid-template-columns:repeat(2,minmax(0,1fr))}.basket-category-editor{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.basket-hero{padding:17px 14px}.basket-hero p{font-size:12px}.basket-game-meta{font-size:12px;padding:10px}.basket-stage{min-height:195px}.basket-item-card{min-height:145px}.basket-targets{padding:9px;gap:8px}.basket-target{min-height:140px;padding:11px 5px;border-width:2px}.basket-bucket-icon{font-size:39px}.basket-targets-3,.basket-targets-4{grid-template-columns:repeat(2,minmax(0,1fr))}.basket-editor-grid,.basket-category-editor{grid-template-columns:1fr 1fr}.basket-editor-grid label:first-child{grid-column:1/-1}.basket-control-buttons .btn{flex:1 1 42%;font-size:11px;padding:8px 6px}.basket-mascot{font-size:36px}body.basket-fullscreen #content{padding:7px 7px 230px}body.basket-fullscreen .basket-controls{padding:8px}.basket-collected span{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.basket-mascot,.basket-stage-arrow,.basket-finish div{animation:none}.basket-item-card,.basket-target,.basket-progress-track>span{transition:none}}
