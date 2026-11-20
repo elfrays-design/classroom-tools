@@ -260,7 +260,7 @@ function coopBoard(){
  '<span>'+s.size+'×'+s.size+' 퍼즐</span></div>'+
  '<div class="coop-grid coop-grid-'+s.size+(s.hint?' coop-grid-hint':'')+'" style="--coop-grid-size:'+s.size+'">'+
  Array.from({length:stat.total},(_,i)=>'<button type="button" class="coop-slot'+(s.slots[i]!==null?' coop-slot-filled':'')+
-  (coopWrong===i?' coop-slot-wrong':'')+'" data-coop-slot="'+i+'" aria-label="퍼즐 위치 '+(i+1)+(s.slots[i]!==null?' 조각 완료':' 비어 있음')+'"'+(stat.finished?' disabled':'')+'>'+
+  (coopWrong===i?' coop-slot-wrong':'')+'" data-coop-slot="'+i+'" aria-label="퍼즐 위치 '+(i+1)+(s.slots[i]!==null?' 조각 완료':' 비어 있음')+'"'+(stat.finished?' disabled':'')+(s.hint&&s.slots[i]===null?' style="'+coopPiecePos(i,s.size)+'"':'')+'>'+
  (s.slots[i]!==null?'<span class="coop-piece-art" aria-hidden="true" style="'+coopPiecePos(i,s.size)+'"></span>':
  '<span class="coop-slot-number">'+(i+1)+'</span>')+'</button>').join('')+'</div>'+
  '<p class="coop-target-help">'+(s.hint?'💡 원본 그림을 참고해 보세요.':'👆 아래에서 조각을 선택하고 위의 알맞은 칸을 눌러 주세요.')+'</p></div>'+
