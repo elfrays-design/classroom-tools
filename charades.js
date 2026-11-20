@@ -12,7 +12,7 @@ const CHARADES_DURATIONS=[30,60,90,120];
 let charadesFull=false,charadesEditorOpen=false,charadesTickId=null,charadesDeadline=0,charadesUndoData=null,charadesNotice='';
 function charadesDefaultPools(){return Object.fromEntries(CHARADES_CATEGORIES.map(x=>[x.id,x.words.slice()]));}
 function charadesNew(){return {category:'animals',pools:charadesDefaultPools(),duration:60,remaining:60,
- teamCount:1,teamNames:['우리 반','1모둠','2모둠','3모둠'],scores:[0,0,0,0],team:0,
+ teamCount:1,teamNames:['1모둠','2모둠','3모둠','4모둠'],scores:[0,0,0,0],team:0,
  phase:'ready',current:null,used:[],reveal:false,correct:0,passed:0,turnCorrect:0,turnPassed:0,turns:0,sound:true};}
 function makeDefaultCharades(){return charadesNew();}
 function charadesPoolItems(s){
@@ -52,6 +52,7 @@ function normalizeCharades(raw){
  return state;
 }
 function charadesState(){const c=activeClass();return c.charades||(c.charades=makeDefaultCharades());}
+function charadesName(s,i){return s.teamCount===1?'우리 반':s.teamNames[i];}
 function charadesStopClock(){if(charadesTickId!==null){clearInterval(charadesTickId);charadesTickId=null;}charadesDeadline=0;}
 function charadesRefreshClock(){
  const s=charadesState(),el=document.getElementById('charadesSeconds'),bar=document.getElementById('charadesTimerFill');
@@ -77,7 +78,7 @@ function charadesPause(){
 function charadesFinish(){
  const s=charadesState();if(s.phase==='ended')return;
  charadesStopClock();s.phase='ended';s.remaining=0;s.reveal=false;s.turns++;
- charadesNotice='⏰ 시간이 끝났어요! '+s.teamNames[s.team]+'의 도전을 마쳤어요.';
+ charadesNotice='⏰ 시간이 끝났어요! '+charadesName(s,s.team)+'의 도전을 마쳤어요.';
  if(s.sound){soundUnlock();beep();}
  save();render();
 }
@@ -141,7 +142,7 @@ function charadesNextTurn(){
  }
  charadesStopClock();s.team=s.teamCount===1?0:(s.team+1)%s.teamCount;
  s.phase='ready';s.remaining=s.duration;s.turnCorrect=0;s.turnPassed=0;s.reveal=false;
- charadesPickNew(s);charadesUndoData=null;charadesNotice='🎭 '+s.teamNames[s.team]+'의 새로운 차례예요!';
+ charadesPickNew(s);charadesUndoData=null;charadesNotice='🎭 '+charadesName(s,s.team)+'의 새로운 차례예요!';
  save();render();
 }
 function charadesResetScores(){
@@ -210,12 +211,12 @@ function charadesBoard(){
  return '<section class="charades-board" aria-label="몸으로 표현해요 몸짓 게임">'+
  '<div class="charades-hero"><div><span>🎭 별이와 송이의 신나는 몸짓 놀이!</span><h2>몸으로 표현해요!</h2>'+
  '<p>말 대신 몸짓으로 표현하고 친구들이 맞혀 보세요.</p></div><div class="charades-mascot" aria-hidden="true">🌟🐿️🎭</div></div>'+
- '<div class="charades-metadata"><span>'+escapeHtml(charadesCategoryName(s))+'</span><span>👥 '+escapeHtml(s.teamNames[s.team])+' 차례</span><span>⭐ 이번 차례 정답 '+s.turnCorrect+'개</span>'+
+ '<div class="charades-metadata"><span>'+escapeHtml(charadesCategoryName(s))+'</span><span>👥 '+escapeHtml(charadesName(s,s.team))+' 차례</span><span>⭐ 이번 차례 정답 '+s.turnCorrect+'개</span>'+
  '<span>🌷 통과 '+s.turnPassed+'개</span></div>'+
  '<div id="charadesClock" class="charades-clock'+(s.remaining<=10&&s.remaining>0?' charades-clock-urgent':'')+'"><span>⏳ 남은 시간</span>'+
  '<strong id="charadesSeconds">'+String(s.remaining).padStart(2,'0')+'초</strong>'+
  '<div class="charades-time-track"><span id="charadesTimerFill" style="width:'+(100*s.remaining/s.duration)+'%"></span></div></div>'+
- (ended?'<div class="charades-finish" role="status"><span>🎉👏🌟</span><h3>이번 차례가 끝났어요!</h3><p>'+escapeHtml(s.teamNames[s.team])+' · 정답 '+s.turnCorrect+'개 · 통과 '+s.turnPassed+'개</p></div>':
+ (ended?'<div class="charades-finish" role="status"><span>🎉👏🌟</span><h3>이번 차례가 끝났어요!</h3><p>'+escapeHtml(charadesName(s,s.team))+' · 정답 '+s.turnCorrect+'개 · 통과 '+s.turnPassed+'개</p></div>':
  '<div class="charades-prompt"><p class="charades-prompt-label">🪄 송이의 비밀 제시어</p>'+
  (visible?'<div class="charades-visible-word" role="status">'+escapeHtml(s.current?.word||'준비된 제시어가 없어요')+'</div>':
  '<div class="charades-hidden-word" aria-label="제시어 가림">🔒 비밀 제시어<br><small>교사가 공개 버튼을 누르면 나타나요!</small></div>')+
@@ -228,10 +229,10 @@ function charadesScoreBoard(){
  const s=charadesState();return '<section class="charades-scoreboard"><div class="charades-score-head"><h3>🏆 우리 반 점수판</h3><span>이번 활동 누적 정답 '+s.correct+'개 · 전체 통과 '+s.passed+'개</span></div>'+
  '<div class="charades-score-grid charades-score-grid-'+s.teamCount+'">'+Array.from({length:s.teamCount},(_,i)=>
  '<div class="charades-score-card'+(s.team===i?' charades-score-current':'')+'">'+
- '<strong>'+escapeHtml(s.teamNames[i])+(s.team===i?' ✨':'')+'</strong>'+
+ '<strong>'+escapeHtml(charadesName(s,i))+(s.team===i?' ✨':'')+'</strong>'+
  '<span>'+s.scores[i]+'점</span>'+
- '<div class="charades-score-actions"><button type="button" class="btn btn-outline btn-small" data-charades-score="'+i+'" data-charades-delta="-1" aria-label="'+escapeHtml(s.teamNames[i])+' 점수 1점 줄이기" '+(!s.scores[i]?'disabled':'')+'>−</button>'+
- '<button type="button" class="btn btn-outline btn-small" data-charades-score="'+i+'" data-charades-delta="1" aria-label="'+escapeHtml(s.teamNames[i])+' 점수 1점 늘리기">+1</button></div></div>').join('')+'</div></section>';
+ '<div class="charades-score-actions"><button type="button" class="btn btn-outline btn-small" data-charades-score="'+i+'" data-charades-delta="-1" aria-label="'+escapeHtml(charadesName(s,i))+' 점수 1점 줄이기" '+(!s.scores[i]?'disabled':'')+'>−</button>'+
+ '<button type="button" class="btn btn-outline btn-small" data-charades-score="'+i+'" data-charades-delta="1" aria-label="'+escapeHtml(charadesName(s,i))+' 점수 1점 늘리기">+1</button></div></div>').join('')+'</div></section>';
 }
 function charadesControls(){
  const s=charadesState(),running=s.phase==='playing',ended=s.phase==='ended';
@@ -256,7 +257,7 @@ function charadesEditor(){
  '<label>한 차례 제한시간<select class="field" id="charadesDuration">'+CHARADES_DURATIONS.map(n=>'<option value="'+n+'" '+(s.duration===n?'selected':'')+'>'+n+'초</option>').join('')+'</select></label>'+
  '<label>모둠 수<select class="field" id="charadesTeamCount">'+[1,2,3,4].map(n=>'<option value="'+n+'" '+(s.teamCount===n?'selected':'')+'>'+ (n===1?'우리 반 함께':'모둠 '+n+'개')+'</option>').join('')+'</select></label></div>'+
  '<div class="charades-team-names">'+Array.from({length:4},(_,i)=>
- '<label>'+(i===0?'우리 반 또는 1모둠':(i+1)+'모둠')+' 이름<input class="field" id="charadesTeamName'+i+'" maxlength="24" value="'+escapeHtml(s.teamNames[i])+'"></label>').join('')+'</div>'+
+ '<label>'+(i+1)+'모둠 이름 (전체 활동 시 우리 반으로 표시)<input class="field" id="charadesTeamName'+i+'" maxlength="24" value="'+escapeHtml(s.teamNames[i])+'"></label>').join('')+'</div>'+
  '<h3>🎫 제시어 직접 편집</h3><p>한 줄에 제시어 하나씩 입력합니다. 주제당 3~40개까지 가능하며, 같은 제시어는 중복 등록하지 않습니다.</p>'+
  '<div class="charades-editor-pools">'+CHARADES_CATEGORIES.map(x=>
  '<details><summary>'+escapeHtml(x.label)+' 제시어 ('+s.pools[x.id].length+'개)</summary>'+
