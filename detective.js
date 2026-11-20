@@ -13,7 +13,7 @@ const DETECTIVE_PRESETS=[
   ['오늘은 [[웬지]] 기분이 좋아요.','왠지','이유 없이 그런 느낌이 든다는 말이에요.','‘왠지’는 ‘왜인지’의 준말입니다.'],
   ['친구가 [[몇일]] 뒤에 온대요.','며칠','날짜를 셀 때 쓰는 한 단어예요.','‘며칠’이 바른 표기입니다.'],
   ['주머니에 연필을 [[너었다]].','넣었다','‘넣다’의 과거형을 생각해 보세요.','‘넣었다’가 바른 표기입니다.'],
-  ['나는 숙제를 [[다했다]].','다 했다','‘다’와 ‘했다’의 띄어쓰기를 살펴보세요.','부사 ‘다’는 뒤의 동사와 띄어 씁니다.'],
+  ['나는 책을 [[읽엇어요]].','읽었어요','‘읽다’의 과거 표현을 생각해 보세요.','‘읽었어요’가 바른 표기입니다.'],
   ['깨끗이 [[씻은후]] 잠자리에 들었어요.','씻은 후','‘후’는 앞말과 띄어 써요.','의존 명사 ‘후’는 앞말과 띄어 씁니다.']
  ]},
  {label:'🌱 과학 개념 탐정',title:'과학 개념 오류 탐정',questions:[
@@ -93,7 +93,7 @@ function detectivePieces(markup){
  return chunks;
 }
 function detectiveCorrected(q){
- return q.markup.replace(/\[\[([\s\S]*?)\]\]/,q.correction);
+ return q.markup.replace(/\[\[([\s\S]*?)\]\]/,()=>q.correction);
 }
 function detectiveLeave(){
  detectiveFull=false;document.body.classList.remove('detective-fullscreen');
