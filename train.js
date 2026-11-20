@@ -158,7 +158,7 @@ function trainBoard(){
   const bad=s.checked&&trainBadSlots.includes(i);
   return '<div class="train-wagon'+(id!==null?' train-wagon-filled':'')+(bad?' train-wagon-error':'')+'">'+
   '<span class="train-wagon-number">'+(i+1)+'번 칸</span>'+
-  '<button type="button" class="train-wagon-target" data-train-slot="'+i+'" draggable="'+(id!==null&&!s.completed)+'" '+(id!==null?'data-train-card="'+id+'"':'') aria-label="'+(i+1)+'번 칸'+(id===null?' 비어 있음':', '+escapeHtml(s.cards[id]))+'">'+
+  '<button type="button" class="train-wagon-target" data-train-slot="'+i+'" draggable="'+(id!==null&&!s.completed)+'" '+(id!==null?'data-train-card="'+id+'"':'')+' aria-label="'+(i+1)+'번 칸'+(id===null?' 비어 있음':', '+escapeHtml(s.cards[id]))+'">'+
   (id===null?'<span class="train-wagon-empty">여기에 쏙!</span>':'<span class="train-wagon-text">'+escapeHtml(s.cards[id])+'</span>')+'</button>'+
   (id!==null&&!s.completed?'<button type="button" class="train-wagon-remove" data-train-remove="'+i+'" aria-label="'+(i+1)+'번 칸 비우기">✕</button>':'')+
   '<div class="train-wheels" aria-hidden="true">⚫ ⚫</div></div>';
