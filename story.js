@@ -29,7 +29,7 @@ function storyMakePreset(p){
 function makeDefaultStory(){return storyMakePreset(STORY_PRESETS[0]);}
 function storyValidPool(raw,fall){
  const arr=Array.isArray(raw)?raw.slice(0,35).map(x=>storyTrim(x,100)).filter(Boolean):[];
- return arr.length>=3?Array.from(new Set(arr)):fall.slice();
+ const unique=Array.from(new Set(arr));return unique.length>=3?unique:fall.slice();
 }
 function normalizeStory(raw){
  const d=makeDefaultStory(),v=raw&&typeof raw==='object'?raw:{};
@@ -145,7 +145,7 @@ function storyLoadPreset(){
 function storySound(){const s=storyState();s.sound=!s.sound;save();render();}
 function storyPrompt(s){
  if(!storyComplete(s))return '등장인물·장소·사건 카드를 모두 뽑으면 이야기의 재료가 완성돼요.';
- return '주인공은 '+s.picked[0]+'이고, 장소는 '+s.picked[1]+'입니다. 그러던 어느 날, '+s.picked[2]+'. 이 일은 어떻게 시작되고, 어떤 과정을 거쳐 해결되었을까요?';
+ return '오늘의 등장인물: '+s.picked[0]+' / 장소: '+s.picked[1]+' / 일어난 사건: '+s.picked[2]+' 이 세 가지를 넣어 이야기의 시작·전개·마무리를 만들어 보세요!';
 }
 function storyCopyPrompt(){const s=storyState();if(!storyComplete(s))return toast('먼저 등장인물·장소·사건 카드를 모두 뽑아 주세요.');copyText(storyPrompt(s));}
 function storyStoryText(s){
