@@ -293,6 +293,47 @@ body::before{display:none}
  border-color:#e6e8ef;box-shadow:0 3px 16px rgba(47,56,85,.045);
 }
 
+/* Sixth category: actually usable per-class Favorites, aligned to a 3×2 grid */
+.refined-category-6 .refined-category-icon{background:#fff5d9}
+.refined-game-card-wrap{position:relative;min-width:0}
+.refined-game-card-wrap>.refined-game-card{height:100%;width:100%;padding-right:34px}
+.refined-game-card-wrap>.refined-game-card .refined-game-go{top:auto;right:18px;bottom:17px}
+.favorite-toggle{
+ position:absolute;top:12px;right:12px;
+ display:grid;place-items:center;
+ width:35px;height:35px;
+ font-size:24px;line-height:1;font-weight:800;
+ color:#ada9ba;background:#fff;
+ border:1px solid #e6e4ee;border-radius:11px;
+ box-shadow:0 2px 8px #716a8820;
+ z-index:2;cursor:pointer;
+ transition:color .15s,background .15s,border-color .15s;
+}
+.favorite-toggle:hover{color:#c58b22;background:#fffbef;border-color:#f4e0ac}
+.favorite-toggle.is-favorite{color:#d69c28;background:#fff7de;border-color:#f1daa6}
+.favorite-toggle:focus-visible{outline:3px solid #9275db;outline-offset:2px}
+.compact-tool-card{position:relative}
+.compact-tool-card .compact-tool-open{padding-right:46px}
+.compact-tool-card>.favorite-toggle{top:50%;right:9px;transform:translateY(-50%)}
+.compact-tool-card.compact-race>.favorite-toggle{top:34px}
+.favorites-empty{
+ grid-column:1/-1;
+ min-height:245px;background:#fff;
+ border:1px dashed #dad8e9;border-radius:18px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ text-align:center;gap:10px;padding:25px 15px;
+}
+.favorites-empty>span{font-size:40px}
+.favorites-empty strong{font-size:17px;font-weight:900;color:#444c61}
+.favorites-empty p{font-size:13px;color:#828b9d;line-height:1.6;margin:0}
+.favorites-empty .btn{margin-top:7px}
+body[data-ui-theme="middle"] .favorite-toggle.is-favorite{color:#a47721;background:#fff8e3;border-color:#eedda9}
+@media(max-width:720px){
+ .refined-game-card-wrap>.refined-game-card{padding-right:28px}
+ .favorite-toggle{top:8px;right:8px;width:31px;height:31px;font-size:21px}
+ .compact-tool-card>.favorite-toggle{right:6px}
+}
+
 /* Middle school theme: the same tidy hierarchy in neutral blue/gray */
 body[data-ui-theme="middle"]{
  --primary:#507a9c;--primary-strong:#416783;
