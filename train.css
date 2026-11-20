@@ -1,0 +1,80 @@
+/* 별이의 순서 기차 — 초등 전자칠판 스타일 */
+.train-layout{max-width:1450px;margin:0 auto;display:grid;gap:15px}
+.train-board{overflow:hidden;border:2px solid #e2d7f6;border-radius:26px;background:linear-gradient(156deg,#fdf8ff,#f0f8ff 55%,#fff9ec);box-shadow:0 13px 35px #6b61a222}
+.train-hero{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:26px 30px;background:radial-gradient(ellipse at 88% 15%,#ffeab2 0%,transparent 43%),linear-gradient(130deg,#e4dcff,#f6e6fa 60%,#ddf7f4)}
+.train-hero-copy{min-width:0}.train-hero-copy>span{font-size:13px;font-weight:900;color:#996eae}
+.train-hero h2{margin:7px 0;color:#5f4e96;font-size:clamp(28px,3.8vw,45px);line-height:1.26;font-weight:950;overflow-wrap:anywhere}
+.train-hero p{font-size:clamp(13px,1.5vw,18px);color:#6d6990;font-weight:750;line-height:1.5;margin:0}
+.train-hero-mascot{font-size:clamp(48px,8vw,90px);white-space:nowrap;animation:trainBounce 2s ease-in-out infinite alternate;filter:drop-shadow(0 7px 7px #7d6a9942)}
+.train-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 18px;padding:14px;background:#fff9;color:#70618f;font-size:14px;font-weight:800}
+.train-stats span{padding:6px 10px;background:#f8f0ff;border-radius:20px}.train-stats b{color:#3c7d99}
+.train-track-head,.train-pool-head{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#6e5596;font-size:16px}
+.train-track-head{padding:21px 23px 7px}.train-pool-head{margin-bottom:14px}
+.train-track-head strong,.train-pool-head strong{font-size:clamp(15px,1.55vw,21px);font-weight:950}
+.train-track-head small,.train-pool-head small{font-size:12px;font-weight:700;color:#8b7f9d}
+.train-track{display:flex;align-items:end;gap:4px;overflow-x:auto;padding:12px 18px 28px;scrollbar-width:thin}
+.train-engine{position:relative;display:flex;flex:0 0 130px;flex-direction:column;align-items:center;justify-content:center;gap:2px;height:166px;background:linear-gradient(135deg,#ecf9ff,#d8e7ff);border:3px solid #8cb1e2;border-radius:21px 21px 13px 13px;box-shadow:0 10px 0 #93aee0;color:#5a659e}
+.train-engine span:first-child{font-size:26px}.train-engine span:nth-child(2){font-size:63px;line-height:1.15}.train-engine small{font-size:13px;font-weight:950}
+.train-wagons{display:flex;align-items:end;gap:10px;min-width:max-content;padding:0 2px 11px}
+.train-wagons-go{animation:trainDepart 1.8s ease-in-out infinite alternate}
+.train-wagon{position:relative;flex:0 0 172px;min-width:172px;min-height:165px;background:linear-gradient(135deg,#fff4da,#ffe7ed);border:3px solid #e9acbd;border-radius:19px 19px 11px 11px;padding:8px 9px 23px;box-shadow:0 10px 0 #efbcc4}
+.train-wagon:nth-child(3n+2){background:linear-gradient(135deg,#eef9ff,#e2f6ea);border-color:#a6cfc2;box-shadow:0 10px 0 #b6d8d0}
+.train-wagon:nth-child(3n){background:linear-gradient(135deg,#f4eefe,#eceaff);border-color:#c5b3e6;box-shadow:0 10px 0 #cfc1ec}
+.train-wagon::before{content:'🔗';position:absolute;left:-17px;bottom:37px;font-size:17px;z-index:3}
+.train-wagon-number{display:block;text-align:center;font-weight:950;font-size:13px;color:#886685;margin-bottom:7px}
+.train-wagon-target{display:flex;align-items:center;justify-content:center;text-align:center;width:100%;min-height:91px;border:2px dashed #e8bdd0;border-radius:12px;background:#fff9;padding:10px 7px;cursor:pointer;touch-action:manipulation;color:#4e477e}
+.train-wagon-filled .train-wagon-target{border-style:solid;border-color:#e2a7b7;background:#fff}
+.train-wagon-empty{font-size:13px;font-weight:850;color:#b89dad;line-height:1.3}
+.train-wagon-text{font-size:clamp(17px,1.5vw,23px);font-weight:950;line-height:1.4;overflow-wrap:anywhere;white-space:pre-wrap}
+.train-wagon-error{outline:4px solid #f7b25c;outline-offset:1px}
+.train-drop-hover .train-wagon-target{border-color:#6f9bea;background:#fff2bb;transform:scale(1.045)}
+.train-wagon-remove{position:absolute;right:5px;top:3px;display:flex;align-items:center;justify-content:center;width:28px;height:28px;border:0;border-radius:50%;background:#ffe2dd;color:#b75e6c;font-size:14px;cursor:pointer;font-weight:900}
+.train-wagon-remove:focus-visible,.train-card:focus-visible,.train-wagon-target:focus-visible{outline:4px solid #6b57da;outline-offset:3px}
+.train-wheels{position:absolute;left:0;right:0;bottom:-13px;text-align:center;color:#444;font-size:18px;letter-spacing:28px;white-space:nowrap}
+.train-pool{background:#fffaf3;border-top:2px dashed #e4c5a7;padding:19px 22px 22px}
+.train-cards{display:flex;align-items:stretch;justify-content:center;flex-wrap:wrap;gap:12px;min-height:92px}
+.train-card{display:flex;flex:0 1 215px;align-items:center;justify-content:center;gap:8px;min-height:100px;padding:12px 14px;border:3px solid #e3b672;border-radius:18px;background:linear-gradient(150deg,#fff,#fff2c9);color:#59457b;box-shadow:0 7px 0 #edd6af,0 12px 20px #998bb424;cursor:grab;touch-action:manipulation;transition:transform .16s;min-width:125px}
+.train-card:hover{transform:translateY(-3px)}.train-card:active{cursor:grabbing}
+.train-card-selected{border-color:#8b67e3;background:#f2e8ff;box-shadow:0 0 0 4px #c9b2ff,0 7px 0 #d3c0f7}
+.train-card-emoji{font-size:24px}.train-card strong{font-size:clamp(16px,1.7vw,25px);line-height:1.4;font-weight:950;overflow-wrap:anywhere}
+.train-pool-empty{display:flex;align-items:center;justify-content:center;text-align:center;color:#95758d;font-weight:800;padding:15px}
+.train-feedback{margin:4px 20px 17px;padding:12px 17px;border-radius:14px;text-align:center;background:#ebf6ff;color:#557396;font-weight:900;font-size:clamp(16px,2vw,23px);line-height:1.5}
+.train-feedback-try{background:#fff0d8;color:#98652d}.train-feedback-win{background:#e0f8eb;color:#347e57}
+.train-hint,.train-answer{margin:12px 20px;padding:13px 17px;border-radius:12px;font-weight:800;font-size:clamp(15px,1.8vw,20px);line-height:1.65;overflow-wrap:anywhere}
+.train-hint{background:#fff7d9;color:#906e3f}.train-answer{background:#e6f4ff;color:#48658d}
+.train-answer p{margin:5px 0 0}
+.train-victory{margin:13px 20px 23px;padding:22px;border-radius:20px;text-align:center;border:3px solid #f3d37c;background:linear-gradient(130deg,#fff8ce,#fde7f4,#e3f8ef)}
+.train-victory span{display:block;font-size:clamp(40px,6vw,76px);animation:trainBounce 1.2s ease-in-out infinite alternate}
+.train-victory h3{font-size:clamp(23px,3.7vw,45px);font-weight:950;color:#8960a0;margin:7px 0}
+.train-victory p{font-size:clamp(14px,1.9vw,21px);color:#6a5c7d;font-weight:800;line-height:1.5}
+.train-controls{background:#fff;border:1px solid #e4d8ef;border-radius:17px;padding:14px;box-shadow:0 6px 20px #665b9020}
+.train-control-buttons{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+.train-control-buttons .btn{font-size:13px;font-weight:900;min-height:45px}
+.train-control-buttons .btn:disabled{cursor:not-allowed;opacity:.4}
+.train-editor h2{color:#5e4b83;font-size:21px;margin:0 0 9px}
+.train-editor-note{font-size:13px;line-height:1.7;color:#857b96;margin:9px 0 14px}
+.train-editor label{display:grid;gap:6px;font-size:13px;font-weight:850;color:#62587b}
+.train-preset{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin:15px 0}
+.train-preset label{flex:1 1 230px;max-width:430px}
+.train-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.train-fields label:first-child{grid-column:1/-1}
+.train-editor input,.train-editor textarea,.train-editor select{width:100%;min-width:0;font-weight:500}
+.train-cards-label{display:block!important;font-size:15px!important;margin:18px 0 9px}
+.train-cards-input{min-height:215px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;line-height:1.65}
+.train-editor-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.train-footnote{color:#817a8d;text-align:center;font-size:12px}
+.train-full-head{display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:900;font-size:19px;color:#65538b}
+body.train-fullscreen .sidebar,body.train-fullscreen .topbar,body.train-fullscreen .main-footer{display:none!important}
+body.train-fullscreen .app-shell{display:block}
+body.train-fullscreen .workarea{margin:0;min-height:100vh}
+body.train-fullscreen #content{max-width:none;padding:12px 20px 125px}
+body.train-fullscreen .train-layout{max-width:none}
+body.train-fullscreen .train-board{min-height:calc(100vh - 220px)}
+body.train-fullscreen .train-card{flex-basis:240px;min-height:110px}
+body.train-fullscreen .train-wagon{flex-basis:200px;min-width:200px}
+body.train-fullscreen .train-controls{position:fixed;bottom:0;left:0;right:0;z-index:80;border:0;border-radius:0;border-top:2px solid #dcc9ed;margin:0;box-shadow:0 -10px 30px #55467930;background:#fffc;backdrop-filter:blur(10px)}
+@keyframes trainBounce{from{transform:translateY(-5px) rotate(-3deg)}to{transform:translateY(5px) rotate(3deg)}}
+@keyframes trainDepart{from{transform:translateX(0)}to{transform:translateX(18px)}}
+@media(max-width:850px){.train-track{gap:2px}.train-engine{flex-basis:100px;height:153px}.train-wagon{min-width:160px;flex-basis:160px}.train-fields{grid-template-columns:1fr}.train-fields label:first-child{grid-column:auto}}
+@media(max-width:600px){.train-hero{padding:16px}.train-hero-mascot{font-size:44px}.train-track-head,.train-pool-head{padding:12px 11px 4px;font-size:14px}.train-pool-head{padding:0;margin:0 0 10px}.train-track{padding:15px 9px 23px}.train-engine{flex-basis:90px}.train-card{flex:1 1 140px;min-height:86px}.train-card strong{font-size:16px}.train-pool{padding:12px}.train-control-buttons .btn{flex:1 1 43%;font-size:11px;padding:8px 5px}.train-stats{font-size:11px;gap:5px}.train-wagon{min-width:145px;flex-basis:145px}.train-wagon-text{font-size:17px}body.train-fullscreen #content{padding:7px 7px 230px}body.train-fullscreen .train-controls{padding:8px}body.train-fullscreen .train-board{min-height:0}}
+@media(prefers-reduced-motion:reduce){.train-hero-mascot,.train-victory span,.train-wagons-go{animation:none!important}.train-card{transition:none!important}}
