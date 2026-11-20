@@ -1,0 +1,67 @@
+/* 틀린 곳을 찾아라! — 초등학생용 오류 탐정 */
+.detective-layout{display:grid;gap:15px;max-width:1400px;margin:0 auto}
+.detective-board{border:2px solid #dfd5ed;border-radius:26px;overflow:hidden;background:linear-gradient(155deg,#fffaf0,#f0f7ff 62%,#fef1fa);box-shadow:0 13px 32px #9581ab24}
+.detective-hero{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:25px 29px;background:radial-gradient(ellipse at 90% 15%,#ffefb9 0,transparent 48%),linear-gradient(132deg,#e1edff,#f7e5fa 58%,#e7f5ec)}
+.detective-hero>div:first-child{min-width:0}.detective-hero span{font-size:13px;font-weight:900;color:#9868a6}
+.detective-hero h2{font-size:clamp(27px,3.8vw,48px);font-weight:950;color:#66518e;line-height:1.3;margin:6px 0 9px;overflow-wrap:anywhere}
+.detective-hero p{font-size:clamp(13px,1.4vw,17px);font-weight:750;color:#716588;line-height:1.55;margin:0}
+.detective-mascot{font-size:clamp(42px,7vw,84px);filter:drop-shadow(0 8px 8px #866f9c55);white-space:nowrap;animation:detectivePeek 2s ease-in-out infinite alternate}
+.detective-stats{padding:15px;display:flex;justify-content:center;align-items:center;gap:9px 13px;flex-wrap:wrap;color:#685980;font-weight:850;font-size:14px}
+.detective-stats span{background:#fff;border:1px solid #eee6f7;padding:7px 13px;border-radius:99px;box-shadow:0 2px 9px #a89abb22}
+.detective-progress{height:12px;margin:0 21px;border-radius:99px;overflow:hidden;background:#e2def1}
+.detective-progress>span{display:block;height:100%;border-radius:99px;background:linear-gradient(95deg,#f9bc73,#e9a2dc,#99cdeb);transition:width .3s}
+.detective-question{margin:20px 19px 23px;border:2px solid #e7daed;border-radius:23px;padding:21px;background:#fff;box-shadow:0 9px 20px #a99ab32a}
+.detective-question-meta{display:flex;justify-content:space-between;align-items:center;gap:9px;flex-wrap:wrap;font-size:15px;color:#8a659d;font-weight:900;margin-bottom:15px}
+.detective-question-meta strong{border-radius:99px;background:#eee8ff;padding:7px 13px;color:#67559c}
+.detective-casefile{display:flex;flex-direction:column;align-items:center;gap:13px;background:linear-gradient(160deg,#fffaf0,#fffdf9);border:3px dashed #e9ce9f;border-radius:23px;min-height:205px;padding:20px 18px;justify-content:center;position:relative}
+.detective-casefile>span{font-size:35px}
+.detective-sentence{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0 3px;font-size:clamp(23px,3.9vw,52px);font-weight:950;line-height:1.7;text-align:center;max-width:1150px;overflow-wrap:anywhere}
+.detective-space{white-space:pre;font-size:inherit}
+.detective-word{appearance:none;box-sizing:border-box;border:2px solid transparent;border-radius:13px;background:transparent;display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:4px 7px;font:inherit;font-size:inherit;line-height:1.4;font-weight:inherit;color:#3f4771;cursor:pointer;transition:transform .15s,background .15s,box-shadow .15s;white-space:pre-wrap;overflow-wrap:anywhere}
+.detective-word:not(:disabled):hover{transform:translateY(-4px);background:#fff1ca;border-color:#f3cc7c;box-shadow:0 7px 14px #b59c942c}
+.detective-word:not(:disabled):active{transform:scale(.96)}
+.detective-word:focus-visible{outline:4px solid #755dd5;outline-offset:3px}
+.detective-word:disabled{opacity:1;cursor:default}
+.detective-word-answer{background:#ddf9e5!important;border-color:#8bd5a9!important;color:#227b4a!important;text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:7px}
+.detective-word-miss{animation:detectiveShake .35s ease-out;background:#fff0d9;border-color:#f0a75e;color:#8c5b3b}
+.detective-guidance{text-align:center;font-size:13px;font-weight:750;color:#827d97;line-height:1.65;margin:16px 0}
+.detective-feedback{margin:10px 0;background:#fff4df;border-radius:13px;text-align:center;font-weight:900;color:#936a37;font-size:clamp(16px,1.8vw,23px);line-height:1.5;padding:13px 16px}
+.detective-feedback-good{background:#e4f8e9;color:#358054}
+.detective-feedback-revealed{background:#e8f2ff;color:#5073a4}
+.detective-hint{padding:14px 18px;background:#fff6cf;border-radius:13px;margin:10px 0;color:#97752d;font-size:clamp(15px,1.8vw,23px);line-height:1.6;font-weight:850}
+.detective-solution{padding:17px 18px;border:2px solid #abdfc1;border-radius:15px;background:#eafaf2;margin-top:13px;display:grid;gap:10px;text-align:center;color:#377b5b}
+.detective-solution>span{font-size:16px;font-weight:900}
+.detective-solution>strong{font-size:clamp(20px,3.1vw,39px);line-height:1.4;overflow-wrap:anywhere;white-space:pre-wrap}
+.detective-solution p{font-size:clamp(14px,1.7vw,20px);font-weight:800;line-height:1.5;margin:5px 0}
+.detective-victory{margin:20px;padding:26px 21px;text-align:center;border:3px solid #ffd77a;border-radius:22px;background:linear-gradient(115deg,#fffad6,#fbe7f6,#e4f8ef)}
+.detective-victory span{display:block;font-size:clamp(40px,7vw,81px);animation:detectivePeek 1.15s ease-in-out infinite alternate}
+.detective-victory h3{font-size:clamp(27px,3.7vw,45px);font-weight:950;color:#8760a3;margin:9px 0}
+.detective-victory p{font-size:clamp(15px,2vw,22px);font-weight:800;color:#74648c;line-height:1.6}
+.detective-controls{padding:14px;background:#fff;border:1px solid #e6dded;border-radius:17px;box-shadow:0 6px 20px #8372a523}
+.detective-control-buttons{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.detective-control-buttons .btn{font-size:13px;font-weight:900;min-height:46px}
+.detective-control-buttons .btn:disabled{opacity:.42;cursor:not-allowed}
+.detective-editor h2{font-size:21px;color:#675589;margin:0 0 11px}
+.detective-editor-note{font-size:13px;font-weight:600;line-height:1.65;color:#80778f;margin:9px 0 14px}
+.detective-editor label{display:grid;gap:6px;font-size:13px;font-weight:850;color:#70627f}
+.detective-editor input,.detective-editor select,.detective-editor textarea{width:100%;min-width:0;font-weight:550}
+.detective-preset{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin:12px 0 17px}
+.detective-preset label{flex:1 1 230px;max-width:450px}
+.detective-input-label{margin:19px 0 10px}
+.detective-questions-input{min-height:250px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;line-height:1.7;font-size:14px;resize:vertical}
+.detective-editor-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}
+.detective-foot{text-align:center;font-size:12px;color:#807889}
+.detective-full-head{display:flex;align-items:center;justify-content:space-between;gap:11px;color:#675587;font-weight:900;font-size:18px}
+body.detective-fullscreen .sidebar,body.detective-fullscreen .topbar,body.detective-fullscreen .main-footer{display:none!important}
+body.detective-fullscreen .app-shell{display:block}
+body.detective-fullscreen .workarea{margin:0;min-height:100vh}
+body.detective-fullscreen #content{max-width:none;padding:15px 19px 126px}
+body.detective-fullscreen .detective-layout{max-width:none}
+body.detective-fullscreen .detective-board{min-height:calc(100vh - 215px)}
+body.detective-fullscreen .detective-casefile{min-height:clamp(210px,37vh,440px)}
+body.detective-fullscreen .detective-sentence{font-size:clamp(30px,4.4vw,68px)}
+body.detective-fullscreen .detective-controls{position:fixed;left:0;right:0;bottom:0;z-index:85;margin:0;border:0;border-top:2px solid #dfd1e9;border-radius:0;box-shadow:0 -8px 26px #766a942b;background:#fffc;backdrop-filter:blur(12px)}
+@keyframes detectivePeek{from{transform:rotate(-7deg) translateY(-4px)}to{transform:rotate(7deg) translateY(6px)}}
+@keyframes detectiveShake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-7px)}50%{transform:translateX(7px)}}
+@media(max-width:720px){.detective-hero{padding:18px 14px}.detective-mascot{font-size:46px}.detective-question{margin:12px 10px 17px;padding:13px}.detective-casefile{padding:14px 10px;min-height:175px}.detective-sentence{font-size:clamp(20px,5.1vw,33px)}.detective-word{min-height:42px;padding:3px 4px}.detective-stats{font-size:11px;gap:5px;padding:10px}.detective-stats span{padding:5px 8px}.detective-control-buttons .btn{flex:1 1 42%;font-size:11px;padding:8px 4px}.detective-question-meta{font-size:12px}.detective-victory{margin:12px}.detective-guidance{font-size:12px}body.detective-fullscreen #content{padding:7px 7px 218px}body.detective-fullscreen .detective-controls{padding:8px}}
+@media(prefers-reduced-motion:reduce){.detective-mascot,.detective-victory span,.detective-word-miss{animation:none!important}.detective-word,.detective-progress>span{transition:none!important}}
